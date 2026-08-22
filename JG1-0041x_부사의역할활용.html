@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부사의 역할 활용</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#4A90D9;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>부사의 역할 활용</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">A형</span></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She sings ___.",
+    hint: "💡 그녀는 아름답게 노래한다.",
+    options: ["beautiful", "beautifully", "beauty", "beautify"],
+    answer: "beautifully",
+    feedback: "동사(sings)를 수식하므로 부사 beautifully를 씁니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 역할로 알맞은 것을 고르세요.",
+    sentence: "He runs <u>very</u> fast.",
+    hint: "💡 그는 매우 빨리 달린다.",
+    options: ["동사를 수식하는 부사", "형용사를 수식하는 부사", "다른 부사를 수식하는 부사", "문장 전체를 수식하는 부사"],
+    answer: "다른 부사를 수식하는 부사",
+    feedback: "very가 부사 fast를 수식하는 역할을 합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "This problem is ___ difficult.",
+    hint: "💡 이 문제는 매우 어렵다.",
+    options: ["extreme", "extremely", "extremity", "extremes"],
+    answer: "extremely",
+    feedback: "형용사(difficult)를 수식하므로 부사 extremely를 씁니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 역할로 알맞은 것을 고르세요.",
+    sentence: "She speaks English <u>fluently</u>.",
+    hint: "💡 그녀는 영어를 유창하게 말한다.",
+    options: ["동사를 수식하는 부사", "형용사를 수식하는 부사", "다른 부사를 수식하는 부사", "문장 전체를 수식하는 부사"],
+    answer: "동사를 수식하는 부사",
+    feedback: "fluently가 동사 speaks를 수식하는 역할을 합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He ___ finishes his work on time.",
+    hint: "💡 그는 항상 제시간에 일을 끝낸다.",
+    options: ["always", "is always", "always is", "always be"],
+    answer: "always",
+    feedback: "빈도부사는 일반동사 앞에 위치합니다."
+  },
+  {
+    instruction: "다음 중 부사가 수식하는 대상이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 수식 대상이 다른 것을 찾아보세요.",
+    hint: "💡 세 문장은 동사를 수식하고, 한 문장은 형용사를 수식합니다.",
+    options: ["She walks quickly.", "He is extremely tired.", "They arrived early.", "The car stopped suddenly."],
+    answer: "He is extremely tired.",
+    feedback: "나머지 셋은 동사를 수식하는 부사이고, 이 문장만 형용사(tired)를 수식하는 부사입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He is ___ late for school.",
+    hint: "💡 그는 학교에 절대 늦지 않는다.",
+    options: ["never", "not", "no", "none"],
+    answer: "never",
+    feedback: "빈도부사 never는 be동사 뒤에 위치합니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 역할로 알맞은 것을 고르세요.",
+    sentence: "<u>Luckily</u>, she passed the exam.",
+    hint: "💡 운 좋게도, 그녀는 시험에 합격했다.",
+    options: ["동사를 수식하는 부사", "형용사를 수식하는 부사", "다른 부사를 수식하는 부사", "문장 전체를 수식하는 부사"],
+    answer: "문장 전체를 수식하는 부사",
+    feedback: "Luckily가 문장 맨 앞에서 문장 전체를 수식하며 화자의 의견을 나타냅니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She ___ waters the plants in the morning.",
+    hint: "💡 그녀는 종종 아침에 식물에 물을 준다.",
+    options: ["often", "is often", "often is", "oftenly"],
+    answer: "often",
+    feedback: "빈도부사는 일반동사 앞에 위치합니다."
+  },
+  {
+    instruction: "다음 중 부사가 수식하는 대상이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 수식 대상이 다른 것을 찾아보세요.",
+    hint: "💡 세 문장은 동사를 수식하고, 한 문장은 형용사를 수식합니다.",
+    options: ["He answered the question correctly.", "She is surprisingly calm.", "They finished the race quickly.", "He drives carefully."],
+    answer: "She is surprisingly calm.",
+    feedback: "나머지 셋은 동사를 수식하는 부사이고, 이 문장만 형용사(calm)를 수식하는 부사입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He solved the problem ___.",
+    hint: "💡 그는 문제를 쉽게 풀었다.",
+    options: ["easy", "easily", "easiness", "easier"],
+    answer: "easily",
+    feedback: "형용사 easy에 -ly를 붙여 부사 easily를 만듭니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 역할로 알맞은 것을 고르세요.",
+    sentence: "It rained <u>heavily</u> last night.",
+    hint: "💡 어젯밤에 비가 심하게 왔다.",
+    options: ["동사를 수식하는 부사", "형용사를 수식하는 부사", "다른 부사를 수식하는 부사", "문장 전체를 수식하는 부사"],
+    answer: "동사를 수식하는 부사",
+    feedback: "heavily가 동사 rained를 수식하는 역할을 합니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.textContent===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${q.answer}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

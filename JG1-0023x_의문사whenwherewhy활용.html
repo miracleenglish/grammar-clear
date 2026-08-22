@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>의문사 when·where·why 활용</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#5BAD6F;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:20px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.7;word-break:keep-all;}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .opt-btn{font-size:17px;font-weight:700;padding:14px 6px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:center;color:#222;transition:all .15s;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>의문사 when·where·why 활용</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">B형</span></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-grid" id="optsGrid"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ is your birthday?\nB: It's May 8th.",
+    hint: "💡 A: 네 생일은 언제니? B: 5월 8일이야.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "When",
+    feedback: "'언제'를 물을 때는 의문사 When을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ do you live?\nB: I live in Busan.",
+    hint: "💡 A: 너는 어디에 사니? B: 나는 부산에 살아.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Where",
+    feedback: "'어디에'를 물을 때는 의문사 Where를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ were you late for school?\nB: Because I missed the bus.",
+    hint: "💡 A: 왜 학교에 늦었니? B: 버스를 놓쳤기 때문이야.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Why",
+    feedback: "'왜'를 물을 때는 의문사 Why를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ did you buy this bag?\nB: I bought it at the mall.",
+    hint: "💡 A: 이 가방을 어디에서 샀니? B: 나는 그것을 쇼핑몰에서 샀어.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Where",
+    feedback: "'어디에서'를 물을 때는 의문사 Where를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ does the movie start?\nB: It starts at 7.",
+    hint: "💡 A: 영화가 언제 시작하니? B: 7시에 시작해.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "When",
+    feedback: "'언제'를 물을 때는 의문사 When을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ do you want to be a doctor?\nB: Because I want to help people.",
+    hint: "💡 A: 왜 의사가 되고 싶니? B: 사람들을 돕고 싶기 때문이야.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Why",
+    feedback: "'왜'를 물을 때는 의문사 Why를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ did they go on vacation?\nB: They went to Jeju Island.",
+    hint: "💡 A: 그들은 어디로 휴가를 갔니? B: 그들은 제주도에 갔어.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Where",
+    feedback: "'어디로'를 물을 때는 의문사 Where를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ did you finish your homework?\nB: I finished it last night.",
+    hint: "💡 A: 언제 숙제를 끝냈니? B: 어젯밤에 끝냈어.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "When",
+    feedback: "'언제'를 물을 때는 의문사 When을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ is she crying?\nB: Because she lost her wallet.",
+    hint: "💡 A: 그녀는 왜 울고 있니? B: 지갑을 잃어버렸기 때문이야.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Why",
+    feedback: "'왜'를 물을 때는 의문사 Why를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ can I find the nearest bank?\nB: It's next to the station.",
+    hint: "💡 A: 가장 가까운 은행은 어디에 있니? B: 그것은 역 옆에 있어.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Where",
+    feedback: "'어디에'를 물을 때는 의문사 Where를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ does the semester end?\nB: It ends in December.",
+    hint: "💡 A: 학기가 언제 끝나니? B: 12월에 끝나.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "When",
+    feedback: "'언제'를 물을 때는 의문사 When을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ didn't you come to the party?\nB: Because I was sick.",
+    hint: "💡 A: 너는 왜 파티에 오지 않았니? B: 아팠기 때문이야.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Why",
+    feedback: "'왜'를 물을 때는 의문사 Why를 씁니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){const q=questions[current];const total=questions.length;document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;document.getElementById('progressBar').style.width=`${(current/total)*100}%`;document.getElementById('instruction').textContent=q.instruction;document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:72px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>').replace(/\n/g,'<br>');document.getElementById('hint').textContent=q.hint;document.getElementById('feedback').className='feedback';document.getElementById('nextBtn').className='next-btn';const grid=document.getElementById('optsGrid');grid.innerHTML='';const opts=shuffleNoFirstAnswer(q.options,q.answer);opts.forEach(opt=>{const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,q);grid.appendChild(btn);});}
+function selectAnswer(selected,q){const btns=document.querySelectorAll('.opt-btn');btns.forEach(b=>{b.disabled=true;if(b.textContent.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');else if(b.textContent===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');});const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect)score++;else wrongIndexes.push(current);const feedback=document.getElementById('feedback');if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${q.answer}`;}document.getElementById('fbBody').textContent=q.feedback;const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

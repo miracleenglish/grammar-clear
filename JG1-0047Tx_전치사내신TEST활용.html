@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전치사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:4px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#E8604C;}
+  .range{text-align:center;font-size:13px;color:#888;margin-bottom:14px;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn .hl{color:#E07B39;font-weight:800;text-decoration:underline;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>전치사 내신TEST</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">TEST</span></div>
+  <div class="range">그룹12 범위 (0044x~0047x)</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "The bakery opens ___ 8 o'clock every day.",
+    hint: "💡 그 빵집은 매일 8시에 문을 연다.",
+    options: ["in", "on", "at", "for"],
+    answer: "at",
+    feedback: "구체적인 시각을 나타낼 때는 at을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "My grandfather was born ___ 1958.",
+    hint: "💡 우리 할아버지는 1958년에 태어나셨다.",
+    options: ["in", "on", "at", "during"],
+    answer: "in",
+    feedback: "연도를 나타낼 때는 in을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "We usually visit our uncle ___ Chuseok.",
+    hint: "💡 우리는 보통 추석에 삼촌 댁을 방문한다.",
+    options: ["in", "on", "at", "during"],
+    answer: "on",
+    feedback: "특정한 날(명절)을 나타낼 때는 on을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He fell asleep ___ the movie.",
+    hint: "💡 그는 영화 보는 동안 잠들었다.",
+    options: ["for", "during", "until", "by"],
+    answer: "during",
+    feedback: "뒤에 특정 기간을 나타내는 명사(the movie)가 오므로 during을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She waited for the bus ___ twenty minutes.",
+    hint: "💡 그녀는 20분 동안 버스를 기다렸다.",
+    options: ["for", "during", "until", "by"],
+    answer: "for",
+    feedback: "숫자를 포함하는 구체적인 기간을 나타낼 때는 for를 씁니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**He works** in the office.", "**Your bag is** on the desk.", "**She lives** on Seoul.", "**They met** at the airport."],
+    answer: "**She lives** on Seoul.",
+    feedback: "도시처럼 비교적 넓은 장소를 나타낼 때는 on이 아닌 in을 써야 합니다. on → in"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Please put your shoes ___ the shoe rack.",
+    hint: "💡 신발을 신발장 위에 놓아 주세요.",
+    options: ["in", "on", "at", "to"],
+    answer: "on",
+    feedback: "접촉해 있는 상태를 나타낼 때는 on을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "The kite flew ___ the trees.",
+    hint: "💡 연이 나무들 위로 날았다.",
+    options: ["near", "over", "under", "behind"],
+    answer: "over",
+    feedback: "표면에 접촉하지 않은 '~ 위에'라는 뜻은 over를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "The cat is sleeping ___ the blanket.",
+    hint: "💡 고양이가 담요 아래에서 자고 있다.",
+    options: ["near", "over", "under", "behind"],
+    answer: "under",
+    feedback: "'~ 아래에'라는 뜻은 under를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "There's a nice bookstore ___ the cafe.",
+    hint: "💡 카페 맞은편에 멋진 서점이 있다.",
+    options: ["in front of", "next to", "across from", "behind"],
+    answer: "across from",
+    feedback: "'~ 맞은편에'라는 뜻의 구 전치사는 across from입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I was standing ___ my best friend at the concert.",
+    hint: "💡 나는 콘서트에서 가장 친한 친구 옆에 서 있었다.",
+    options: ["in front of", "next to", "across from", "behind"],
+    answer: "next to",
+    feedback: "'~ 옆에'라는 뜻의 구 전치사는 next to입니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**He is studying** on the library.", "**Look at those stars** on the sky.", "**Her key is** in her pocket.", "**There is a lamp** at the wall."],
+    answer: "**Her key is** in her pocket.",
+    feedback: "나머지 셋에 오류가 있습니다. studying on the library→in the library, stars on the sky→in the sky, lamp at the wall→on the wall"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "There's a nice park ___ the school.",
+    hint: "💡 학교 근처에 멋진 공원이 있다.",
+    options: ["near", "over", "under", "behind"],
+    answer: "near",
+    feedback: "'~ 근처에'라는 뜻은 near를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I left my jacket ___ the sofa.",
+    hint: "💡 나는 소파 뒤에 재킷을 두었다.",
+    options: ["near", "over", "under", "behind"],
+    answer: "behind",
+    feedback: "'~ 뒤에'라는 뜻은 behind를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Draw a line ___ point A ___ point B.",
+    hint: "💡 A지점에서 B지점까지 선을 그어라.",
+    options: ["from / to", "between / and", "near / to", "over / under"],
+    answer: "from / to",
+    feedback: "'A부터 B까지'라는 뜻의 구 전치사는 from A to B입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "There was a debate ___ the two teams ___ the topic.",
+    hint: "💡 그 주제에 대해 두 팀 사이에 토론이 있었다.",
+    options: ["from / to", "between / and", "near / to", "over / under"],
+    answer: "between / and",
+    feedback: "'A와 B 사이에'라는 뜻의 구 전치사는 between A and B입니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**She stayed** at her cousin's.", "**It is two miles** near the station.", "**He waited** for an hour.", "**We met** during the festival."],
+    answer: "**It is two miles** near the station.",
+    feedback: "거리를 나타내는 구 전치사는 near가 아닌 to를 써야 합니다. near → to"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Can you turn ___ the right at the corner?",
+    hint: "💡 모퉁이에서 오른쪽으로 돌아줄 수 있니?",
+    options: ["near", "over", "to", "behind"],
+    answer: "to",
+    feedback: "'~로(목적지)'라는 뜻은 to를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "The gym is open ___ 6 a.m. ___ 10 p.m.",
+    hint: "💡 그 체육관은 오전 6시부터 오후 10시까지 문을 연다.",
+    options: ["from / to", "between / and", "near / to", "over / under"],
+    answer: "from / to",
+    feedback: "'A부터 B까지'라는 뜻의 구 전치사는 from A to B입니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**We talked** near the party.", "**The store closes** in 9 p.m.", "**It rained** at the weekend.", "**They arrived** at the hotel."],
+    answer: "**They arrived** at the hotel.",
+    feedback: "나머지 셋에 오류가 있습니다. talked near the party→during the party, closes in 9 p.m.→at 9 p.m., rained at the weekend→on the weekend"
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+function stripMarkers(s){return s.replace(/\*\*/g,'');}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>').replace(/\n/g,'<br>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=opt.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    btn.dataset.raw=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.raw.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.dataset.raw===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${stripMarkers(q.answer)}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

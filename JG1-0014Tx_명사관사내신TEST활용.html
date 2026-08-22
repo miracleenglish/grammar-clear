@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>명사·관사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:4px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#E8604C;}
+  .range{text-align:center;font-size:13px;color:#888;margin-bottom:14px;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn .hl{color:#E07B39;font-weight:800;text-decoration:underline;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>명사·관사 내신TEST</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">TEST</span></div>
+  <div class="range">그룹3 범위 (0012x~0014x)</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I need two ___ of paper for this project.",
+    hint: "💡 나는 이 프로젝트를 위해 종이 두 장이 필요하다.",
+    options: ["piece", "pieces", "slice", "slices"],
+    answer: "pieces",
+    feedback: "paper는 셀 수 없는 명사이므로 단위 명사 piece를 씁니다. 두 장이므로 복수형 pieces."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She drinks two ___ of milk every morning.",
+    hint: "💡 그녀는 매일 아침 우유 두 잔을 마신다.",
+    options: ["glass", "glasses", "bottle", "cup"],
+    answer: "glasses",
+    feedback: "우유의 양을 나타낼 때는 glass를 단위로 씁니다. 두 잔이므로 복수형 glasses."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He is ___ honest and diligent student.",
+    hint: "💡 그는 정직하고 성실한 학생이다.",
+    options: ["a", "an", "the", "관사 없음"],
+    answer: "an",
+    feedback: "honest는 모음 소리(h가 묵음)로 시작하므로 an을 씁니다."
+  },
+  {
+    instruction: "다음 중 셀 수 없는 명사를 고르세요.",
+    sentence: "어느 것이 셀 수 없는 명사일까요?",
+    hint: "💡 셀 수 없는 명사는 a/an을 붙이거나 복수형으로 쓸 수 없어요.",
+    options: ["chair", "furniture", "book", "table"],
+    answer: "furniture",
+    feedback: "furniture(가구)는 셀 수 없는 명사입니다. chair, book, table은 모두 셀 수 있는 명사입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Could you give me ___ advice about this problem?",
+    hint: "💡 이 문제에 대해 조언을 좀 해 주실 수 있나요?",
+    options: ["a", "an", "some", "many"],
+    answer: "some",
+    feedback: "advice는 셀 수 없는 명사이므로 a/an을 쓸 수 없습니다. some을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "We go to ___ church every Sunday.",
+    hint: "💡 우리는 매주 일요일 교회에 간다.",
+    options: ["a", "an", "the", "관사 없음"],
+    answer: "관사 없음",
+    feedback: "church가 본래의 용도(예배)로 쓰일 때는 관사를 쓰지 않습니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**I bought two loaves** of bread.", "**She has much books** on the shelf.", "**We need a little sugar** for the cake.", "**There are many people** here."],
+    answer: "**She has much books** on the shelf.",
+    feedback: "books는 셀 수 있는 명사의 복수형이므로 much가 아닌 many를 써야 합니다. much → many"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ moon looks very bright tonight.",
+    hint: "💡 오늘 밤 달이 매우 밝아 보인다.",
+    options: ["A", "An", "The", "관사 없음"],
+    answer: "The",
+    feedback: "세상에 하나뿐인 것(moon, sun, earth 등)에는 정관사 The를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He plays ___ violin in the school orchestra.",
+    hint: "💡 그는 학교 오케스트라에서 바이올린을 연주한다.",
+    options: ["a", "an", "the", "관사 없음"],
+    answer: "the",
+    feedback: "악기 이름 앞에는 정관사 the를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "There ___ a lot of furniture in this room.",
+    hint: "💡 이 방에는 가구가 많이 있다.",
+    options: ["is", "are", "was", "were"],
+    answer: "is",
+    feedback: "furniture는 셀 수 없는 명사이므로 단수 취급하여 is를 씁니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**I need a informations.**", "**She has many furniture.**", "**We bought a few apples.**", "**He drank much juices.**"],
+    answer: "**We bought a few apples.**",
+    feedback: "나머지 셋은 명사의 가산/불가산 구분에 오류가 있습니다. a informations→some information, many furniture→much furniture, much juices→much juice"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I bought three ___ of cheese at the market.",
+    hint: "💡 나는 시장에서 치즈 세 조각을 샀다.",
+    options: ["piece", "pieces", "loaf", "loaves"],
+    answer: "pieces",
+    feedback: "치즈는 piece of cheese로 나타냅니다. 세 조각이므로 복수형 pieces."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She has ___ interesting idea for the project.",
+    hint: "💡 그녀는 그 프로젝트를 위한 흥미로운 아이디어가 있다.",
+    options: ["a", "an", "the", "관사 없음"],
+    answer: "an",
+    feedback: "interesting은 모음 소리로 시작하므로 an을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "We need ___ chairs for the party tomorrow.",
+    hint: "💡 우리는 내일 파티를 위한 의자가 몇 개 필요하다.",
+    options: ["much", "a little", "a few", "a piece of"],
+    answer: "a few",
+    feedback: "chairs는 셀 수 있는 명사의 복수형이므로 a few를 씁니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**He is a university** student.", "**She bought a umbrella.**", "**I saw an elephant** at the zoo.", "**They have an hour** to finish."],
+    answer: "**She bought a umbrella.**",
+    feedback: "umbrella는 모음 소리로 시작하므로 a가 아닌 an을 써야 합니다. a umbrella → an umbrella"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He goes to ___ bed at ten every night.",
+    hint: "💡 그는 매일 밤 10시에 잠자리에 든다.",
+    options: ["a", "an", "the", "관사 없음"],
+    answer: "관사 없음",
+    feedback: "go to bed는 '잠자리에 들다'라는 관용 표현으로 bed 앞에 관사를 쓰지 않습니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I don't have ___ time to finish this today.",
+    hint: "💡 나는 오늘 이것을 끝낼 시간이 별로 없다.",
+    options: ["many", "a few", "much", "a number of"],
+    answer: "much",
+    feedback: "time은 셀 수 없는 명사이므로 much를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ Pacific Ocean is the largest ocean in the world.",
+    hint: "💡 태평양은 세계에서 가장 큰 바다이다.",
+    options: ["A", "An", "The", "관사 없음"],
+    answer: "The",
+    feedback: "바다, 강 등 고유명사 앞에는 정관사 the를 씁니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**There is many toys** on the floor.", "**She needs a advice.**", "**We have a little money** left.", "**He ate much cookies.**"],
+    answer: "**We have a little money** left.",
+    feedback: "나머지 셋은 명사의 가산/불가산 구분에 오류가 있습니다. is many toys→are many toys, a advice→some advice, much cookies→many cookies"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Can you pass me ___ salt on the table?",
+    hint: "💡 탁자 위에 있는 소금 좀 건네줄 수 있니?",
+    options: ["a", "an", "the", "관사 없음"],
+    answer: "the",
+    feedback: "특정한 소금(대화 상대방이 알고 있는 것)을 가리키므로 정관사 the를 씁니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+function stripMarkers(s){return s.replace(/\*\*/g,'');}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>').replace(/\n/g,'<br>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=opt.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    btn.dataset.raw=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.raw.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.dataset.raw===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${stripMarkers(q.answer)}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

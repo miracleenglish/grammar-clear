@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>형용사의 역할 활용</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#4A90D9;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn .hl{color:#E07B39;font-weight:800;text-decoration:underline;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>형용사의 역할 활용</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">A형</span></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I left the door ___.",
+    hint: "💡 나는 문을 열린 채로 두었다.",
+    options: ["open", "opens", "openly", "opened"],
+    answer: "open",
+    feedback: "open은 형용사, opens는 동사 open의 3인칭단수형, opened는 과거형, openly는 부사(공공연히)입니다. 목적어(door)를 보충 설명하는 목적격보어 자리이므로 형용사 open이 필요합니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 용법으로 알맞은 것을 고르세요.",
+    sentence: "She found the exam <u>easy</u>.",
+    hint: "💡 그녀는 그 시험이 쉽다는 것을 알았다.",
+    options: ["명사를 수식하는 용법", "주격보어로 쓰인 용법", "목적격보어로 쓰인 용법"],
+    answer: "목적격보어로 쓰인 용법",
+    feedback: "find + 목적어 + 형용사 구조에서 목적어(exam)를 보충 설명하는 목적격보어입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "His words made me ___.",
+    hint: "💡 그의 말은 나를 화나게 만들었다.",
+    options: ["angry", "angrily", "anger", "angers"],
+    answer: "angry",
+    feedback: "angry는 형용사, angrily는 부사, anger는 명사(분노) 또는 동사(화나게 하다), angers는 동사 anger의 3인칭단수형입니다. 목적어(me)를 보충 설명하는 목적격보어 자리이므로 형용사 angry가 필요합니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 용법으로 알맞은 것을 고르세요.",
+    sentence: "He wants to be someone <u>special</u>.",
+    hint: "💡 그는 특별한 사람이 되고 싶어 한다.",
+    options: ["명사를 수식하는 용법", "주격보어로 쓰인 용법", "목적격보어로 쓰인 용법"],
+    answer: "명사를 수식하는 용법",
+    feedback: "-one으로 끝나는 대명사(someone)는 형용사가 뒤에서 꾸며줍니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Did you pack everything ___ for the trip?",
+    hint: "💡 너는 여행에 필요한 모든 것을 챙겼니?",
+    options: ["necessary", "necessarily", "necessity", "necessitate"],
+    answer: "necessary",
+    feedback: "necessary는 형용사, necessarily는 부사(반드시), necessity는 명사(필요성), necessitate는 동사(필요로 하다)입니다. -thing으로 끝나는 대명사(everything)를 뒤에서 꾸며주는 자리이므로 형용사 necessary가 필요합니다."
+  },
+  {
+    instruction: "다음 중 형용사의 용법이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 용법이 다른 것을 찾아보세요.",
+    hint: "💡 세 문장은 명사를 수식하고, 한 문장은 주격보어로 쓰입니다.",
+    options: ["I want something **warm** to drink.", "He has a **new** laptop.", "She is **kind** and pretty.", "He is a **good** soccer player."],
+    answer: "She is **kind** and pretty.",
+    feedback: "나머지 셋은 명사를 앞이나 뒤에서 꾸며주는 용법이고, 이 문장만 주어(She)를 보충 설명하는 주격보어로 쓰였습니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "The cake tastes ___.",
+    hint: "💡 그 케이크는 맛있는 맛이 난다.",
+    options: ["delicious", "deliciously", "delicacy", "delight"],
+    answer: "delicious",
+    feedback: "delicious는 형용사, deliciously는 부사, delicacy는 명사(진미, 맛있는 음식), delight는 명사(기쁨) 또는 동사(기쁘게 하다)입니다. 감각동사(tastes) 뒤에서 주어를 보충 설명하는 주격보어 자리이므로 형용사 delicious가 필요합니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 용법으로 알맞은 것을 고르세요.",
+    sentence: "I found her <u>friendly</u>.",
+    hint: "💡 나는 그녀가 친절하다고 느꼈다.",
+    options: ["명사를 수식하는 용법", "주격보어로 쓰인 용법", "목적격보어로 쓰인 용법"],
+    answer: "목적격보어로 쓰인 용법",
+    feedback: "find + 목적어 + 형용사 구조에서 목적어(her)를 보충 설명하는 목적격보어입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Be ___ with that ladder.",
+    hint: "💡 그 사다리를 조심해서 다루어라.",
+    options: ["careful", "carefully", "care", "cares"],
+    answer: "careful",
+    feedback: "careful은 형용사, carefully는 부사, care는 명사(주의) 또는 동사(신경 쓰다), cares는 동사 care의 3인칭단수형입니다. Be동사 뒤에서 주어(you)를 보충 설명하는 주격보어 자리이므로 형용사 careful이 필요합니다."
+  },
+  {
+    instruction: "다음 중 형용사의 용법이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 용법이 다른 것을 찾아보세요.",
+    hint: "💡 세 문장은 주격보어로 쓰이고, 한 문장은 목적격보어로 쓰입니다.",
+    options: ["It is very **exciting** to watch a live concert.", "Her voice is really **beautiful**.", "She is **kind** and pretty.", "She found the exam **easy**."],
+    answer: "She found the exam **easy**.",
+    feedback: "나머지 셋은 주어를 보충 설명하는 주격보어이고, 이 문장만 목적어(exam)를 보충 설명하는 목적격보어(find+목적어+형용사)로 쓰였습니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "There was nothing ___ in the show.",
+    hint: "💡 그 쇼에는 특별한 것이 없었다.",
+    options: ["special", "specially", "specialty", "specialize"],
+    answer: "special",
+    feedback: "special은 형용사, specially는 부사, specialty는 명사(특기, 전문 분야), specialize는 동사(전문으로 하다)입니다. -thing으로 끝나는 대명사(nothing)를 뒤에서 꾸며주는 자리이므로 형용사 special이 필요합니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 용법으로 알맞은 것을 고르세요.",
+    sentence: "She has a <u>new</u> laptop.",
+    hint: "💡 그녀는 새 노트북을 가지고 있다.",
+    options: ["명사를 수식하는 용법", "주격보어로 쓰인 용법", "목적격보어로 쓰인 용법"],
+    answer: "명사를 수식하는 용법",
+    feedback: "new가 명사 laptop을 앞에서 꾸며주는 역할입니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+function stripMarkers(s){return s.replace(/\*\*/g,'');}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=opt.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    btn.dataset.raw=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.raw.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.dataset.raw===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${stripMarkers(q.answer)}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

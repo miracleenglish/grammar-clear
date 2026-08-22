@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>조동사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:4px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#E8604C;}
+  .range{text-align:center;font-size:13px;color:#888;margin-bottom:14px;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn .hl{color:#E07B39;font-weight:800;text-decoration:underline;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>조동사 내신TEST</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">TEST</span></div>
+  <div class="range">그룹5 범위 (0018x~0021x)</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I ___ visit my cousin next weekend.",
+    hint: "💡 나는 다음 주말에 사촌을 방문할 것이다.",
+    options: ["will", "am", "do", "was"],
+    answer: "will",
+    feedback: "미래의 계획을 나타낼 때 조동사 will을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She ___ to visit Paris this summer.",
+    hint: "💡 그녀는 이번 여름에 파리를 방문할 예정이다.",
+    options: ["is going", "will going", "is go", "going"],
+    answer: "is going",
+    feedback: "be going to의 긍정문은 be동사+going to 형태입니다. is going to visit."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ you swim across the lake?",
+    hint: "💡 너는 호수를 헤엄쳐 건널 수 있니?",
+    options: ["Can", "Do", "Will", "Are"],
+    answer: "Can",
+    feedback: "능력을 묻는 의문문이므로 Can을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "You ___ wear a helmet when you ride a bike.",
+    hint: "💡 너는 자전거를 탈 때 헬멧을 써야 한다.",
+    options: ["must", "should", "can", "will"],
+    answer: "must",
+    feedback: "강한 의무를 나타낼 때 must를 씁니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**He can swim** very well.", "**She wills come** tomorrow.", "**They must finish** the work.", "**I should apologize** to her."],
+    answer: "**She wills come** tomorrow.",
+    feedback: "조동사는 주어의 인칭이나 수에 관계없이 형태가 변하지 않습니다. wills → will"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "That story ___ be true. It sounds too strange.",
+    hint: "💡 그 이야기는 사실일 리가 없다. 너무 이상하게 들린다.",
+    options: ["cannot", "must", "should", "will"],
+    answer: "cannot",
+    feedback: "'~일 리가 없다'는 강한 부정적 추측은 cannot을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 대답을 고르세요.",
+    sentence: "A: Are you going to join the club?\nB: ___",
+    hint: "💡 A: 너는 그 동아리에 가입할 거니? B: 응, 그럴 거야.",
+    options: ["Yes, I am.", "Yes, I will.", "Yes, I do.", "Yes, I can."],
+    answer: "Yes, I am.",
+    feedback: "be going to 의문문(Are you going to ~?)에 대한 대답은 be동사로 합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He ___ not able to lift this heavy box alone.",
+    hint: "💡 그는 혼자서 이 무거운 상자를 들 수 없다.",
+    options: ["is", "does", "will", "can"],
+    answer: "is",
+    feedback: "be able to의 부정문은 be동사+not+able to 형태입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Students ___ not run in the hallway.",
+    hint: "💡 학생들은 복도에서 뛰면 안 된다.",
+    options: ["must", "will", "can", "should"],
+    answer: "must",
+    feedback: "강한 금지를 나타낼 때 must not을 씁니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**She musts finish** it today.", "**He can to swim** well.", "**They should to apologize.**", "**We have to leave** now."],
+    answer: "**We have to leave** now.",
+    feedback: "나머지 셋은 조동사 뒤에 to를 잘못 쓰거나 조동사 형태가 틀렸습니다. musts→must, can to swim→can swim, should to apologize→should apologize"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "You ___ wear a seatbelt in the car.",
+    hint: "💡 너는 차 안에서 안전벨트를 매야 한다.",
+    options: ["should", "must", "can", "will"],
+    answer: "should",
+    feedback: "'~해야 한다'는 조언·권고는 should를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He looks very tired. He ___ be sick.",
+    hint: "💡 그는 매우 피곤해 보인다. 그는 아픈 것이 틀림없다.",
+    options: ["must", "should", "will", "can"],
+    answer: "must",
+    feedback: "'~임이 틀림없다'는 강한 추측은 must를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 대답을 고르세요.",
+    sentence: "A: Do you have to finish this today?\nB: ___",
+    hint: "💡 A: 너는 오늘 이걸 끝내야 하니? B: 아니, 그럴 필요 없어.",
+    options: ["Yes, I do.", "No, I don't have to.", "No, I can't.", "Yes, I must."],
+    answer: "No, I don't have to.",
+    feedback: "Do you have to ~? 에 대한 부정 대답은 No, I don't have to.입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "We ___ able to solve the problem yesterday.",
+    hint: "💡 우리는 어제 그 문제를 풀 수 있었다.",
+    options: ["are", "were", "will", "can"],
+    answer: "were",
+    feedback: "be able to의 과거형은 was/were able to입니다. 주어가 복수이므로 were."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**You must not** touch this.", "**She doesn't have to** come.", "**They mays be** late.", "**He should apologize** now."],
+    answer: "**They mays be** late.",
+    feedback: "조동사는 주어의 인칭이나 수에 관계없이 형태가 변하지 않습니다. mays → may"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "You ___ not bring food into the library.",
+    hint: "💡 너는 도서관에 음식을 가져오면 안 된다.",
+    options: ["must", "should", "will", "can"],
+    answer: "must",
+    feedback: "강한 금지를 나타낼 때 must not을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "It ___ rain this afternoon. Take an umbrella.",
+    hint: "💡 오늘 오후에 비가 올 예정이다. 우산을 가져가라.",
+    options: ["is going to", "can", "must", "should"],
+    answer: "is going to",
+    feedback: "미래에 대한 예측·계획을 나타낼 때 be going to를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "You ___ believe everything you read online.",
+    hint: "💡 너는 온라인에서 읽는 모든 것을 믿으면 안 된다.",
+    options: ["shouldn't", "mustn't", "can't", "won't"],
+    answer: "shouldn't",
+    feedback: "'~하면 안 된다'는 조언의 부정은 shouldn't를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 대답을 고르세요.",
+    sentence: "A: Will you be able to come to the party?\nB: ___",
+    hint: "💡 A: 너는 파티에 올 수 있을까? B: 아니, 못 갈 것 같아.",
+    options: ["Yes, I will.", "No, I won't.", "No, I can't.", "Yes, I do."],
+    answer: "No, I won't.",
+    feedback: "Will you be able to ~? 에 대한 부정 대답은 No, I won't.입니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**He must to finish** it.", "**She can plays** the piano.", "**We should not to worry.**", "**They have to wait** for the bus."],
+    answer: "**They have to wait** for the bus.",
+    feedback: "나머지 셋은 조동사 뒤에 to를 잘못 쓰거나 동사 형태가 틀렸습니다. must to finish→must finish, can plays→can play, should not to worry→should not worry"
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+function stripMarkers(s){return s.replace(/\*\*/g,'');}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>').replace(/\n/g,'<br>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=opt.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    btn.dataset.raw=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.raw.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.dataset.raw===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${stripMarkers(q.answer)}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

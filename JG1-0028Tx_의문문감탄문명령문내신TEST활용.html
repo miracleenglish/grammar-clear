@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>의문문·감탄문·명령문 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:4px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#E8604C;}
+  .range{text-align:center;font-size:13px;color:#888;margin-bottom:14px;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn .hl{color:#E07B39;font-weight:800;text-decoration:underline;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>의문문·감탄문·명령문 내신TEST</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">TEST</span></div>
+  <div class="range">그룹7 범위 (0025x~0028x)</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He is a good singer, ___?",
+    hint: "💡 그는 노래를 잘 해, 그렇지?",
+    options: ["isn't he", "doesn't he", "is he", "does he"],
+    answer: "isn't he",
+    feedback: "긍정문(is)의 부가의문문은 부정형으로 만듭니다. is → isn't he"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She doesn't eat meat, ___?",
+    hint: "💡 그녀는 고기를 안 먹어, 그렇지?",
+    options: ["does she", "doesn't she", "is she", "isn't she"],
+    answer: "does she",
+    feedback: "부정문(doesn't)의 부가의문문은 긍정형으로 만듭니다. doesn't → does she"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ open the window? It's stuffy in here.",
+    hint: "💡 창문 좀 열어줄래? 여기 답답해.",
+    options: ["Do you", "Can you", "Are you", "Will you"],
+    answer: "Can you",
+    feedback: "부탁·요청을 나타내는 표현으로 Can you를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ you like tea or coffee?\nB: I'd like coffee, please.",
+    hint: "💡 A: 차를 원하니, 커피를 원하니? B: 커피 주세요.",
+    options: ["Do", "Would", "Are", "Is"],
+    answer: "Would",
+    feedback: "정중하게 선택을 묻는 표현으로 Would를 씁니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**You can swim**, can't you?", "**She isn't** tired, is she?", "**They will come**, won't they?", "**He doesn't** like it, doesn't he?"],
+    answer: "**He doesn't** like it, doesn't he?",
+    feedback: "부정문(doesn't)의 부가의문문은 긍정형으로 만들어야 합니다. doesn't he → does he"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ your feet!",
+    hint: "💡 발조심해!",
+    options: ["Watch", "Watches", "Watching", "To watch"],
+    answer: "Watch",
+    feedback: "명령문은 동사원형으로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ touch the wet paint.",
+    hint: "💡 젖은 페인트를 만지지 마.",
+    options: ["Don't", "Not", "No", "Never mind"],
+    answer: "Don't",
+    feedback: "부정 명령문은 Don't + 동사원형 형태입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ amazing this view is!",
+    hint: "💡 이 경치 정말 놀랍구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "How",
+    feedback: "형용사(amazing)를 강조하는 감탄문은 How로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ interesting book this is!",
+    hint: "💡 이것은 정말 흥미로운 책이구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "What a",
+    feedback: "셀 수 있는 단수 명사(book)를 강조할 때는 What a로 시작합니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ she a nurse or a doctor?\nB: She is a doctor.",
+    hint: "💡 A: 그녀는 간호사니, 의사니? B: 그녀는 의사야.",
+    options: ["Is", "Does", "Are", "Do"],
+    answer: "Is",
+    feedback: "주어가 3인칭 단수(she)인 선택의문문이므로 Is를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ be late for the meeting again.",
+    hint: "💡 회의에 또 늦지 마.",
+    options: ["Don't", "Not", "No", "Aren't"],
+    answer: "Don't",
+    feedback: "부정 명령문은 Don't + 동사원형 형태입니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**What a** exciting game!", "**How a** beautiful sunset!", "**Walks quietly** in the hall.", "**Let's not go** outside today."],
+    answer: "**Let's not go** outside today.",
+    feedback: "나머지 셋은 감탄문·명령문 형태에 오류가 있습니다. a exciting→an exciting, How a beautiful→What a beautiful, Walks quietly→Walk quietly"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "You aren't hungry, ___?",
+    hint: "💡 너 배고프지 않지, 그렇지?",
+    options: ["are you", "aren't you", "do you", "don't you"],
+    answer: "are you",
+    feedback: "부정문(aren't)의 부가의문문은 긍정형으로 만듭니다. aren't → are you"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ be quiet in the museum.",
+    hint: "💡 박물관에서는 조용히 하세요.",
+    options: ["Be", "Are", "Is", "Being"],
+    answer: "Be",
+    feedback: "be동사가 쓰인 명령문도 동사원형(Be)으로 시작합니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ he speak English or French at the meeting?\nB: He spoke English.",
+    hint: "💡 A: 그는 회의에서 영어로 말했니, 프랑스어로 말했니? B: 그는 영어로 말했어.",
+    options: ["Did", "Does", "Do", "Was"],
+    answer: "Did",
+    feedback: "과거의 선택을 묻는 질문이므로 Did를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ cute this little puppy is!",
+    hint: "💡 이 작은 강아지 정말 귀엽구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "How",
+    feedback: "형용사(cute)를 강조하는 감탄문은 How로 시작합니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**Read this book**, and you'll learn a lot.", "**Study hard**, or you won't pass.", "**Let's not** to go there.", "**Don't be** late again."],
+    answer: "**Let's not** to go there.",
+    feedback: "Let's not 뒤에는 to 없이 동사원형을 씁니다. to go → go"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He can speak Chinese, ___?",
+    hint: "💡 그는 중국어를 할 수 있어, 그렇지?",
+    options: ["can't he", "can he", "doesn't he", "does he"],
+    answer: "can't he",
+    feedback: "긍정문(can)의 부가의문문은 부정형으로 만듭니다. can → can't he"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Study hard, ___ you will pass the exam.",
+    hint: "💡 열심히 공부해라, 그러면 시험에 합격할 거야.",
+    options: ["and", "or", "but", "so"],
+    answer: "and",
+    feedback: "'~해라, 그러면 ~할 것이다'라는 뜻의 〈명령문+and~〉 구문입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Hurry up, ___ you'll miss the bus.",
+    hint: "💡 서둘러라, 그렇지 않으면 버스를 놓칠 거야.",
+    options: ["and", "or", "but", "so"],
+    answer: "or",
+    feedback: "'~해라, 그렇지 않으면 ~할 것이다'라는 뜻의 〈명령문+or~〉 구문입니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+function stripMarkers(s){return s.replace(/\*\*/g,'');}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>').replace(/\n/g,'<br>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=opt.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    btn.dataset.raw=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.raw.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.dataset.raw===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${stripMarkers(q.answer)}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

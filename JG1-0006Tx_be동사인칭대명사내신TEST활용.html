@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>be동사·인칭대명사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:4px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#E8604C;}
+  .range{text-align:center;font-size:13px;color:#888;margin-bottom:14px;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn .hl{color:#E07B39;font-weight:800;text-decoration:underline;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>be동사·인칭대명사 내신TEST</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">TEST</span></div>
+  <div class="range">그룹1 범위 (0004x~0006x)</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: Is it Tuesday today?\nB: No, it ___.",
+    hint: "💡 A: 오늘 화요일이니? B: 아니, 아니야.",
+    options: ["is", "are", "isn't", "wasn't"],
+    answer: "isn't",
+    feedback: "it을 주어로 하는 be동사 현재형 의문문의 부정 대답은 No, it isn't.입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: Is this your backpack?\nB: No, that is not ___.",
+    hint: "💡 A: 이거 네 배낭이니? B: 아니, 그건 내 것이 아니야.",
+    options: ["mine", "yours", "his", "my"],
+    answer: "mine",
+    feedback: "명사를 포함하는 소유대명사가 필요합니다. (my backpack = mine)"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Jenny ___ in Canada last year.",
+    hint: "💡 Jenny는 작년에 캐나다에 있었다.",
+    options: ["is", "are", "was", "were"],
+    answer: "was",
+    feedback: "주어가 3인칭 단수(Jenny)이고 last year로 보아 과거의 일이므로 was를 씁니다."
+  },
+  {
+    instruction: "다음 중 밑줄 친 be동사의 쓰임이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 쓰임이 다른 것을 찾아보세요.",
+    hint: "💡 세 문장의 be동사는 '~이다'라는 의미이고, 한 문장은 '~에 있다'라는 의미입니다.",
+    options: ["She **is** a doctor.", "He **is** at the library.", "They **are** kind.", "I **am** a student."],
+    answer: "He **is** at the library.",
+    feedback: "나머지 셋의 be동사는 '~이다'라는 의미이고, 이 문장의 is는 '~에 있다'라는 의미로 쓰였습니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 대답을 고르세요.",
+    sentence: "A: Are Cindy and Jack firefighters?\nB: ___",
+    hint: "💡 A: Cindy와 Jack은 소방관이니? B: 응, 그들은 소방관이야.",
+    options: ["Yes, he is.", "Yes, they are.", "No, we were.", "No, you aren't."],
+    answer: "Yes, they are.",
+    feedback: "대답하는 사람 입장에서 Cindy와 Jack을 받는 주격대명사는 they이며, 긍정 대답은 Yes, they are.입니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 대답을 고르세요.",
+    sentence: "A: Are you and your sister twins?\nB: ___",
+    hint: "💡 A: 너랑 네 언니는 쌍둥이니? B: 응, 우리는 쌍둥이야.",
+    options: ["Yes, she is.", "Yes, you are.", "Yes, we are.", "No, they aren't."],
+    answer: "Yes, we are.",
+    feedback: "대답하는 사람 입장에서 you와 your sister를 받는 주격대명사는 we이며, 긍정 대답은 Yes, we are.입니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 대답을 고르세요.",
+    sentence: "A: Is there a smart TV in your classroom?\nB: ___",
+    hint: "💡 A: 너희 교실에 스마트 TV가 있니? B: 아니, 없어.",
+    options: ["Yes, there are.", "Yes, there was.", "No, there isn't.", "No, there wasn't."],
+    answer: "No, there isn't.",
+    feedback: "〈There is/are+명사〉의 현재형 의문문이고 a smart TV는 단수명사이므로 부정 대답은 No, there isn't.입니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**She's not** a nurse.", "**They was** happy yesterday.", "**We are not** in the same class.", "**It was** very cold."],
+    answer: "**They was** happy yesterday.",
+    feedback: "주어가 복수(They)이므로 was가 아닌 were를 써야 합니다. They was → They were"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Mark ___ with his girlfriend last weekend.",
+    hint: "💡 Mark는 지난 주말에 여자친구와 함께 있지 않았다.",
+    options: ["isn't", "wasn't", "aren't", "weren't"],
+    answer: "wasn't",
+    feedback: "주어가 3인칭 단수(Mark)이고 last weekend로 보아 과거이므로 wasn't를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Their bags are ___. (그들의 것)",
+    hint: "💡 저 가방들은 그들의 것이다.",
+    options: ["they", "their", "theirs", "them"],
+    answer: "theirs",
+    feedback: "명사 없이 '그들의 것'을 나타낼 때는 소유대명사 theirs를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "There ___ many people at the concert last night.",
+    hint: "💡 어젯밤 콘서트에 사람들이 많이 있었다.",
+    options: ["is", "was", "are", "were"],
+    answer: "were",
+    feedback: "뒤에 복수 명사(many people)가 오고 last night으로 보아 과거이므로 were를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 대답을 고르세요.",
+    sentence: "A: Were you and David in the same class?\nB: ___",
+    hint: "💡 A: 너랑 David은 같은 반이었니? B: 아니, 우리는 아니었어.",
+    options: ["Yes, we were.", "No, we weren't.", "Yes, they were.", "No, you weren't."],
+    answer: "No, we weren't.",
+    feedback: "대답하는 사람 입장에서 you와 David을 받는 주격대명사는 we이며, 부정 대답은 No, we weren't.입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ Julie and Mina in the same club?",
+    hint: "💡 Julie와 Mina는 같은 동아리에 있니?",
+    options: ["Is", "Are", "Was", "Were"],
+    answer: "Are",
+    feedback: "주어가 복수(Julie and Mina)이고 현재 의문문이므로 Are를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "That cap is not ___. It's Teddy's.",
+    hint: "💡 그 모자는 내 것이 아니다. 그것은 Teddy의 것이다.",
+    options: ["I", "me", "my", "mine"],
+    answer: "mine",
+    feedback: "명사 없이 '나의 것'을 나타낼 때는 소유대명사 mine을 씁니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**Is** there a book on the desk?", "**There isn't** any coins in her purse.", "**Was** she in the hospital?", "**They aren't** at school today."],
+    answer: "**There isn't** any coins in her purse.",
+    feedback: "coins는 복수명사이므로 There isn't이 아닌 There aren't를 써야 합니다. isn't → aren't"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ your parents at home now?",
+    hint: "💡 너희 부모님은 지금 집에 계시니?",
+    options: ["Is", "Are", "Was", "Were"],
+    answer: "Are",
+    feedback: "주어가 복수(your parents)이고 현재 의문문이므로 Are를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "The blanket is not ___. It's my brother's.",
+    hint: "💡 그 담요는 그의 것이 아니다. 그것은 내 남동생의 것이다.",
+    options: ["he", "him", "his", "himself"],
+    answer: "his",
+    feedback: "명사 없이 '그의 것'을 나타낼 때는 소유대명사 his를 씁니다. (his는 소유격과 소유대명사 형태가 같음)"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ your son a lawyer?",
+    hint: "💡 당신의 아들은 변호사인가요?",
+    options: ["Is", "Are", "Was", "Were"],
+    answer: "Is",
+    feedback: "주어가 3인칭 단수(your son)이고 현재 의문문이므로 Is를 씁니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**She're** a teacher.", "**It don't** be sunny.", "**They is** cheerleaders.", "**We are** in the same club."],
+    answer: "**We are** in the same club.",
+    feedback: "나머지 셋은 주어와 be동사가 일치하지 않습니다. She're→She's, It don't be→It isn't, They is→They are"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "There ___ a big sport event next month.",
+    hint: "💡 다음 달에 큰 스포츠 행사가 있을 것이다.",
+    options: ["is", "was", "will be", "were"],
+    answer: "will be",
+    feedback: "next month는 미래를 나타내므로 will be를 씁니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+function stripMarkers(s){return s.replace(/\*\*/g,'');}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>').replace(/\n/g,'<br>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=opt.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    btn.dataset.raw=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.raw.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.dataset.raw===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${stripMarkers(q.answer)}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

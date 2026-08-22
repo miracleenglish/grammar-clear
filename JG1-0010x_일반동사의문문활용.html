@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0010x | 일반동사 의문문 활용</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);}.badge-type{background:#5BAD6F;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:21px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;font-style:italic;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .opt-btn{font-size:17px;font-weight:700;padding:14px 6px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:center;color:#222;transition:all .15s;}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;}.feedback.correct{background:var(--correct-bg);color:var(--correct-text);}.feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;}.result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;}.score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;}.btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>일반동사 의문문 활용</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">B형</span></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-grid" id="optsGrid"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ Andy love playing soccer?\nB: Yes, he does.",
+    hint: "A: Andy는 축구하는 것을 좋아하니? B: 응, 그래.",
+    options: ["Do", "Does", "Did", "Is"],
+    answer: "Does",
+    feedback: "주어가 3인칭 단수(Andy)인 현재 의문문이므로 Does를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ they know the answer?\nB: No, they don't.",
+    hint: "A: 그들은 답을 아니? B: 아니, 몰라.",
+    options: ["Do", "Does", "Did", "Are"],
+    answer: "Do",
+    feedback: "주어가 복수(they)인 현재 의문문이므로 Do를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ she have a cat?\nB: Yes, she does.",
+    hint: "A: 그녀는 고양이를 키우니? B: 응, 그래.",
+    options: ["Do", "Does", "Did", "Is"],
+    answer: "Does",
+    feedback: "주어가 3인칭 단수(she)인 현재 의문문이므로 Does를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ he catch the ball?\nB: No, he didn't.",
+    hint: "A: 그는 공을 잡았니? B: 아니, 못 잡았어.",
+    options: ["Do", "Does", "Did", "Was"],
+    answer: "Did",
+    feedback: "과거 의문문이므로 주어에 관계없이 Did를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: Do you like this song?\nB: Yes, ___ ___.",
+    hint: "A: 이 노래 좋아하니? B: 응, 그래.",
+    options: ["I do", "I am", "I does", "you do"],
+    answer: "I do",
+    feedback: "Do you ~? 의 긍정 대답은 Yes, I do.입니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: Does this bus go to City Hall?\nB: Yes, ___ ___.",
+    hint: "A: 이 버스 시청에 가니? B: 응, 그래.",
+    options: ["it do", "it does", "it is", "this does"],
+    answer: "it does",
+    feedback: "Does this bus ~? 의 긍정 대답은 Yes, it does.입니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: Did Joseph hit home runs last season?\nB: No, ___ ___.",
+    hint: "A: Joseph은 지난 시즌에 홈런을 쳤니? B: 아니, 못 쳤어.",
+    options: ["he didn't", "he doesn't", "he did", "he wasn't"],
+    answer: "he didn't",
+    feedback: "Did로 시작하는 과거 의문문의 부정 대답은 No, he didn't.입니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: Do Sharon and Brad eat meat?\nB: No, ___ ___.",
+    hint: "A: Sharon과 Brad는 고기를 먹니? B: 아니, 안 먹어.",
+    options: ["they don't", "they doesn't", "they didn't", "she doesn't"],
+    answer: "they don't",
+    feedback: "주어가 복수(Sharon and Brad = they)이고 현재 부정 대답이므로 they don't입니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: Does Matt play basketball?\nB: Yes, ___ ___.",
+    hint: "A: Matt은 농구를 하니? B: 응, 해.",
+    options: ["he do", "he does", "he is", "it does"],
+    answer: "he does",
+    feedback: "Does Matt ~? 의 긍정 대답은 Yes, he does.입니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ you walk to school every day?\nB: No, I don't.",
+    hint: "A: 너는 매일 걸어서 학교에 가니? B: 아니, 안 가.",
+    options: ["Do", "Does", "Did", "Are"],
+    answer: "Do",
+    feedback: "주어가 2인칭(you)인 현재 의문문이므로 Do를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ your classmates come here often?\nB: Yes, they do.",
+    hint: "A: 너의 반 친구들이 여기 자주 오니? B: 응, 그래.",
+    options: ["Do", "Does", "Did", "Are"],
+    answer: "Do",
+    feedback: "주어가 복수(your classmates)인 현재 의문문이므로 Do를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ Julie study at the library?\nB: Yes, she does.",
+    hint: "A: Julie는 도서관에서 공부하니? B: 응, 그래.",
+    options: ["Do", "Does", "Did", "Is"],
+    answer: "Does",
+    feedback: "주어가 3인칭 단수(Julie)인 현재 의문문이므로 Does를 씁니다."
+  }
+];
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[],isWrongRetry=false;
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){const q=questions[current];const total=questions.length;document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;document.getElementById('progressBar').style.width=`${(current/total)*100}%`;document.getElementById('instruction').textContent=q.instruction;document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:64px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 2px;"> </span>').replace(/\n/g,'<br>');document.getElementById('hint').textContent='힌트: '+q.hint;document.getElementById('feedback').className='feedback';document.getElementById('nextBtn').className='next-btn';const grid=document.getElementById('optsGrid');grid.innerHTML='';const opts=shuffleNoFirstAnswer(q.options,q.answer);opts.forEach(opt=>{const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,q);grid.appendChild(btn);});}
+function selectAnswer(selected,q){const btns=document.querySelectorAll('.opt-btn');btns.forEach(b=>{b.disabled=true;if(b.textContent.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');else if(b.textContent===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');});const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect)score++;else wrongIndexes.push(current);const feedback=document.getElementById('feedback');if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${q.answer}`;}document.getElementById('fbBody').textContent=q.feedback;const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];isWrongRetry=true;startQuiz(shuffle(wrongQs));}
+function retryAll(){isWrongRetry=false;startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

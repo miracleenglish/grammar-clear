@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>to부정사 명사적용법 활용</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#4A90D9;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>to부정사 명사적용법 활용</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">A형</span></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ a new hobby can bring you joy.",
+    hint: "💡 새로운 취미를 시작하는 것은 너에게 기쁨을 줄 수 있다.",
+    options: ["Try", "Tries", "To try", "Trying and"],
+    answer: "To try",
+    feedback: "to부정사가 문장의 주어 역할을 할 때는 To + 동사원형으로 씁니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 역할로 알맞은 것을 고르세요.",
+    sentence: "Her wish is <u>to travel</u> around the world.",
+    hint: "💡 그녀의 소원은 전 세계를 여행하는 것이다.",
+    options: ["문장의 주어 역할", "문장의 보어 역할", "동사의 목적어 역할"],
+    answer: "문장의 보어 역할",
+    feedback: "be동사(is) 뒤에서 주어(wish)를 설명하는 보어 역할입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He decided ___ soccer at a professional level.",
+    hint: "💡 그는 프로 수준으로 축구를 하기로 결심했다.",
+    options: ["play", "plays", "to play", "playing"],
+    answer: "to play",
+    feedback: "동사 decide는 목적어로 to부정사를 취합니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 역할로 알맞은 것을 고르세요.",
+    sentence: "She wants <u>to travel</u> to Japan next year.",
+    hint: "💡 그녀는 내년에 일본으로 여행 가고 싶어 한다.",
+    options: ["문장의 주어 역할", "문장의 보어 역할", "동사의 목적어 역할"],
+    answer: "동사의 목적어 역할",
+    feedback: "동사 want의 목적어 역할을 하는 to부정사입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Can you tell me ___ to use this machine?",
+    hint: "💡 이 기계를 어떻게 사용하는지 알려줄 수 있니?",
+    options: ["what", "how", "when", "where"],
+    answer: "how",
+    feedback: "'어떻게 사용하는지'라는 의미이므로 〈how + to부정사〉 구조가 필요합니다."
+  },
+  {
+    instruction: "다음 중 to부정사의 역할이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 역할이 다른 것을 찾아보세요.",
+    hint: "💡 세 문장은 동사의 목적어, 한 문장은 문장의 주어 역할입니다.",
+    options: ["To exercise regularly is important for health.", "She wants to exercise every day.", "He promised to exercise more.", "They hope to exercise together."],
+    answer: "To exercise regularly is important for health.",
+    feedback: "나머지 셋은 동사(want/promise/hope)의 목적어 역할이고, 이 문장만 문장의 주어 역할입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ good friends is not always easy.",
+    hint: "💡 좋은 친구를 사귀는 것은 항상 쉬운 일은 아니다.",
+    options: ["Make", "Makes", "To make", "Making and"],
+    answer: "To make",
+    feedback: "to부정사가 문장의 주어 역할을 할 때는 To + 동사원형으로 씁니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 역할로 알맞은 것을 고르세요.",
+    sentence: "<u>To speak</u> in public makes many people nervous.",
+    hint: "💡 사람들 앞에서 말하는 것은 많은 사람들을 긴장하게 만든다.",
+    options: ["문장의 주어 역할", "문장의 보어 역할", "동사의 목적어 역할"],
+    answer: "문장의 주어 역할",
+    feedback: "문장 맨 앞에서 주어 역할을 하는 to부정사입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He promised ___ back before dark.",
+    hint: "💡 그는 어두워지기 전에 돌아오겠다고 약속했다.",
+    options: ["come", "comes", "to come", "coming"],
+    answer: "to come",
+    feedback: "동사 promise는 목적어로 to부정사를 취합니다."
+  },
+  {
+    instruction: "다음 중 to부정사의 역할이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 역할이 다른 것을 찾아보세요.",
+    hint: "💡 세 문장은 보어 역할, 한 문장은 주어 역할입니다.",
+    options: ["My dream is to become a pilot.", "His goal is to win the championship.", "To become a pilot is her dream.", "Her wish is to see the ocean."],
+    answer: "To become a pilot is her dream.",
+    feedback: "나머지 셋은 be동사 뒤에서 보어 역할을 하고, 이 문장만 문장 앞에서 주어 역할을 합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She didn't know ___ to wear for the interview.",
+    hint: "💡 그녀는 면접에 무엇을 입어야 할지 몰랐다.",
+    options: ["what", "how", "when", "where"],
+    answer: "what",
+    feedback: "'무엇을 입어야 할지'라는 의미이므로 〈what + to부정사〉 구조가 필요합니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 역할로 알맞은 것을 고르세요.",
+    sentence: "He expects <u>to pass</u> the exam this year.",
+    hint: "💡 그는 올해 시험에 합격하기를 기대한다.",
+    options: ["문장의 주어 역할", "문장의 보어 역할", "동사의 목적어 역할"],
+    answer: "동사의 목적어 역할",
+    feedback: "동사 expect의 목적어 역할을 하는 to부정사입니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.textContent===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${q.answer}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

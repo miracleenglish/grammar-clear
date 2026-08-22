@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>감탄문·명령문 활용</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#4A90D9;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:21px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .opt-btn{font-size:17px;font-weight:700;padding:14px 6px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:center;color:#222;transition:all .15s;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>감탄문·명령문 활용</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">A형</span></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-grid" id="optsGrid"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ nice weather it is today!",
+    hint: "💡 오늘 날씨가 정말 좋구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "What",
+    feedback: "명사(weather)를 강조하는 감탄문은 What으로 시작합니다. weather는 셀 수 없는 명사이므로 관사 없이 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ cute this puppy is!",
+    hint: "💡 이 강아지 정말 귀엽구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "How",
+    feedback: "형용사(cute)를 강조하는 감탄문은 How로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ delicious cake she made!",
+    hint: "💡 그녀가 정말 맛있는 케이크를 만들었구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "What a",
+    feedback: "셀 수 있는 단수 명사(cake)를 강조할 때는 What a로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ carefully, please.",
+    hint: "💡 조심스럽게 걸어 주세요.",
+    options: ["Walk", "Walks", "Walking", "To walk"],
+    answer: "Walk",
+    feedback: "명령문은 동사원형으로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ be late for the meeting.",
+    hint: "💡 회의에 늦지 마세요.",
+    options: ["Don't", "Not", "Doesn't", "No"],
+    answer: "Don't",
+    feedback: "부정 명령문은 Don't + 동사원형 형태입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ tall that tree is!",
+    hint: "💡 저 나무는 정말 크구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "How",
+    feedback: "형용사(tall)를 강조하는 감탄문은 How로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ the door before you leave.",
+    hint: "💡 나가기 전에 문을 닫아 주세요.",
+    options: ["Close", "Closes", "Closing", "To close"],
+    answer: "Close",
+    feedback: "명령문은 동사원형으로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ interesting story it is!",
+    hint: "💡 정말 흥미로운 이야기구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "What a",
+    feedback: "셀 수 있는 단수 명사(story)를 강조할 때는 What a로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ worry about the test.",
+    hint: "💡 시험에 대해 걱정하지 마.",
+    options: ["Don't", "Not", "No", "Never mind"],
+    answer: "Don't",
+    feedback: "부정 명령문은 Don't + 동사원형 형태입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ fast she runs!",
+    hint: "💡 그녀는 정말 빨리 달리는구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "How",
+    feedback: "부사(fast)를 강조하는 감탄문은 How로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ quiet in the library.",
+    hint: "💡 도서관에서는 조용히 하세요.",
+    options: ["Be", "Are", "Is", "Being"],
+    answer: "Be",
+    feedback: "be동사가 쓰인 명령문도 동사원형(Be)으로 시작합니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ hard question this is!",
+    hint: "💡 이것은 정말 어려운 질문이구나!",
+    options: ["What", "How", "What a", "How a"],
+    answer: "What a",
+    feedback: "셀 수 있는 단수 명사(question)를 강조할 때는 What a로 시작합니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){const q=questions[current];const total=questions.length;document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;document.getElementById('progressBar').style.width=`${(current/total)*100}%`;document.getElementById('instruction').textContent=q.instruction;document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:72px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>');document.getElementById('hint').textContent=q.hint;document.getElementById('feedback').className='feedback';document.getElementById('nextBtn').className='next-btn';const grid=document.getElementById('optsGrid');grid.innerHTML='';const opts=shuffleNoFirstAnswer(q.options,q.answer);opts.forEach(opt=>{const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,q);grid.appendChild(btn);});}
+function selectAnswer(selected,q){const btns=document.querySelectorAll('.opt-btn');btns.forEach(b=>{b.disabled=true;if(b.textContent.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');else if(b.textContent===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');});const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect)score++;else wrongIndexes.push(current);const feedback=document.getElementById('feedback');if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${q.answer}`;}document.getElementById('fbBody').textContent=q.feedback;const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

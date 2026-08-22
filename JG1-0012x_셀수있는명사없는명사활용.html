@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0012x | 셀 수 있는 명사·셀 수 없는 명사 활용</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#4A90D9;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:23px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .opt-btn{font-size:18px;font-weight:700;padding:14px 8px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:center;color:#222;transition:all .15s;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>셀 수 있는 명사·없는 명사</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">A형</span></div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-grid" id="optsGrid"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I need two ___ of paper.",
+    hint: "💡 나는 종이 두 장이 필요하다.",
+    options: ["piece", "pieces", "slice", "slices"],
+    answer: "pieces",
+    feedback: "paper는 셀 수 없는 명사이므로 단위 명사 piece를 씁니다. 두 장이므로 복수형 pieces."
+  },
+  {
+    instruction: "밑줄에 알맞은 말을 고르세요.",
+    sentence: "She drinks three ___ of milk every day.",
+    hint: "💡 그녀는 매일 우유 세 잔을 마신다.",
+    options: ["glass", "glasses", "bottle", "bottles"],
+    answer: "glasses",
+    feedback: "우유의 양을 나타낼 때는 glass를 단위로 씁니다. 세 잔이므로 복수형 glasses."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "We bought ___ bread at the bakery.",
+    hint: "💡 우리는 빵집에서 빵 한 덩어리를 샀다.",
+    options: ["a loaf of", "a piece of", "a slice of", "a cup of"],
+    answer: "a loaf of",
+    feedback: "bread(빵)의 덩어리를 나타낼 때는 a loaf of를 씁니다."
+  },
+  {
+    instruction: "다음 중 셀 수 없는 명사를 고르세요.",
+    sentence: "어느 것이 셀 수 없는 명사일까요?",
+    hint: "💡 셀 수 없는 명사는 a/an을 붙이거나 복수형으로 쓸 수 없어요.",
+    options: ["desk", "water", "chair", "book"],
+    answer: "water",
+    feedback: "water(물)는 셀 수 없는 명사입니다. desk, chair, book은 모두 셀 수 있는 명사입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Can I have ___ coffee, please?",
+    hint: "💡 커피 조금 마실 수 있을까요?",
+    options: ["a little", "a few", "many", "a number of"],
+    answer: "a little",
+    feedback: "coffee는 셀 수 없는 명사이므로 수량 표현으로 a little을 씁니다. a few, many, a number of는 셀 수 있는 명사에 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "There are ___ sandwiches on the table.",
+    hint: "💡 탁자 위에 샌드위치가 몇 개 있다.",
+    options: ["a little", "much", "a few", "a piece of"],
+    answer: "a few",
+    feedback: "sandwiches는 셀 수 있는 명사의 복수형이므로 a few를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He doesn't have ___ money left.",
+    hint: "💡 그는 남은 돈이 많지 않다.",
+    options: ["many", "much", "a few", "few"],
+    answer: "much",
+    feedback: "money는 셀 수 없는 명사이므로 much를 씁니다. many, a few, few는 셀 수 있는 명사에 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I ate two ___ of pizza for lunch.",
+    hint: "💡 나는 점심에 피자 두 조각을 먹었다.",
+    options: ["piece", "pieces", "loaf", "loaves"],
+    answer: "pieces",
+    feedback: "피자 조각은 piece of pizza로 나타냅니다. 두 조각이므로 복수형 pieces."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Could you give me ___ advice?",
+    hint: "💡 조언을 좀 해 주실 수 있나요?",
+    options: ["a", "an", "some", "many"],
+    answer: "some",
+    feedback: "advice는 셀 수 없는 명사이므로 a/an을 쓸 수 없습니다. some을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She bought ___ furniture for her new apartment.",
+    hint: "💡 그녀는 새 아파트를 위해 가구를 좀 샀다.",
+    options: ["a", "many", "some", "a few"],
+    answer: "some",
+    feedback: "furniture는 셀 수 없는 명사이므로 a, many, a few는 쓸 수 없습니다. some을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "We need ___ chairs for the meeting.",
+    hint: "💡 우리는 회의를 위한 의자 몇 개가 필요하다.",
+    options: ["much", "a little", "a few", "a piece of"],
+    answer: "a few",
+    feedback: "chairs는 셀 수 있는 명사의 복수형이므로 a few를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He drank four ___ of juice.",
+    hint: "💡 그는 주스 네 병을 마셨다.",
+    options: ["bottle", "bottles", "glass", "cups"],
+    answer: "bottles",
+    feedback: "주스를 병으로 셀 때는 bottle을 씁니다. 네 병이므로 복수형 bottles."
+  }
+];
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){const q=questions[current];const total=questions.length;document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;document.getElementById('progressBar').style.width=`${(current/total)*100}%`;document.getElementById('instruction').textContent=q.instruction;document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:72px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>');document.getElementById('hint').textContent=q.hint;document.getElementById('feedback').className='feedback';document.getElementById('nextBtn').className='next-btn';const grid=document.getElementById('optsGrid');grid.innerHTML='';const opts=shuffleNoFirstAnswer(q.options,q.answer);opts.forEach(opt=>{const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,q);grid.appendChild(btn);});}
+function selectAnswer(selected,q){const btns=document.querySelectorAll('.opt-btn');btns.forEach(b=>{b.disabled=true;if(b.textContent.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');else if(b.textContent===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');});const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect)score++;else wrongIndexes.push(current);const feedback=document.getElementById('feedback');if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${q.answer}`;}document.getElementById('fbBody').textContent=q.feedback;const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

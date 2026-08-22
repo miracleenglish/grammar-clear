@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>의문사 의문문 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:4px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#E8604C;}
+  .range{text-align:center;font-size:13px;color:#888;margin-bottom:14px;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn .hl{color:#E07B39;font-weight:800;text-decoration:underline;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>의문사 의문문 내신TEST</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">TEST</span></div>
+  <div class="range">그룹6 범위 (0022x~0024x)</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ made this delicious cake?\nB: My mom did.",
+    hint: "💡 A: 누가 이 맛있는 케이크를 만들었니? B: 우리 엄마가 만들었어.",
+    options: ["Who", "What", "Which", "Whose"],
+    answer: "Who",
+    feedback: "'누가'를 물을 때는 의문사 Who를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ do you want for your birthday?\nB: I want a new bike.",
+    hint: "💡 A: 생일에 무엇을 원하니? B: 나는 새 자전거를 원해.",
+    options: ["Who", "What", "Whose", "Which"],
+    answer: "What",
+    feedback: "'무엇을'을 물을 때는 의문사 What을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ bag is this? \nB: It's Sarah's bag.",
+    hint: "💡 A: 이것은 누구의 가방이니? B: Sarah의 가방이야.",
+    options: ["Who", "What", "Whose", "Which"],
+    answer: "Whose",
+    feedback: "'누구의'라는 소유를 물을 때는 Whose를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ subject do you like better, math or science?\nB: I like science better.",
+    hint: "💡 A: 수학과 과학 중 어느 과목을 더 좋아하니? B: 나는 과학을 더 좋아해.",
+    options: ["What", "Which", "Who", "Whose"],
+    answer: "Which",
+    feedback: "정해진 것들 중 선택을 물을 때는 Which를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ is your birthday party?\nB: It's next Saturday.",
+    hint: "💡 A: 네 생일 파티는 언제니? B: 다음 주 토요일이야.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "When",
+    feedback: "'언제'를 물을 때는 의문사 When을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ do you keep your bike?\nB: I keep it in the garage.",
+    hint: "💡 A: 자전거를 어디에 보관하니? B: 차고에 보관해.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Where",
+    feedback: "'어디에'를 물을 때는 의문사 Where를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ were you late for school today?\nB: Because I missed the bus.",
+    hint: "💡 A: 오늘 왜 학교에 늦었니? B: 버스를 놓쳤기 때문이야.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Why",
+    feedback: "'왜'를 물을 때는 의문사 Why를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ did you get to the airport?\nB: I took a taxi.",
+    hint: "💡 A: 공항에 어떻게 갔니? B: 택시를 탔어.",
+    options: ["What", "Why", "Who", "How"],
+    answer: "How",
+    feedback: "수단·방법을 물을 때는 의문사 How를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ old is your grandmother?",
+    hint: "💡 네 할머니는 연세가 어떻게 되시니?",
+    options: ["How", "What", "Why", "Who"],
+    answer: "How",
+    feedback: "나이를 물을 때는 How old를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ many students are in your class?",
+    hint: "💡 너희 반에는 학생이 몇 명 있니?",
+    options: ["How", "What", "Why", "Who"],
+    answer: "How",
+    feedback: "셀 수 있는 명사의 수를 물을 때는 How many를 씁니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "💡 세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**What is** your favorite color?", "**Whose pencil** is this?", "**Who make** this chair?", "**Where do** you live?"],
+    answer: "**Who make** this chair?",
+    feedback: "Who가 주어 역할을 하는 의문문에서는 일반동사에 3인칭 단수형을 그대로 씁니다. make → makes(현재) 또는 made(과거)"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ much is this jacket?",
+    hint: "💡 이 재킷은 얼마니?",
+    options: ["How", "What", "Why", "Who"],
+    answer: "How",
+    feedback: "가격을 물을 때는 How much를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ won the singing contest?\nB: Jina won it.",
+    hint: "💡 A: 누가 노래 경연에서 이겼니? B: Jina가 이겼어.",
+    options: ["Who", "What", "Whose", "Which"],
+    answer: "Who",
+    feedback: "'누가'를 물을 때는 의문사 Who를 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ car is parked in front of the house?\nB: It's my uncle's car.",
+    hint: "💡 A: 집 앞에 주차된 것은 누구의 차니? B: 우리 삼촌의 차야.",
+    options: ["Who", "What", "Whose", "Which"],
+    answer: "Whose",
+    feedback: "'누구의'라는 소유를 물을 때는 Whose를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ long does it take to walk to the station?",
+    hint: "💡 역까지 걸어서 얼마나 걸리니?",
+    options: ["How", "What", "Why", "Who"],
+    answer: "How",
+    feedback: "시간의 길이를 물을 때는 How long을 씁니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "💡 세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**What color do you** like?", "**How old do you** are?", "**Why you are** late?", "**Whose is this** bag?"],
+    answer: "**What color do you** like?",
+    feedback: "나머지 셋은 의문사 의문문의 어순에 오류가 있습니다. How old do you are→How old are you, Why you are late→Why are you late, Whose is this bag→Whose bag is this"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ often do you visit your grandparents?",
+    hint: "💡 조부모님을 얼마나 자주 방문하니?",
+    options: ["How", "What", "Why", "Who"],
+    answer: "How",
+    feedback: "빈도를 물을 때는 How often을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ is the nearest bus stop?\nB: It's just around the corner.",
+    hint: "💡 A: 가장 가까운 버스 정류장이 어디니? B: 모퉁이를 돌면 바로 있어.",
+    options: ["When", "Where", "Why", "How"],
+    answer: "Where",
+    feedback: "'어디에'를 물을 때는 의문사 Where를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ tall is that building over there?",
+    hint: "💡 저기 저 건물은 얼마나 높니?",
+    options: ["How", "What", "Why", "Who"],
+    answer: "How",
+    feedback: "높이를 물을 때는 How tall을 씁니다."
+  },
+  {
+    instruction: "대화의 빈칸에 알맞은 말을 고르세요.",
+    sentence: "A: ___ is your dog's name?\nB: His name is Max.",
+    hint: "💡 A: 네 강아지의 이름은 뭐니? B: 이름은 Max야.",
+    options: ["Who", "What", "Whose", "Which"],
+    answer: "What",
+    feedback: "이름을 물을 때는 What을 씁니다."
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+function stripMarkers(s){return s.replace(/\*\*/g,'');}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>').replace(/\n/g,'<br>');
+  document.getElementById('hint').textContent=q.hint;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=opt.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    btn.dataset.raw=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.raw.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.dataset.raw===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${stripMarkers(q.answer)}`;}
+  document.getElementById('fbBody').textContent=q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

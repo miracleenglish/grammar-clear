@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>접속사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--main:#1E5A46;--track:#5BAD6F;--correct:#4CAF93;--correct-bg:#E7F7F0;--correct-text:#2E8064;--wrong:#E8604C;--wrong-bg:#FDEAE6;--wrong-text:#B84534;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Nunito','Noto Sans KR',sans-serif;display:flex;justify-content:center;padding:20px 0 60px;}
+  .app{width:100%;max-width:480px;padding:16px;padding-bottom:40px;}
+  h1{font-size:19px;font-weight:800;color:var(--main);text-align:center;margin-bottom:6px;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-bottom:4px;}
+  .badge{font-size:11.5px;padding:3px 10px;border-radius:999px;font-weight:800;color:#fff;}
+  .badge-track{background:var(--track);} .badge-type{background:#E8604C;}
+  .range{text-align:center;font-size:13px;color:#888;margin-bottom:14px;}
+  .progress-wrap{height:12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 2px #B2DFCC;margin:14px 0 18px;}
+  .progress-bar{height:100%;border-radius:999px;background:var(--track);transition:width 0.4s;}
+  .card{background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;font-weight:700;}
+  .card-instruction{font-size:16.5px;color:var(--main);font-weight:700;margin-bottom:14px;line-height:1.5;}
+  .sentence-box{font-size:19px;font-weight:800;color:#1a1a1a;background:#F5FAF7;border-radius:14px;padding:16px;text-align:center;margin-bottom:10px;line-height:1.6;word-break:keep-all;}
+  .sentence-box u{text-decoration:none;border-bottom:2.5px solid var(--main);padding-bottom:2px;color:var(--main);}
+  .hint{font-size:16px;color:#888;text-align:center;margin-bottom:18px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{font-size:16px;font-weight:700;padding:13px 14px;border:2.5px solid #B2DFCC;border-radius:14px;background:#fff;cursor:pointer;text-align:left;color:#222;transition:all .15s;line-height:1.4;}
+  .opt-btn:active{transform:scale(0.97);}
+  .opt-btn.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct-text);}
+  .opt-btn.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong-text);}
+  .opt-btn:disabled{cursor:default;}
+  .opt-btn .hl{color:#E07B39;font-weight:800;text-decoration:underline;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-top:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.show{display:block;} .feedback.correct{background:var(--correct-bg);color:var(--correct-text);} .feedback.wrong{background:var(--wrong-bg);color:var(--wrong-text);}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{display:none;width:100%;margin-top:14px;padding:14px;border-radius:14px;background:var(--main);color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;}
+  .next-btn.show{display:block;}
+  .result{display:none;text-align:center;} .result.show{display:block;}
+  .stars{font-size:44px;margin:10px 0;} .score{font-size:18px;font-weight:800;margin:6px 0;color:var(--main);}
+  .score-sub{font-size:13.5px;color:#888;margin-bottom:20px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;border:none;cursor:pointer;}
+  .btn-retry-wrong{background:var(--wrong);color:#fff;} .btn-retry-all{background:var(--main);color:#fff;}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>접속사 내신TEST</h1>
+  <div class="badges"><span class="badge badge-track">활용</span><span class="badge badge-type">TEST</span></div>
+  <div class="range">그룹13 범위 (0048x~0051x)</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card">
+      <div class="qnum" id="qnum"></div>
+      <div class="card-instruction" id="instruction"></div>
+      <div class="sentence-box" id="sentence"></div>
+      <div class="hint" id="hint"></div>
+      <div class="opts-col" id="optsCol"></div>
+      <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()"></button>
+    </div>
+  </div>
+  <div class="result" id="resultArea">
+    <div class="stars" id="stars"></div>
+    <div class="score" id="scoreText"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry-wrong" onclick="retryWrong()">오답만 다시 풀기</button>
+      <button class="result-btn btn-retry-all" onclick="retryAll()">전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "He is smart ___ diligent.",
+    hint: "💡 그는 똑똑하고 성실하다.",
+    options: ["and", "but", "or", "so"],
+    answer: "and",
+    feedback: "비슷한 내용을 연결할 때는 and를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "The soup was hot ___ delicious.",
+    hint: "💡 그 수프는 뜨겁고 맛있었다.",
+    options: ["and", "but", "or", "so"],
+    answer: "and",
+    feedback: "비슷한 내용을 연결할 때는 and를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I studied hard, ___ I still failed.",
+    hint: "💡 나는 열심히 공부했지만, 여전히 떨어졌다.",
+    options: ["and", "but", "or", "so"],
+    answer: "but",
+    feedback: "앞뒤 내용이 반대되므로 but을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Do you want pizza ___ pasta for dinner?",
+    hint: "💡 저녁으로 피자를 원하니, 파스타를 원하니?",
+    options: ["and", "but", "or", "so"],
+    answer: "or",
+    feedback: "선택을 나타낼 때는 or를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Study now, ___ you'll regret it later.",
+    hint: "💡 지금 공부해, 그렇지 않으면 나중에 후회할 거야.",
+    options: ["and", "but", "or", "so"],
+    answer: "or",
+    feedback: "'그렇지 않으면'이라는 뜻으로도 or를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "It was very cold, ___ we stayed inside.",
+    hint: "💡 매우 추워서, 우리는 실내에 머물렀다.",
+    options: ["and", "but", "so", "or"],
+    answer: "so",
+    feedback: "결과를 나타낼 때는 so를 씁니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**She is tall** and pretty.", "**He was tired**, but he kept working.", "**I tried hard**, but I succeeded.", "**Turn left**, and you'll see it."],
+    answer: "**I tried hard**, but I succeeded.",
+    feedback: "결과를 나타내는 문맥이므로 but이 아닌 so를 써야 합니다. but → so"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ I got home, I took a shower.",
+    hint: "💡 나는 집에 도착했을 때, 샤워를 했다.",
+    options: ["When", "While", "Before", "After"],
+    answer: "When",
+    feedback: "특정 시점을 나타낼 때는 When을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ doing my homework, I listened to music.",
+    hint: "💡 숙제를 하는 동안, 나는 음악을 들었다.",
+    options: ["When", "While", "Before", "After"],
+    answer: "While",
+    feedback: "'~하는 동안'이라는 뜻은 While을 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "Please wash your hands ___ you eat.",
+    hint: "💡 먹기 전에 손을 씻어라.",
+    options: ["when", "while", "before", "after"],
+    answer: "before",
+    feedback: "'~하기 전에'라는 뜻은 before를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I felt relieved ___ I finished the exam.",
+    hint: "💡 시험을 끝낸 후에 나는 안심이 됐다.",
+    options: ["when", "while", "before", "after"],
+    answer: "after",
+    feedback: "'~한 후에'라는 뜻은 after를 씁니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**While I saw** her, I waved.", "**When cooking** dinner, she listens to music.", "**We ate lunch** after we arrived home.", "**He left** before he said goodbye."],
+    answer: "**When cooking** dinner, she listens to music.",
+    feedback: "나머지 셋에 오류가 있습니다. While I saw→When I saw, ate lunch after we arrived home→before we arrived home, left before he said goodbye→without saying goodbye 등 문맥상 부적절"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I stayed home ___ I had a cold.",
+    hint: "💡 감기에 걸려서 나는 집에 있었다.",
+    options: ["because", "if", "that", "when"],
+    answer: "because",
+    feedback: "원인·이유를 나타낼 때는 because를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ you study hard, you'll pass the test.",
+    hint: "💡 네가 열심히 공부하면, 시험에 합격할 것이다.",
+    options: ["Because", "If", "That", "When"],
+    answer: "If",
+    feedback: "조건을 나타낼 때는 If를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "I believe ___ honesty is important.",
+    hint: "💡 나는 정직함이 중요하다고 믿는다.",
+    options: ["because", "if", "that", "when"],
+    answer: "that",
+    feedback: "명사절을 이끄는 접속사는 that입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "It is surprising ___ he passed the exam.",
+    hint: "💡 그가 시험에 합격했다는 것은 놀랍다.",
+    options: ["because", "if", "that", "when"],
+    answer: "that",
+    feedback: "가주어 It, 진주어 that절 구문입니다."
+  },
+  {
+    instruction: "다음 밑줄 친 부분이 문법적으로 틀린 것을 고르세요.",
+    sentence: "네 문장을 비교해 보고 오류를 찾아보세요.",
+    hint: "세 문장은 문법적으로 옳고, 한 문장에 오류가 있습니다.",
+    options: ["**We stayed home** because it was raining.", "**If you need** help, call me.", "**I know when** she likes chocolate.", "**It is clear** that he is right."],
+    answer: "**I know when** she likes chocolate.",
+    feedback: "'~라는 것을 안다'는 명사절이므로 when이 아닌 that을 써야 합니다. when → that"
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "___ you don't hurry, you'll miss the train.",
+    hint: "💡 서두르지 않으면, 기차를 놓칠 것이다.",
+    options: ["Because", "If", "That", "When"],
+    answer: "If",
+    feedback: "조건을 나타낼 때는 If를 씁니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 말을 고르세요.",
+    sentence: "She was upset ___ she lost her wallet.",
+    hint: "💡 지갑을 잃어버려서 그녀는 속상했다.",
+    options: ["because", "if", "that", "when"],
+    answer: "because",
+    feedback: "원인·이유를 나타낼 때는 because를 씁니다."
+  },
+  {
+    instruction: "다음 중 어법상 옳은 문장을 고르세요.",
+    sentence: "네 문장을 비교해 보세요.",
+    hint: "세 문장에 오류가 있고, 한 문장만 옳습니다.",
+    options: ["**He can speak** both Korean but English.", "**I think if** she is right.", "**Because you leave** now, you'll be late.", "**She wore glasses** when she read."],
+    answer: "**She wore glasses** when she read.",
+    feedback: "나머지 셋에 오류가 있습니다. both Korean but English→both Korean and English, think if→think that, Because you leave→If you leave"
+  }
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+function stripMarkers(s){return s.replace(/\*\*/g,'');}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizArea').style.display='';document.getElementById('resultArea').classList.remove('show');showQ();}
+function showQ(){
+  const q=questions[current];const total=questions.length;
+  document.getElementById('qnum').textContent=`Q${current+1} / ${total}`;
+  document.getElementById('progressBar').style.width=`${(current/total)*100}%`;
+  document.getElementById('instruction').textContent=q.instruction;
+  document.getElementById('sentence').innerHTML=q.sentence.replace(/___/g,'<span style="display:inline-block;min-width:60px;border-bottom:3px solid var(--main);vertical-align:bottom;margin:0 3px;"> </span>').replace(/\n/g,'<br>');
+  document.getElementById('hint').textContent='';
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const col=document.getElementById('optsCol');col.innerHTML='';
+  const opts=shuffleNoFirstAnswer(q.options,q.answer);
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=opt.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    btn.dataset.raw=opt;
+    btn.onclick=()=>selectAnswer(opt,q);col.appendChild(btn);
+  });
+}
+function selectAnswer(selected,q){
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.raw.toLowerCase()===q.answer.toLowerCase())b.classList.add('correct');
+    else if(b.dataset.raw===selected&&selected.toLowerCase()!==q.answer.toLowerCase())b.classList.add('wrong');
+  });
+  const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();
+  if(isCorrect)score++;else wrongIndexes.push(current);
+  const feedback=document.getElementById('feedback');
+  if(isCorrect){feedback.className='feedback correct show';document.getElementById('fbTitle').textContent='✅ 정답!';}
+  else{feedback.className='feedback wrong show';document.getElementById('fbTitle').textContent=`❌ 오답 | 정답: ${stripMarkers(q.answer)}`;}
+  document.getElementById('fbBody').textContent=(q.hint?q.hint+' ':'')+q.feedback;
+  const nextBtn=document.getElementById('nextBtn');nextBtn.className='next-btn show';
+  nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';
+}
+function nextQ(){current++;if(current<questions.length)showQ();else showResult();}
+function showResult(){document.getElementById('quizArea').style.display='none';const result=document.getElementById('resultArea');result.classList.add('show');document.getElementById('progressBar').style.width='100%';const pct=score/questions.length;let stars='⭐';if(pct>=0.9)stars='⭐⭐⭐';else if(pct>=0.6)stars='⭐⭐';document.getElementById('stars').textContent=stars;document.getElementById('scoreText').textContent=`${score} / ${questions.length} 정답`;document.getElementById('scoreSub').textContent=`정답률 ${Math.round(pct*100)}%`;}
+function retryWrong(){if(wrongIndexes.length===0){retryAll();return;}const wrongQs=wrongIndexes.map(i=>questions[i]);wrongIndexes=[];startQuiz(shuffle(wrongQs));}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
