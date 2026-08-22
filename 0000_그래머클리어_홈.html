@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>그래머클리어 | 미라클 영어 스터디</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+KR:wght@400;500;700;800&display=swap');
+  :root{
+    --navy:#1C2E40;--navy2:#2A4260;
+    --green:#1E5A46;--green2:#16432F;--green3:#4CAF93;
+    --mint:#EAF6F1;--mint2:#d0ece3;
+    --blue:#4A90D9;--blue-light:#EBF4FF;
+    --teal:#5BAD6F;--teal-light:#E8F5EC;
+    --purple:#9B6DD1;--purple-light:#F0EBFD;
+    --orange:#E07B39;--orange-light:#FEF3EB;
+    --coral:#E8604C;--coral-light:#FDEAE6;
+    --gold:#D4AF37;--gold-light:#FBF5DC;
+    --bg:#F0F7F4;--card:#fff;--text:#1C2E40;--muted:#6B8A7A;--border:#C8E6D4;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+  /* ── 헤더 ── */
+  header{
+    background:linear-gradient(135deg,var(--green) 0%,var(--navy2) 100%);
+    color:#fff;padding:44px 20px 36px;text-align:center;
+    position:relative;overflow:hidden;
+  }
+  header::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 70% 30%,rgba(76,175,147,.25) 0%,transparent 60%);
+  }
+  header .brand{font-size:13px;letter-spacing:3px;opacity:.7;margin-bottom:10px;
+    font-family:'Noto Sans KR',sans-serif;font-weight:600;position:relative;}
+  header h1{font-size:38px;font-weight:900;margin-bottom:8px;letter-spacing:-.5px;position:relative;}
+  header h1 .em{color:#7FDEBC;}
+  header .tagline{font-size:15px;opacity:.85;font-family:'Noto Sans KR',sans-serif;
+    line-height:1.65;position:relative;}
+  .stats-row{display:flex;justify-content:center;gap:12px;margin-top:24px;
+    flex-wrap:wrap;position:relative;}
+  .stat{background:rgba(255,255,255,.14);border-radius:14px;padding:10px 24px;
+    text-align:center;backdrop-filter:blur(4px);}
+  .stat .n{font-size:24px;font-weight:900;}
+  .stat .l{font-size:12px;opacity:.75;font-family:'Noto Sans KR',sans-serif;margin-top:2px;}
+
+  /* ── 안내 배너 ── */
+  .guide-banner{max-width:760px;margin:20px auto 0;padding:0 16px;}
+  .guide-inner{background:#fff;border-radius:14px;padding:14px 20px;
+    display:flex;align-items:center;gap:10px;
+    box-shadow:0 4px 16px rgba(30,90,70,.07);
+    font-size:14px;font-family:'Noto Sans KR',sans-serif;
+    color:var(--text);line-height:1.65;}
+
+  /* ── 권 선택 탭 ── */
+  .series-wrap{max-width:760px;margin:20px auto 0;padding:0 16px;}
+  .series-bar{display:flex;gap:10px;flex-wrap:wrap;}
+  .series-btn{
+    flex:1;min-width:160px;
+    background:#fff;border:2px solid var(--border);border-radius:var(--radius);
+    padding:14px 18px;cursor:pointer;transition:all .18s ease;
+    font-family:'Noto Sans KR',sans-serif;text-align:left;
+    box-shadow:0 3px 12px rgba(30,90,70,.06);
+    display:flex;align-items:center;gap:12px;
+  }
+  .series-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(30,90,70,.12);}
+  .series-btn .sb-icon{font-size:22px;width:44px;height:44px;border-radius:13px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .series-btn .sb-text{display:flex;flex-direction:column;gap:2px;}
+  .series-btn .sb-name{font-size:14.5px;font-weight:800;color:var(--text);line-height:1.2;}
+  .series-btn .sb-sub{font-size:12px;color:var(--muted);font-weight:600;}
+
+  .series-btn.jg1 .sb-icon{background:var(--mint);color:var(--green);}
+  .series-btn.jg1.active,.series-btn.jg1:hover{border-color:var(--green);}
+  .series-btn.jg1.active .sb-name{color:var(--green);}
+
+  .series-btn.jg2 .sb-icon{background:var(--blue-light);color:var(--blue);}
+  .series-btn.jg2.active,.series-btn.jg2:hover{border-color:var(--blue);}
+  .series-btn.jg2.active .sb-name{color:var(--blue);}
+
+  .series-btn.jg3 .sb-icon{background:var(--purple-light);color:var(--purple);}
+  .series-btn.jg3.active,.series-btn.jg3:hover{border-color:var(--purple);}
+  .series-btn.jg3.active .sb-name{color:var(--purple);}
+
+  .series-btn.coming{opacity:.55;cursor:not-allowed;box-shadow:none;}
+  .series-btn.coming:hover{transform:none;box-shadow:none;border-color:var(--border);}
+  .series-btn.coming .sb-icon{background:#eef2ef;color:var(--muted);}
+
+  /* ── 메인 패널 ── */
+  main{max-width:760px;margin:0 auto;padding:20px 16px 60px;}
+  .series-panel{display:none;}
+  .series-panel.show{display:block;}
+
+  /* ── 트랙 탭 ── */
+  .track-bar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+  .track-btn{
+    padding:8px 18px;border-radius:99px;border:2px solid var(--border);
+    background:#fff;font-size:13px;font-weight:800;cursor:pointer;
+    transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--muted);
+  }
+  .track-btn:hover{border-color:var(--green);color:var(--green);}
+  .track-btn.active{background:var(--green);border-color:var(--green);color:#fff;}
+  .track-btn.tb-basic.active{background:var(--blue);border-color:var(--blue);}
+  .track-btn.tb-apply.active{background:var(--teal);border-color:var(--teal);}
+  .track-btn.tb-deep.active{background:var(--purple);border-color:var(--purple);}
+  .track-btn.tb-test.active{background:var(--coral);border-color:var(--coral);}
+
+  .track-panel{display:none;}
+  .track-panel.show{display:block;}
+
+  /* ── 섹션 ── */
+  .section{margin-bottom:20px;}
+  .section-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .section-icon{width:36px;height:36px;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+  .section-title{font-size:16px;font-weight:900;color:var(--text);}
+  .section-sub{font-size:12px;color:var(--muted);font-family:'Noto Sans KR',sans-serif;margin-top:1px;}
+
+  /* ── 카드 그리드 ── */
+  .card-grid{display:flex;flex-direction:column;gap:8px;}
+
+  /* ── 앱 카드 ── */
+  .app-card{
+    background:#fff;border-radius:14px;padding:13px 15px;
+    display:flex;align-items:center;gap:11px;
+    box-shadow:0 2px 8px rgba(30,90,70,.06);
+    text-decoration:none;color:var(--text);
+    transition:all .15s;border:1.5px solid transparent;
+  }
+  .app-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(30,90,70,.12);}
+  .app-card.basic-card{background:#EBF4FF;}
+  .app-card.apply-card{background:#E8F5EC;}
+  .app-card.deep-card{background:#F0EBFD;}
+  .app-card.test-card{background:#FFF0EE;}
+  .app-card.basics-card{background:#FBF5DC;}
+
+  .app-num{font-size:11px;font-weight:800;color:var(--muted);
+    min-width:36px;text-align:center;font-family:'Nunito',sans-serif;flex-shrink:0;}
+  .app-icon{width:38px;height:38px;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;flex-shrink:0;font-weight:900;
+    font-family:'Nunito',sans-serif;color:#fff;}
+
+  /* 아이콘 색상 */
+  .ic-basic-a{background:linear-gradient(135deg,#4A90D9,#2A6AB0);}
+  .ic-basic-b{background:linear-gradient(135deg,#5BAD6F,#3A8A50);}
+  .ic-basic-c{background:linear-gradient(135deg,#9B6DD1,#7040B0);}
+  .ic-basic-t{background:linear-gradient(135deg,#E8604C,#C03A28);}
+  .ic-basics{background:linear-gradient(135deg,#D4AF37,#A08010);}
+  .ic-apply-a{background:linear-gradient(135deg,#5BAD6F,#3A8A50);}
+  .ic-apply-b{background:linear-gradient(135deg,#4A90D9,#2A6AB0);}
+  .ic-apply-c{background:linear-gradient(135deg,#9B6DD1,#7040B0);}
+  .ic-deep{background:linear-gradient(135deg,#9B6DD1,#7040B0);}
+  .ic-coming{background:#D0D8DC;color:#8A9AA8!important;}
+
+  .app-info{flex:1;min-width:0;}
+  .app-name{font-size:14.5px;font-weight:800;margin-bottom:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .app-desc{font-size:11.5px;color:var(--muted);font-family:'Noto Sans KR',sans-serif;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .app-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:99px;
+    flex-shrink:0;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
+
+  /* 배지 색 */
+  .bdg-a{background:var(--blue-light);color:var(--blue);}
+  .bdg-b{background:var(--teal-light);color:#2E8050;}
+  .bdg-c{background:var(--purple-light);color:#6040A0;}
+  .bdg-t{background:var(--coral-light);color:var(--coral);}
+  .bdg-basics{background:var(--gold-light);color:#8B6800;}
+  .bdg-coming{background:#EAEEF0;color:#8A9AA8;}
+
+  /* ── 그룹 서브헤더 ── */
+  .group-label{
+    font-size:12px;font-weight:800;color:var(--muted);
+    margin:20px 0 10px 2px;padding-bottom:8px;
+    border-bottom:1.5px dashed var(--border);
+    font-family:'Noto Sans KR',sans-serif;
+    display:flex;align-items:center;gap:6px;
+  }
+  .group-label .gl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+  /* ── 내신TEST 서브그룹 ── */
+  .subgroup{background:#fff;border-radius:14px;padding:12px 14px;
+    box-shadow:0 2px 8px rgba(30,90,70,.06);margin-bottom:8px;}
+  .subgroup-title{font-size:12px;font-weight:700;color:var(--muted);
+    margin-bottom:10px;padding-bottom:8px;
+    border-bottom:1px solid var(--border);font-family:'Noto Sans KR',sans-serif;}
+  .subgroup .app-card{box-shadow:none;border:1.5px solid var(--border);margin-bottom:6px;}
+  .subgroup .app-card:last-child{margin-bottom:0;}
+
+  /* ── Coming Soon ── */
+  .coming-box{background:#fff;border:1.5px dashed var(--border);border-radius:var(--radius);
+    padding:48px 20px;text-align:center;color:var(--muted);font-family:'Noto Sans KR',sans-serif;}
+  .coming-box .ci{font-size:36px;margin-bottom:10px;}
+  .coming-box .ct{font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px;}
+  .coming-box .cd{font-size:13px;line-height:1.7;}
+
+  /* ── 푸터 ── */
+  footer{text-align:center;padding:30px;color:var(--muted);
+    font-size:12px;font-family:'Noto Sans KR',sans-serif;}
+  footer a{color:var(--green);text-decoration:none;font-weight:700;}
+
+  /* ── 반응형 ── */
+  @media(max-width:560px){
+    header h1{font-size:28px;}
+    .series-btn{min-width:calc(50% - 5px);}
+  }
+  @media(max-width:360px){
+    .series-btn{min-width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ 헤더 ══ -->
+<header>
+  <div class="brand">미라클 영어 스터디</div>
+  <h1>📗 <span class="em">그래머</span>클리어</h1>
+  <div class="tagline">중학 영문법을 단계별로 완성하는 인터랙티브 학습 앱</div>
+  <div class="stats-row">
+    <div class="stat"><div class="n">3</div><div class="l">레벨</div></div>
+    <div class="stat"><div class="n">64</div><div class="l">완성 앱</div></div>
+    <div class="stat"><div class="n">13</div><div class="l">내신 TEST</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">학습 트랙</div></div>
+  </div>
+</header>
+
+<!-- ══ 안내 배너 ══ -->
+<div class="guide-banner">
+  <div class="guide-inner">
+    <span>💡</span>
+    <span>아래에서 권(레벨)을 선택하고, 트랙 탭을 눌러 학습하고 싶은 교재를 선택하세요.
+    기본→활용→심화 순서로 학습하면 내신 실력이 빠르게 올라갑니다!</span>
+  </div>
+</div>
+
+<!-- ══ 권 선택 버튼 ══ -->
+<div class="series-wrap">
+  <div class="series-bar">
+    <button class="series-btn jg1 active" onclick="showSeries('jg1',this)">
+      <div class="sb-icon">📗</div>
+      <div class="sb-text">
+        <span class="sb-name">점프 영문법 1권</span>
+        <span class="sb-sub">중1 · 기초 문법 완성 · 64앱</span>
+      </div>
+    </button>
+    <button class="series-btn jg2 coming" onclick="return false">
+      <div class="sb-icon">📘</div>
+      <div class="sb-text">
+        <span class="sb-name">점프 영문법 2권</span>
+        <span class="sb-sub">중2 · 준비 중</span>
+      </div>
+    </button>
+    <button class="series-btn jg3 coming" onclick="return false">
+      <div class="sb-icon">📙</div>
+      <div class="sb-text">
+        <span class="sb-name">점프 영문법 3권</span>
+        <span class="sb-sub">중3 · 준비 중</span>
+      </div>
+    </button>
+  </div>
+</div>
+
+<!-- ══ 메인 ══ -->
+<main>
+
+<!-- ▣ JG1 패널 -->
+<div id="series-jg1" class="series-panel show">
+
+  <!-- 트랙 탭 -->
+  <div class="track-bar">
+    <button class="track-btn tb-basics active" onclick="showTrack('jg1','basics',this)">📖 Grammar Basics</button>
+    <button class="track-btn tb-basic" onclick="showTrack('jg1','basic',this)">🔵 기본 (1316그래머)</button>
+    <button class="track-btn tb-apply coming-tab" style="opacity:.5;cursor:not-allowed;">🟢 활용 (문마중)</button>
+    <button class="track-btn tb-deep coming-tab" style="opacity:.5;cursor:not-allowed;">🟣 심화 (그래머인사이드)</button>
+    <button class="track-btn tb-test" onclick="showTrack('jg1','test',this)">🔴 내신 TEST</button>
+  </div>
+
+  <!-- ── Grammar Basics 트랙 ── -->
+  <div id="jg1-basics" class="track-panel show">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon" style="background:linear-gradient(135deg,#D4AF37,#A08010);">📖</div>
+        <div>
+          <div class="section-title">Grammar Basics — 문법 기초 개념</div>
+          <div class="section-sub">품사 · 문장의 성분 · 구와 절 | 3개 앱</div>
+        </div>
+      </div>
+      <div class="card-grid">
+        <a class="app-card basics-card" href="JG1-0001_품사.html">
+          <div class="app-num">01</div>
+          <div class="app-icon ic-basics">B</div>
+          <div class="app-info">
+            <div class="app-name">품사</div>
+            <div class="app-desc">명사·대명사·동사·형용사·부사·전치사·접속사·감탄사</div>
+          </div>
+          <span class="app-badge bdg-basics">Basics</span>
+        </a>
+        <a class="app-card basics-card" href="JG1-0002_문장의성분.html">
+          <div class="app-num">02</div>
+          <div class="app-icon ic-basics">B</div>
+          <div class="app-info">
+            <div class="app-name">문장의 성분</div>
+            <div class="app-desc">주어·동사·목적어·보어·수식어</div>
+          </div>
+          <span class="app-badge bdg-basics">Basics</span>
+        </a>
+        <a class="app-card basics-card" href="JG1-0003_구와절.html">
+          <div class="app-num">03</div>
+          <div class="app-icon ic-basics">B</div>
+          <div class="app-info">
+            <div class="app-name">구와 절</div>
+            <div class="app-desc">명사구·형용사구·부사구 · 명사절·형용사절·부사절</div>
+          </div>
+          <span class="app-badge bdg-basics">Basics</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 기본 트랙 ── -->
+  <div id="jg1-basic" class="track-panel">
+
+    <!-- 그룹1 be동사·인칭대명사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹1 · be동사와 인칭대명사 (Ch01)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0004_be동사문장.html">
+        <div class="app-num">04</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">be동사가 있는 문장</div><div class="app-desc">be동사 현재·과거 / 긍정·부정·의문문</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0005_인칭대명사.html">
+        <div class="app-num">05</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">인칭대명사</div><div class="app-desc">주격·목적격·소유격·소유대명사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0006_be동사인칭대명사문장점검.html">
+        <div class="app-num">06</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">be동사·인칭대명사 문장 점검</div><div class="app-desc">Ch01 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹2 일반동사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹2 · 일반동사 (Ch02)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0007_일반동사의미형태.html">
+        <div class="app-num">07</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">일반동사의 의미와 형태</div><div class="app-desc">3인칭 단수 / 불규칙 변화</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0008_일반동사과거형.html">
+        <div class="app-num">08</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">일반동사의 과거형</div><div class="app-desc">규칙·불규칙 과거형</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0009_일반동사부정문.html">
+        <div class="app-num">09</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">일반동사가 있는 부정문</div><div class="app-desc">don't / doesn't / didn't</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0010_일반동사의문문.html">
+        <div class="app-num">10</div><div class="app-icon ic-basic-b">B</div>
+        <div class="app-info"><div class="app-name">일반동사가 있는 의문문</div><div class="app-desc">Do / Does / Did 의문문과 대답</div></div>
+        <span class="app-badge bdg-b">B형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0011_일반동사문장점검.html">
+        <div class="app-num">11</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">일반동사 문장 점검</div><div class="app-desc">Ch02 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹3 명사·관사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹3 · 명사와 관사 (Ch03)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0012_가산명사와불가산명사.html">
+        <div class="app-num">12</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">셀 수 있는 명사와 없는 명사</div><div class="app-desc">가산명사 복수형 / 불가산명사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0013_관사.html">
+        <div class="app-num">13</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">관사</div><div class="app-desc">a / an / the · 관사 없는 경우</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0014_명사관사문장점검.html">
+        <div class="app-num">14</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">명사·관사 문장 점검</div><div class="app-desc">Ch03 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹4 시제 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹4 · 문장의 시제 (Ch04)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0015_현재시제와과거시제.html">
+        <div class="app-num">15</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">현재시제와 과거시제</div><div class="app-desc">현재 습관·사실 / 과거 신호어</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0016_진행형.html">
+        <div class="app-num">16</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">진행형</div><div class="app-desc">현재진행형 / 과거진행형</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0017_시제문장점검.html">
+        <div class="app-num">17</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">시제 문장 점검</div><div class="app-desc">Ch04 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹5 조동사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹5 · 조동사 (Ch05)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0018_will.html">
+        <div class="app-num">18</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">will / be going to</div><div class="app-desc">미래 표현 · will vs be going to</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0019_canmay.html">
+        <div class="app-num">19</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">can, may</div><div class="app-desc">능력·허가·추측</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0020_mustshould.html">
+        <div class="app-num">20</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">must, should</div><div class="app-desc">의무·금지·충고 · had better</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0021_조동사문장점검.html">
+        <div class="app-num">21</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">조동사 문장 점검</div><div class="app-desc">Ch05 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹6 의문사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹6 · 의문사가 있는 의문문 (Ch06)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0022_의문사whowhatwhich.html">
+        <div class="app-num">22</div><div class="app-icon ic-basic-b">B</div>
+        <div class="app-info"><div class="app-name">의문사 who, what, which</div><div class="app-desc">사람·사물·선택 의문사</div></div>
+        <span class="app-badge bdg-b">B형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0023_의문사whenwherewhy.html">
+        <div class="app-num">23</div><div class="app-icon ic-basic-b">B</div>
+        <div class="app-info"><div class="app-name">의문사 when, where, why</div><div class="app-desc">시간·장소·이유 의문사</div></div>
+        <span class="app-badge bdg-b">B형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0024_의문사how.html">
+        <div class="app-num">24</div><div class="app-icon ic-basic-b">B</div>
+        <div class="app-info"><div class="app-name">의문사 how</div><div class="app-desc">how / how + 형용사·부사</div></div>
+        <span class="app-badge bdg-b">B형</span>
+      </a>
+    </div>
+
+    <!-- 그룹7 기타의문문·감탄문·명령문 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹7 · 기타의문문·감탄문·명령문 (Ch07)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0025_부가의문문.html">
+        <div class="app-num">25</div><div class="app-icon ic-basic-b">B</div>
+        <div class="app-info"><div class="app-name">부가의문문</div><div class="app-desc">isn't it? / don't they?</div></div>
+        <span class="app-badge bdg-b">B형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0026_부정의문문선택의문문.html">
+        <div class="app-num">26</div><div class="app-icon ic-basic-b">B</div>
+        <div class="app-info"><div class="app-name">부정의문문·선택의문문</div><div class="app-desc">Aren't you~? / A or B?</div></div>
+        <span class="app-badge bdg-b">B형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0027_감탄문명령문.html">
+        <div class="app-num">27</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">감탄문·명령문</div><div class="app-desc">What/How 감탄문 · 긍정·부정 명령문</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0028_의문문감탄문명령문문장점검.html">
+        <div class="app-num">28</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">의문문·감탄문·명령문 점검</div><div class="app-desc">Ch07 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹8 문장형식 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹8 · 동사의 종류와 문장 형식 (Ch08)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0029_감각동사형용사.html">
+        <div class="app-num">29</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">감각동사+형용사</div><div class="app-desc">look/smell/taste/sound/feel</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0030_수여동사.html">
+        <div class="app-num">30</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">수여동사</div><div class="app-desc">give/send/show+간목+직목 · 4형식→3형식</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0031_목적격보어.html">
+        <div class="app-num">31</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">동사+목적어+목적격보어</div><div class="app-desc">make/call/keep+목적어+보어 · 5형식</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0032_문장형식점검.html">
+        <div class="app-num">32</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">문장 형식 점검</div><div class="app-desc">Ch08 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹9 to부정사·동명사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹9 · to부정사와 동명사 (Ch09)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0033_to부정사명사적용법.html">
+        <div class="app-num">33</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">to부정사의 명사적 용법</div><div class="app-desc">주어·목적어·보어 역할</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0034_to부정사형용사부사적용법.html">
+        <div class="app-num">34</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">to부정사의 형용사·부사적 용법</div><div class="app-desc">명사수식 / 목적·감정원인·결과</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0035_동명사.html">
+        <div class="app-num">35</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">동명사</div><div class="app-desc">주어·목적어·보어 · enjoy/finish/keep</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0036_to부정사동명사문장점검.html">
+        <div class="app-num">36</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">to부정사·동명사 문장 점검</div><div class="app-desc">Ch09 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹10 대명사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹10 · 대명사 (Ch10)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0037_재귀대명사비인칭주어it.html">
+        <div class="app-num">37</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">재귀대명사·비인칭주어 it</div><div class="app-desc">myself/herself · 날씨·시간·거리</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0038_onesomeany.html">
+        <div class="app-num">38</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">one, some, any</div><div class="app-desc">one/ones · some/any 긍·부정·의문</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0039_대명사문장점검.html">
+        <div class="app-num">39</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">대명사 문장 점검</div><div class="app-desc">Ch10 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹11 형용사·부사·비교 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹11 · 형용사와 부사·비교 표현 (Ch11)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0040_형용사의역할.html">
+        <div class="app-num">40</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">형용사의 역할</div><div class="app-desc">한정·서술 용법 / many·much·few·little</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0041_부사의역할.html">
+        <div class="app-num">41</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">부사의 역할</div><div class="app-desc">빈도부사 위치 · 형용사 vs 부사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0042_비교표현.html">
+        <div class="app-num">42</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">비교 표현</div><div class="app-desc">원급·비교급·최상급 · as ~ as</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0043_형용사부사비교문장점검.html">
+        <div class="app-num">43</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">형용사·부사·비교 문장 점검</div><div class="app-desc">Ch11 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹12 전치사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹12 · 전치사 (Ch12)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card basic-card" href="JG1-0044_시간의전치사.html">
+        <div class="app-num">44</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">시간의 전치사</div><div class="app-desc">at/on/in · for/since/during · by/until</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0045_장소의전치사.html">
+        <div class="app-num">45</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">장소의 전치사</div><div class="app-desc">in/on/at · between/among · over/under</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0046_기타전치사.html">
+        <div class="app-num">46</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">기타 전치사</div><div class="app-desc">by/with/in · 형용사+전치사 숙어</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0047_전치사문장점검.html">
+        <div class="app-num">47</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">전치사 문장 점검</div><div class="app-desc">Ch12 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+    <!-- 그룹13 접속사 -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹13 · 접속사 (Ch13)</div>
+    <div class="card-grid">
+      <a class="app-card basic-card" href="JG1-0048_andbutorso.html">
+        <div class="app-num">48</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">and, but, or, so</div><div class="app-desc">등위접속사 · 명령문+and/or</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0049_whenbeforeafterwhile.html">
+        <div class="app-num">49</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">when, before, after, while</div><div class="app-desc">시간 부사절 접속사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0050_becauseifthat.html">
+        <div class="app-num">50</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">because, if, that</div><div class="app-desc">이유·조건·명사절 접속사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card basic-card" href="JG1-0051_접속사문장점검.html">
+        <div class="app-num">51</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">접속사 문장 점검</div><div class="app-desc">Ch13 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+    </div>
+
+  </div><!-- /jg1-basic -->
+
+  <!-- ── 활용 트랙 ── -->
+  <div id="jg1-apply" class="track-panel">
+    <div class="coming-box">
+      <div class="ci">🟢</div>
+      <div class="ct">활용 트랙 — 준비 중</div>
+      <div class="cd">문마중(문법으로 마스터하는 중학영어) 기반 활용 앱이<br>곧 추가될 예정입니다.</div>
+    </div>
+  </div>
+
+  <!-- ── 심화 트랙 ── -->
+  <div id="jg1-deep" class="track-panel">
+    <div class="coming-box">
+      <div class="ci">🟣</div>
+      <div class="ct">심화 트랙 — 준비 중</div>
+      <div class="cd">그래머인사이드 기반 심화 앱(객관식+주관식 혼합)이<br>곧 추가될 예정입니다.</div>
+    </div>
+  </div>
+
+  <!-- ── 내신 TEST 트랙 ── -->
+  <div id="jg1-test" class="track-panel">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon" style="background:linear-gradient(135deg,#E8604C,#C03A28);">📝</div>
+        <div>
+          <div class="section-title">그룹별 내신 TEST — 20문제 실전 연습</div>
+          <div class="section-sub">각 챕터 Review Test 유형 · 4지선다 20문제 · 13개</div>
+        </div>
+      </div>
+      <div class="subgroup">
+        <div class="subgroup-title">📝 내신 TEST (힌트 없이 실전처럼 풀기)</div>
+        <a class="app-card test-card" href="JG1-0006T_be동사인칭대명사내신TEST.html">
+          <div class="app-num">T-01</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">be동사·인칭대명사 내신 TEST</div><div class="app-desc">Ch01 · be동사 / 인칭대명사 / 소유대명사</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0011T_일반동사내신TEST.html">
+          <div class="app-num">T-02</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">일반동사 내신 TEST</div><div class="app-desc">Ch02 · 일반동사 현재·과거 / 부정·의문문</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0014T_명사관사내신TEST.html">
+          <div class="app-num">T-03</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">명사·관사 내신 TEST</div><div class="app-desc">Ch03 · 가산·불가산 명사 / a·an·the</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0017T_시제내신TEST.html">
+          <div class="app-num">T-04</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">문장의 시제 내신 TEST</div><div class="app-desc">Ch04 · 현재·과거·진행형</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0021T_조동사내신TEST.html">
+          <div class="app-num">T-05</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">조동사 내신 TEST</div><div class="app-desc">Ch05 · will/can/may/must/should</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0024T_의문사내신TEST.html">
+          <div class="app-num">T-06</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">의문사 의문문 내신 TEST</div><div class="app-desc">Ch06 · who/what/which/when/where/why/how</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0028T_의문문감탄문명령문내신TEST.html">
+          <div class="app-num">T-07</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">기타의문문·감탄문·명령문 내신 TEST</div><div class="app-desc">Ch07 · 부가·부정·선택의문문 / 감탄·명령문</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0032T_문장형식내신TEST.html">
+          <div class="app-num">T-08</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">동사의 종류·문장 형식 내신 TEST</div><div class="app-desc">Ch08 · 감각동사·수여동사·목적격보어</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0036T_to부정사동명사내신TEST.html">
+          <div class="app-num">T-09</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">to부정사·동명사 내신 TEST</div><div class="app-desc">Ch09 · 명사·형용사·부사적 용법 / 동명사</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0039T_대명사내신TEST.html">
+          <div class="app-num">T-10</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">대명사 내신 TEST</div><div class="app-desc">Ch10 · 재귀대명사·비인칭it·one/some/any</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0043T_형용사부사비교내신TEST.html">
+          <div class="app-num">T-11</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">형용사·부사·비교 내신 TEST</div><div class="app-desc">Ch11 · 형용사·부사 역할 / 비교급·최상급</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0047T_전치사내신TEST.html">
+          <div class="app-num">T-12</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">전치사 내신 TEST</div><div class="app-desc">Ch12 · 시간·장소·기타 전치사</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+        <a class="app-card test-card" href="JG1-0051T_접속사내신TEST.html">
+          <div class="app-num">T-13</div><div class="app-icon ic-basic-t">T</div>
+          <div class="app-info"><div class="app-name">접속사 내신 TEST</div><div class="app-desc">Ch13 · 등위·시간·이유·조건·명사절 접속사</div></div>
+          <span class="app-badge bdg-t">TEST</span>
+        </a>
+      </div>
+    </div>
+  </div><!-- /jg1-test -->
+
+</div><!-- /series-jg1 -->
+
+<!-- ▣ JG2 패널 -->
+<div id="series-jg2" class="series-panel">
+  <div class="coming-box">
+    <div class="ci">📘</div>
+    <div class="ct">점프 영문법 2권 — 준비 중</div>
+    <div class="cd">중2 수준 문법 앱이 곧 추가될 예정입니다.<br>기본 → 활용 → 심화 트랙으로 구성됩니다.</div>
+  </div>
+</div>
+
+<!-- ▣ JG3 패널 -->
+<div id="series-jg3" class="series-panel">
+  <div class="coming-box">
+    <div class="ci">📙</div>
+    <div class="ct">점프 영문법 3권 — 준비 중</div>
+    <div class="cd">중3 수준 문법 앱이 곧 추가될 예정입니다.<br>기본 → 활용 → 심화 트랙으로 구성됩니다.</div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  미라클 영어 스터디 · 그래머클리어<br>
+  <a href="0000_영문법탐정단_홈.html">영문법 탐정단</a> | <a href="index.html">보카 마스터</a>
+</footer>
+
+<script>
+// 권(시리즈) 선택
+function showSeries(series, btn) {
+  document.querySelectorAll('.series-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  ['jg1','jg2','jg3'].forEach(s => {
+    const el = document.getElementById('series-'+s);
+    if (el) el.style.display = (s === series) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.series-panel').forEach(p => p.classList.remove('show'));
+  const target = document.getElementById('series-'+series);
+  if (target) target.classList.add('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// 트랙 탭 선택
+function showTrack(series, track, btn) {
+  // 탭 버튼 활성화
+  const bar = document.querySelector('#series-'+series+' .track-bar');
+  if (bar) bar.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  // 패널 전환
+  ['basics','basic','apply','deep','test'].forEach(t => {
+    const el = document.getElementById(series+'-'+t);
+    if (el) el.style.display = (t === track) ? 'block' : 'none';
+    if (el) el.classList.toggle('show', t === track);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// 초기 상태: JG1 기본 Basics 탭 표시
+document.addEventListener('DOMContentLoaded', function() {
+  showSeries('jg1', document.querySelector('.series-btn.jg1'));
+});
+</script>
+</body>
+</html>
