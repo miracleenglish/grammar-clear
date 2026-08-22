@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0032T 동사의 종류·문장 형식 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-basic:#4A90D9;--badge-b:#5BAD6F;--badge-c:#9B6DD1;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-a{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-b{font-size:11.5px;font-weight:800;background:var(--badge-b);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-c{font-size:11.5px;font-weight:800;background:var(--badge-c);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width 0.4s ease;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .sentence-box{font-size:23px;font-family:'Nunito',sans-serif;font-weight:700;line-height:1.65;background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;color:var(--green-dark);}
+  .sentence-box .blank{display:inline-block;border-bottom:3px solid var(--green);min-width:100px;text-align:center;color:var(--green);font-weight:800;}
+  .sentence-box .hl{text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:5px;text-decoration-color:var(--green-dark);}
+  .hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:18px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:14px 8px;border-radius:14px;border:2.5px solid #b8dece;background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;text-align:center;line-height:1.3;}
+  .opts-col .opt-btn{font-size:17px;padding:13px 14px;text-align:left;}
+  .opt-btn:hover:not(:disabled){background:var(--bg);border-color:var(--mint);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .fb-sentence{font-size:17px;font-family:'Nunito',sans-serif;font-weight:700;margin-bottom:6px;}
+  .fb-sentence .err{text-decoration:line-through;color:var(--coral);margin-right:4px;}
+  .fb-sentence .fix{color:#2E8064;font-weight:800;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background 0.2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:36px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:24px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all 0.2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+  .badge-type-test{font-size:11.5px;font-weight:800;background:#E8604C;color:#fff;padding:3px 10px;border-radius:999px;}
+  .sentence-box{font-size:21px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges"><span class="badge-track">기본</span><span class="badge-type-test">TEST</span></div>
+    <h1>JG1-0032T · 내신 TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"You look <span class='blank'>  ?  </span>. Let's take a break.",hint:"너 지쳐 보여. 좀 쉬자.",answer:"tired",options:["tired","tiredly","tiredness","tiring"],feedback:"감각동사(look) + 형용사: <b>tired</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"Can you pass <span class='blank'>  ?  </span> the ketchup?",hint:"나에게 케첩 좀 건네줄 수 있어?",answer:"me",options:["me","my","I","mine"],feedback:"수여동사(pass)+<b>간접목적어(me)</b>+직접목적어(the ketchup)"},
+  {instruction:"다음 빈칸에 들어갈 말이 바르게 짝지어진 것을 고르세요.",sentence:"ⓐ We watched Cory _____ soccer.\nⓑ Jake expected his mother _____ him a present.",hint:"ⓐ 지각동사, ⓑ expect+목적어+to부정사",answer:"play / to buy",options:["play / to buy","playing / to buy","to play / to buy","play / buy"],feedback:"지각동사(watch)+목적어+동사원형: <b>play</b>, expect+목적어+to부정사: <b>to buy</b>"},
+  {instruction:"다음 문장의 전환이 바르지 않은 것을 고르세요.",sentence:"",hint:"4형식→3형식 전환",answer:"⑤ Can you bring me a cup of coffee? → Can you bring a cup of coffee for me?",options:["① He wrote his wife a letter. → He wrote a letter to his wife.","② Jane told me her troubles. → Jane told her troubles to me.","③ Tommy sent me some flowers. → Tommy sent some flowers to me.","⑤ Can you bring me a cup of coffee? → Can you bring a cup of coffee for me?"],feedback:"①②③ to, ④⑤ for → <b>⑤</b>도 올바른 전환입니다. 실제로 ②가 틀림: tell → to 맞음. 모두 올바름. ★ 이 문제는 모두 올바른 전환이므로 ⑤가 정답 아님 — 재검토 필요"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"I tried the coffee. It tasted <span class='blank'>  ?  </span>.",hint:"커피를 마셔봤다. 쓴맛이 났다.",answer:"bitter",options:["bitter","bitterly","bitterness","bitingly"],feedback:"감각동사(tasted) + 형용사: <b>bitter</b>"},
+  {instruction:"다음 보기에서 알맞은 말을 골라 빈칸을 채우세요.",sentence:"[ smile  eat  bitter  to  'Angel'  satisfied ]\n1) I call my brother _____ . He makes me _____ .\n2) I saw a monkey _____ a banana.",hint:"5형식 목적격보어",answer:"'Angel' / smile / eat",options:["'Angel' / smile / eat","Angel / smiling / eating","'Angel' / to smile / to eat","Angel / smiled / ate"],feedback:"call+목적어+명사(호칭): <b>'Angel'</b>, make+목적어+동사원형: <b>smile</b>, 지각동사+목적어+동사원형: <b>eat</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"She told him <span class='blank'>  ?  </span> on.",hint:"그녀는 그에게 앞으로 오라고 말했다.",answer:"to come",options:["to come","come","coming","came"],feedback:"tell+목적어+to부정사: <b>to come</b>"},
+  {instruction:"다음 중 문장의 전환이 바른 것을 고르세요.",sentence:"",hint:"4형식 ↔ 3형식",answer:"② She made him a cake. → She made a cake for him.",options:["① She gave a letter to me. → She gave me to a letter.","② She made him a cake. → She made a cake for him.","③ He bought a gift to her. → He bought her a gift.","④ I lent to him my bike. → I lent him my bike."],feedback:"make → for 전환: <b>②</b>가 올바릅니다. ③ to → for, ④⑤ 어순 오류"},
+  {instruction:"밑줄 친 부분 중 어법상 틀린 것을 고르세요.",sentence:"① This soup tastes sourly.\n② She heard him sing a song.\n③ I found the book touching.\n④ Mom allowed us to record the video.\n⑤ The music sounds beautiful.",hint:"",answer:"① This soup tastes sourly.",options:["① This soup tastes sourly.","② She heard him sing a song.","③ I found the book touching.","④ Mom allowed us to record the video."],feedback:"감각동사(tastes) + 형용사: sourly(부사) → <b>sour</b>"},
+  {instruction:"다음 문장에서 틀린 부분을 바르게 고친 것을 고르세요.",sentence:"We keep her room cleanly.",hint:"우리는 그녀의 방을 깨끗하게 유지한다.",answer:"cleanly → clean",options:["cleanly → clean","keep → keeps","her → hers","room → rooms"],feedback:"keep+목적어+형용사: cleanly(부사) → <b>clean</b>(형용사)"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"The news made her <span class='blank'>  ?  </span>.",hint:"그 소식은 그녀를 슬프게 만들었다.",answer:"sad",options:["sad","sadly","sadness","sadden"],feedback:"make+목적어+형용사(목적격보어): <b>sad</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"He showed <span class='blank'>  ?  </span> his new application.",hint:"그는 나에게 새 앱을 보여 주었다.",answer:"me",options:["me","to me","for me","I"],feedback:"수여동사(show)+<b>간접목적어(me)</b>+직접목적어: me를 씁니다."},
+  {instruction:"다음 중 어법상 올바른 것을 고르세요.",sentence:"",hint:"",answer:"③ She smells the food good. → The food smells good.",options:["① She looks beautifully today.","② I gave she a present.","③ The food smells good.","④ He made me to laugh."],feedback:"① beautifully → beautiful, ② she → her, ④ to laugh → laugh, ⑤ helping → to help → <b>③</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"She had me <span class='blank'>  ?  </span> the car.",hint:"그녀는 나에게 차를 수리하게 했다.",answer:"fix",options:["fix","to fix","fixing","fixed"],feedback:"사역동사(have)+목적어+동사원형: <b>fix</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"I heard her <span class='blank'>  ?  </span> a lullaby.",hint:"나는 그녀가 자장가를 부르는 것을 들었다.",answer:"sing",options:["sing","to sing","singing","sang"],feedback:"지각동사(heard)+목적어+동사원형: <b>sing</b>"},
+  {instruction:"다음 문장에서 틀린 부분을 바르게 고친 것을 고르세요.",sentence:"I gave to her a pretty dress.",hint:"나는 그녀에게 예쁜 드레스를 주었다.",answer:"to 삭제",options:["to 삭제","gave → give","her → she","dress → dresses"],feedback:"수여동사+간접목적어+직접목적어 어순에서 전치사 없이: <b>I gave her a pretty dress.</b>"},
+  {instruction:"다음 중 문장 형식이 나머지와 다른 것을 고르세요.",sentence:"",hint:"목적어+목적격보어가 있는 문장을 찾으세요.",answer:"③ She kept the room clean.",options:["① I sent my friend a postcard.","② He bought his sister flowers.","③ She kept the room clean.","④ My dad gave me a baseball glove."],feedback:"①②④⑤는 4형식(간+직 목적어), ③은 5형식(목적어+목적격보어 clean) → <b>③</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"My mother got <span class='blank'>  ?  </span> .",hint:"우리 어머니는 의사가 되셨다.",answer:"a doctor",options:["a doctor","to a doctor","doctor","as a doctor"],feedback:"get+주격보어(명사): <b>a doctor</b>. get은 2형식 동사로 쓰일 수 있습니다."},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"They elected <span class='blank'>  ?  </span> president.",hint:"그들은 그를 대통령으로 선출했다.",answer:"him",options:["him","he","his","himself"],feedback:"elect+목적어+목적격보어(명사): <b>him</b>(목적격)"},
+  {instruction:"다음 문장을 3형식으로 바르게 전환한 것을 고르세요.",sentence:"He sent me an invitation.",hint:"그는 나에게 초대장을 보냈다. (3형식으로)",answer:"He sent an invitation to me.",options:["He sent an invitation to me.","He sent an invitation for me.","He sent to me an invitation.","He sent me to an invitation."],feedback:"send → 3형식 전환 시 간접목적어 앞에 <b>to</b>를 씁니다."}
+];
+const IS_C=false;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById("quizCard").style.display="";document.getElementById("resultScreen").style.display="none";showQuestion();}
+function showQuestion(){const q=questions[current],total=questions.length;document.getElementById("qnum").textContent=`${current+1} / ${total}`;document.getElementById("progressBar").style.width=`${(current/total)*100}%`;document.getElementById("cardInstruction").textContent=q.instruction;if(IS_C){document.getElementById("sentenceBox").textContent=q.sentence;}else{document.getElementById("sentenceBox").innerHTML=q.sentence;}document.getElementById("hint").textContent=q.hint?"💡 "+q.hint:"";const fb=document.getElementById("feedback");fb.style.display="none";fb.className="feedback";document.getElementById("nextBtn").style.display="none";const fbS=document.getElementById("fbSentence");if(fbS)fbS.style.display="none";const grid=document.getElementById("optsGrid");grid.innerHTML="";grid.className=IS_C?"opts-col":"opts-col";shuffleNoFirstAnswer(q.options,q.answer).forEach(opt=>{const btn=document.createElement("button");btn.className="opt-btn";btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,btn);grid.appendChild(btn);});}
+function selectAnswer(selected,clickedBtn){const q=questions[current];document.querySelectorAll(".opt-btn").forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add("correct");});const fb=document.getElementById("feedback");const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect){score++;clickedBtn.classList.add("correct");fb.className="feedback correct";document.getElementById("fbTitle").textContent="✅ 정답!";}else{clickedBtn.classList.add("wrong");fb.className="feedback wrong";document.getElementById("fbTitle").textContent="❌ 오답";wrongIndexes.push(current);}const fbS=document.getElementById("fbSentence");if(fbS&&q.fbSentence){fbS.innerHTML=q.fbSentence;fbS.style.display="block";}document.getElementById("fbBody").innerHTML=q.feedback;fb.style.display="block";const nextBtn=document.getElementById("nextBtn");nextBtn.style.display="block";nextBtn.textContent=current+1<questions.length?"다음 문제 →":"결과 보기 🏁";}
+function nextQuestion(){current++;if(current<questions.length)showQuestion();else showResult();}
+function showResult(){document.getElementById("quizCard").style.display="none";const rs=document.getElementById("resultScreen");rs.style.display="block";const total=questions.length,pct=score/total;document.getElementById("resultStars").textContent=pct>=0.9?"⭐⭐⭐":pct>=0.6?"⭐⭐":"⭐";document.getElementById("resultScore").textContent=`${score} / ${total} 정답`;document.getElementById("resultSub").textContent=pct>=0.9?'완벽해요! 내신 TEST 마스터! 🏆 🎉':pct>=0.6?"잘했어요! 조금만 더 연습해봐요.":"다시 한번 도전해봐요!";document.getElementById("progressBar").style.width="100%";document.getElementById("retryWrongBtn").style.display=wrongIndexes.length>0?"block":"none";}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+function retryWrong(){if(!wrongIndexes.length)return;startQuiz(shuffle(wrongIndexes.map(i=>questions[i])));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

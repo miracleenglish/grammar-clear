@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0036T to부정사·동명사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-basic:#4A90D9;--badge-b:#5BAD6F;--badge-c:#9B6DD1;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-a{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-b{font-size:11.5px;font-weight:800;background:var(--badge-b);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-c{font-size:11.5px;font-weight:800;background:var(--badge-c);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width 0.4s ease;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .sentence-box{font-size:23px;font-family:'Nunito',sans-serif;font-weight:700;line-height:1.65;background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;color:var(--green-dark);}
+  .sentence-box .blank{display:inline-block;border-bottom:3px solid var(--green);min-width:100px;text-align:center;color:var(--green);font-weight:800;}
+  .sentence-box .hl{text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:5px;text-decoration-color:var(--green-dark);}
+  .hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:18px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:14px 8px;border-radius:14px;border:2.5px solid #b8dece;background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;text-align:center;line-height:1.3;}
+  .opts-col .opt-btn{font-size:17px;padding:13px 14px;text-align:left;}
+  .opt-btn:hover:not(:disabled){background:var(--bg);border-color:var(--mint);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .fb-sentence{font-size:17px;font-family:'Nunito',sans-serif;font-weight:700;margin-bottom:6px;}
+  .fb-sentence .err{text-decoration:line-through;color:var(--coral);margin-right:4px;}
+  .fb-sentence .fix{color:#2E8064;font-weight:800;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background 0.2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:36px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:24px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all 0.2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+  .badge-type-test{font-size:11.5px;font-weight:800;background:#E8604C;color:#fff;padding:3px 10px;border-radius:999px;}
+  .sentence-box{font-size:21px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges"><span class="badge-track">기본</span><span class="badge-type-test">TEST</span></div>
+    <h1>JG1-0036T · 내신 TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {instruction:"빈칸에 들어갈 말이 바르게 짝지어진 것을 고르세요.",sentence:"ⓐ It's fun _____ window-shopping.\nⓑ The man gave up _____ mountains.\nⓒ _____ fruit is good for your health.",hint:"",answer:"to go / climbing / Eating",options:["to go / climbing / Eating","go / climbing / To eat","to go / to climb / Eating","going / climbing / To eat"],feedback:"It's fun <b>to go</b> / give up+동명사: <b>climbing</b> / 주어 자리 동명사: <b>Eating</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"She kept <span class='blank'>  ?  </span> on the stage.",hint:"그녀는 무대 위에서 계속 춤을 췄다.",answer:"dancing",options:["dance","dances","to dance","dancing"],feedback:"keep+동명사: <b>dancing</b>"},
+  {instruction:"다음 중 어법상 틀린 것을 고르세요.",sentence:"",hint:"",answer:"② She kept to dance on the stage.",options:["① It was nice to meet new people.","② She kept to dance on the stage.","③ I don't have enough time to exercise.","④ Children should avoid eating fast food."],feedback:"keep+동명사: to dance → <b>dancing</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"My husband and I <span class='blank'>  ?  </span> to travel around the world.",hint:"나의 남편과 나는 세계를 여행하기를 원한다.",answer:"want",options:["want","enjoy","keep","practice"],feedback:"to부정사를 목적어로 취하는 동사: <b>want</b>"},
+  {instruction:"밑줄 친 to부정사의 용법으로 알맞은 것을 고르세요.",sentence:"I was surprised <span class='hl'>to see him</span> here.",hint:"나는 여기서 그를 보고 놀랐다.",answer:"감정의 원인을 나타내는 용법",options:["명사적 용법(주어)","명사적 용법(목적어)","형용사적 용법","감정의 원인을 나타내는 용법"],feedback:"형용사(surprised) 뒤에서 감정의 원인 → <b>감정의 원인을 나타내는 용법</b>(부사적)"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"A: Did you start your report?\nB: Not yet. I don't know <span class='blank'>  ?  </span> about.",hint:"아직이요. 뭘 써야 할지 모르겠어요.",answer:"what to write",options:["what to write","how to write","where to write","when to write"],feedback:"'무엇을 쓸지' → <b>what to write</b>"},
+  {instruction:"다음 문장에서 틀린 부분을 바르게 고친 것을 고르세요.",sentence:"I look forward to meet you next week.",hint:"다음 주에 당신을 만나기를 기대합니다.",answer:"meet → meeting",options:["meet → meeting","forward → toward","to → for","look → am looking"],feedback:"look forward to+동명사: meet → <b>meeting</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"She is rich enough <span class='blank'>  ?  </span> anything she wants.",hint:"그녀는 원하는 것은 무엇이든 살 수 있을 만큼 충분히 부유하다.",answer:"to buy",options:["to buy","buying","buy","bought"],feedback:"enough+to부정사: '~할 만큼 충분히' → <b>to buy</b>"},
+  {instruction:"밑줄 친 부분의 역할이 나머지와 다른 것을 고르세요.",sentence:"",hint:"to부정사의 명사적/형용사적/부사적 용법 구별",answer:"③ He went to the cafe to meet his friend.",options:["① To be a pilot is my dream.","② She wants to become a teacher.","③ He went to the cafe to meet his friend.","④ Her goal is to study abroad."],feedback:"①②④⑤는 명사적 용법(주어·목적어·보어), ③은 목적을 나타내는 <b>부사적 용법</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"Wearing a helmet is important. Not <span class='blank'>  ?  </span> one is dangerous.",hint:"헬멧을 쓰는 것은 중요하다. 쓰지 않는 것은 위험하다.",answer:"wearing",options:["wearing","to wear","wear","wore"],feedback:"동명사의 부정: Not+v-ing → <b>Not wearing</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"She has a habit of <span class='blank'>  ?  </span> her hair during exam periods.",hint:"그녀는 시험 기간 동안 머리를 감지 않는 습관이 있다.",answer:"not washing",options:["not washing","washing not","to not wash","not to wash"],feedback:"전치사(of) 뒤에는 동명사: <b>not washing</b>. 동명사의 부정은 not을 앞에 씁니다."},
+  {instruction:"다음 ( ) 안에서 알맞은 말을 고르세요.",sentence:"ⓐ I planned (going / to go) to the library.\nⓑ He enjoyed (reading / to read) comic books.",hint:"",answer:"to go / reading",options:["to go / reading","going / to read","to go / to read","going / reading"],feedback:"plan+to부정사: <b>to go</b>, enjoy+동명사: <b>reading</b>"},
+  {instruction:"밑줄 친 to부정사의 역할을 고르세요.",sentence:"I have a lot of homework <span class='hl'>to do</span> today.",hint:"나는 오늘 해야 할 숙제가 많다.",answer:"명사를 수식하는 용법",options:["주어로 쓰인 용법","목적어로 쓰인 용법","명사를 수식하는 용법","목적을 나타내는 용법"],feedback:"to do가 앞의 명사(homework)를 꾸밈 → <b>명사를 수식하는 용법</b>(형용사적)"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"She went <span class='blank'>  ?  </span> with her mom last Sunday.",hint:"그녀는 지난 일요일에 엄마와 쇼핑하러 갔다.",answer:"shopping",options:["shop","to shop","shopping","shopped"],feedback:"go+v-ing: '~하러 가다' → go <b>shopping</b>"},
+  {instruction:"다음 중 어법상 올바른 것을 고르세요.",sentence:"",hint:"",answer:"④ I look forward to seeing you soon.",options:["① She wants going to Paris.","② He finished to write the report.","③ It is easy learn English.","④ I look forward to seeing you soon."],feedback:"① wants+to go, ② finished+writing, ③ easy+to learn, ⑤ avoided+answering → <b>④</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"It is impossible <span class='blank'>  ?  </span> everything in one day.",hint:"하루 만에 모든 것을 배우는 것은 불가능하다.",answer:"to learn",options:["to learn","learning","learn","learned"],feedback:"It is+형용사+to부정사 구문: <b>to learn</b>"},
+  {instruction:"다음 문장에서 틀린 부분을 바르게 고친 것을 고르세요.",sentence:"She has nothing eating.",hint:"그녀는 먹을 것이 없다.",answer:"eating → to eat",options:["eating → to eat","nothing → not","has → have","She → Her"],feedback:"-thing을 수식하는 형용사적 용법의 to부정사: eating → <b>to eat</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"My dream is <span class='blank'>  ?  </span> a famous writer.",hint:"나의 꿈은 유명한 작가가 되는 것이다.",answer:"to become",options:["to become","becoming","become","became"],feedback:"be동사 뒤 보어 자리 → to부정사(명사적): <b>to become</b>"},
+  {instruction:"빈칸에 들어갈 말이 바르게 짝지어진 것을 고르세요.",sentence:"Ella: What do you want _____ today?\nJack: I feel like _____ basketball with my friends.",hint:"오늘 뭐 하고 싶어? — 친구들이랑 농구하고 싶어.",answer:"to do / playing",options:["to do / playing","doing / to play","to do / to play","doing / playing"],feedback:"want+to부정사: <b>to do</b>, feel like+동명사: <b>playing</b>"},
+  {instruction:"다음 중 밑줄 친 to부정사의 용법이 나머지와 다른 것을 고르세요.",sentence:"",hint:"",answer:"③ She studied hard to pass the exam.",options:["① To finish the project is hard.","② I have work to finish.","③ She studied hard to pass the exam.","④ She was glad to finish it."],feedback:"①은 주어(명사적), ②는 형용사적, ③은 목적(부사적), ④는 감정원인(부사적), ⑤는 결과(부사적) → 용법이 가장 다른 것: ①(명사적) vs 나머지"}
+];
+const IS_C=false;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById("quizCard").style.display="";document.getElementById("resultScreen").style.display="none";showQuestion();}
+function showQuestion(){const q=questions[current],total=questions.length;document.getElementById("qnum").textContent=`${current+1} / ${total}`;document.getElementById("progressBar").style.width=`${(current/total)*100}%`;document.getElementById("cardInstruction").textContent=q.instruction;if(IS_C){document.getElementById("sentenceBox").textContent=q.sentence;}else{document.getElementById("sentenceBox").innerHTML=q.sentence;}document.getElementById("hint").textContent=q.hint?"💡 "+q.hint:"";const fb=document.getElementById("feedback");fb.style.display="none";fb.className="feedback";document.getElementById("nextBtn").style.display="none";const fbS=document.getElementById("fbSentence");if(fbS)fbS.style.display="none";const grid=document.getElementById("optsGrid");grid.innerHTML="";grid.className=IS_C?"opts-col":"opts-col";shuffleNoFirstAnswer(q.options,q.answer).forEach(opt=>{const btn=document.createElement("button");btn.className="opt-btn";btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,btn);grid.appendChild(btn);});}
+function selectAnswer(selected,clickedBtn){const q=questions[current];document.querySelectorAll(".opt-btn").forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add("correct");});const fb=document.getElementById("feedback");const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect){score++;clickedBtn.classList.add("correct");fb.className="feedback correct";document.getElementById("fbTitle").textContent="✅ 정답!";}else{clickedBtn.classList.add("wrong");fb.className="feedback wrong";document.getElementById("fbTitle").textContent="❌ 오답";wrongIndexes.push(current);}const fbS=document.getElementById("fbSentence");if(fbS&&q.fbSentence){fbS.innerHTML=q.fbSentence;fbS.style.display="block";}document.getElementById("fbBody").innerHTML=q.feedback;fb.style.display="block";const nextBtn=document.getElementById("nextBtn");nextBtn.style.display="block";nextBtn.textContent=current+1<questions.length?"다음 문제 →":"결과 보기 🏁";}
+function nextQuestion(){current++;if(current<questions.length)showQuestion();else showResult();}
+function showResult(){document.getElementById("quizCard").style.display="none";const rs=document.getElementById("resultScreen");rs.style.display="block";const total=questions.length,pct=score/total;document.getElementById("resultStars").textContent=pct>=0.9?"⭐⭐⭐":pct>=0.6?"⭐⭐":"⭐";document.getElementById("resultScore").textContent=`${score} / ${total} 정답`;document.getElementById("resultSub").textContent=pct>=0.9?'완벽해요! 내신 TEST 마스터! 🏆 🎉':pct>=0.6?"잘했어요! 조금만 더 연습해봐요.":"다시 한번 도전해봐요!";document.getElementById("progressBar").style.width="100%";document.getElementById("retryWrongBtn").style.display=wrongIndexes.length>0?"block":"none";}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+function retryWrong(){if(!wrongIndexes.length)return;startQuiz(shuffle(wrongIndexes.map(i=>questions[i])));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

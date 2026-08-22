@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0017 시제 문장 점검</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-basic:#4A90D9;--badge-c:#9B6DD1;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type{font-size:11.5px;font-weight:800;background:var(--badge-c);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width 0.4s ease;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .sentence-box{font-size:21px;font-family:'Nunito',sans-serif;font-weight:700;line-height:1.65;background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;color:var(--green-dark);}
+  .hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:17px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:13px 14px;border-radius:14px;border:2.5px solid #b8dece;background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;text-align:left;line-height:1.3;}
+  .opt-btn:hover:not(:disabled){background:var(--bg);border-color:var(--mint);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:6px;}
+  .fb-sentence{font-size:17px;font-family:'Nunito',sans-serif;font-weight:700;margin-bottom:6px;}
+  .fb-sentence .err{text-decoration:line-through;color:var(--coral);margin-right:4px;}
+  .fb-sentence .fix{color:#2E8064;font-weight:800;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background 0.2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:36px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:24px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all 0.2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+      <span class="badge-type">C형</span>
+    </div>
+    <h1>JG1-0017 · 문장 점검</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div class="fb-sentence" id="fbSentence"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "She study math every day.",
+    hint: "그녀는 매일 수학을 공부한다.",
+    answer: "study",
+    options: ["study", "math", "every"],
+    correction: "studies",
+    fbSentence: "She <span class='err'>study</span> <span class='fix'>studies</span> math every day.",
+    feedback: "주어가 She(3인칭 단수)이고 현재 습관이므로 study에 -es를 붙여 <b>studies</b>를 씁니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "I see a good movie last night.",
+    hint: "나는 어젯밤에 좋은 영화를 봤다.",
+    answer: "see",
+    options: ["see", "good", "night"],
+    correction: "saw",
+    fbSentence: "I <span class='err'>see</span> <span class='fix'>saw</span> a good movie last night.",
+    feedback: "last night은 과거 신호어입니다. see의 과거형은 불규칙 변화로 <b>saw</b>입니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "The train leaved the station.",
+    hint: "기차가 역에서 출발했다.",
+    answer: "leaved",
+    options: ["train", "leaved", "station"],
+    correction: "left",
+    fbSentence: "The train <span class='err'>leaved</span> <span class='fix'>left</span> the station.",
+    feedback: "leave의 과거형은 불규칙 변화로 <b>left</b>입니다. leaved는 존재하지 않는 형태입니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "She is study English now.",
+    hint: "그녀는 지금 영어를 공부하고 있다.",
+    answer: "study",
+    options: ["is", "study", "now"],
+    correction: "studying",
+    fbSentence: "She is <span class='err'>study</span> <span class='fix'>studying</span> English now.",
+    feedback: "현재진행형은 <b>be동사+v-ing</b>입니다. study → <b>studying</b>"
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "They was playing soccer then.",
+    hint: "그들은 그때 축구를 하고 있었다.",
+    answer: "was",
+    options: ["was", "playing", "then"],
+    correction: "were",
+    fbSentence: "They <span class='err'>was</span> <span class='fix'>were</span> playing soccer then.",
+    feedback: "주어가 They(복수)이고 과거진행형이므로 <b>were</b>를 씁니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "She is knowing the answer.",
+    hint: "그녀는 답을 알고 있다.",
+    answer: "knowing",
+    options: ["knowing", "answer", "the"],
+    correction: "knows",
+    fbSentence: "She <span class='err'>is knowing</span> <span class='fix'>knows</span> the answer.",
+    feedback: "know는 상태를 나타내는 동사로 진행형으로 쓰지 않습니다. 현재시제 <b>knows</b>를 씁니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "He is takeing pictures now.",
+    hint: "그는 지금 사진을 찍고 있다.",
+    answer: "takeing",
+    options: ["is", "takeing", "now"],
+    correction: "taking",
+    fbSentence: "He is <span class='err'>takeing</span> <span class='fix'>taking</span> pictures now.",
+    feedback: "take처럼 -e로 끝나는 동사의 v-ing형은 e를 없애고 -ing를 붙여 <b>taking</b>이 됩니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "I posted my picture yesterday, and she sees it now.",
+    hint: "나는 어제 사진을 올렸고, 그녀는 지금 그것을 보고 있다.",
+    answer: "sees",
+    options: ["posted", "sees", "now"],
+    correction: "is seeing",
+    fbSentence: "she <span class='err'>sees</span> <span class='fix'>is seeing</span> it now.",
+    feedback: "now(지금)는 현재진행형의 신호어입니다. she는 3인칭 단수이므로 <b>is seeing</b>을 씁니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "My sister are clapping her hands now.",
+    hint: "내 여동생은 지금 손뼉을 치고 있다.",
+    answer: "are",
+    options: ["are", "clapping", "now"],
+    correction: "is",
+    fbSentence: "My sister <span class='err'>are</span> <span class='fix'>is</span> clapping her hands now.",
+    feedback: "주어가 My sister(3인칭 단수)이므로 현재진행형에는 <b>is</b>를 씁니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "He runed in the park yesterday.",
+    hint: "그는 어제 공원에서 달렸다.",
+    answer: "runed",
+    options: ["runed", "park", "yesterday"],
+    correction: "ran",
+    fbSentence: "He <span class='err'>runed</span> <span class='fix'>ran</span> in the park yesterday.",
+    feedback: "run의 과거형은 불규칙 변화로 <b>ran</b>입니다. runed는 존재하지 않는 형태입니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "She was preparing not her lunch then.",
+    hint: "그녀는 그때 점심을 준비하고 있지 않았다.",
+    answer: "not",
+    options: ["was", "not", "then"],
+    correction: "not preparing",
+    fbSentence: "She was <span class='err'>preparing not</span> <span class='fix'>not preparing</span> her lunch then.",
+    feedback: "진행형 부정문은 <b>be동사+not+v-ing</b> 어순입니다. was not preparing이 올바른 형태입니다."
+  },
+  {
+    instruction: "문장에서 틀린 단어를 고르세요.",
+    sentence: "Two years ago, she invent a new machine.",
+    hint: "2년 전에 그녀는 새 기계를 발명했다.",
+    answer: "invent",
+    options: ["invent", "new", "machine"],
+    correction: "invented",
+    fbSentence: "Two years ago, she <span class='err'>invent</span> <span class='fix'>invented</span> a new machine.",
+    feedback: "two years ago는 과거 신호어입니다. invent의 과거형은 규칙 변화로 <b>invented</b>입니다."
+  }
+];
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById('quizCard').style.display='';document.getElementById('resultScreen').style.display='none';showQuestion();}
+function showQuestion(){const q=questions[current],total=questions.length;document.getElementById('qnum').textContent=`${current+1} / ${total}`;document.getElementById('progressBar').style.width=`${(current/total)*100}%`;document.getElementById('cardInstruction').textContent=q.instruction;document.getElementById('sentenceBox').textContent=q.sentence;document.getElementById('hint').textContent='💡 '+q.hint;const fb=document.getElementById('feedback');fb.style.display='none';fb.className='feedback';document.getElementById('nextBtn').style.display='none';const grid=document.getElementById('optsGrid');grid.innerHTML='';shuffleNoFirstAnswer(q.options,q.answer).forEach(opt=>{const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,btn);grid.appendChild(btn);});}
+function selectAnswer(selected,clickedBtn){const q=questions[current];document.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add('correct');});const fb=document.getElementById('feedback');const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect){score++;clickedBtn.classList.add('correct');fb.className='feedback correct';document.getElementById('fbTitle').textContent='✅ 정답!';}else{clickedBtn.classList.add('wrong');fb.className='feedback wrong';document.getElementById('fbTitle').textContent='❌ 오답';wrongIndexes.push(current);}document.getElementById('fbSentence').innerHTML=q.fbSentence;document.getElementById('fbBody').innerHTML=q.feedback;fb.style.display='block';const nextBtn=document.getElementById('nextBtn');nextBtn.style.display='block';nextBtn.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 🏁';}
+function nextQuestion(){current++;if(current<questions.length)showQuestion();else showResult();}
+function showResult(){document.getElementById('quizCard').style.display='none';const rs=document.getElementById('resultScreen');rs.style.display='block';const total=questions.length,pct=score/total;document.getElementById('resultStars').textContent=pct>=0.9?'⭐⭐⭐':pct>=0.6?'⭐⭐':'⭐';document.getElementById('resultScore').textContent=`${score} / ${total} 정답`;document.getElementById('resultSub').textContent=pct>=0.9?'완벽해요! 문장 점검 마스터! 🎉':pct>=0.6?'잘했어요! 조금만 더 연습해봐요.':'다시 한번 도전해봐요!';document.getElementById('progressBar').style.width='100%';document.getElementById('retryWrongBtn').style.display=wrongIndexes.length>0?'block':'none';}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+function retryWrong(){if(!wrongIndexes.length)return;startQuiz(shuffle(wrongIndexes.map(i=>questions[i])));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

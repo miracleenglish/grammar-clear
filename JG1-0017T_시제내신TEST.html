@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0017T 문장의 시제 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-basic:#4A90D9;--badge-b:#5BAD6F;--badge-c:#9B6DD1;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-a{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-b{font-size:11.5px;font-weight:800;background:var(--badge-b);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-c{font-size:11.5px;font-weight:800;background:var(--badge-c);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width 0.4s ease;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .sentence-box{font-size:23px;font-family:'Nunito',sans-serif;font-weight:700;line-height:1.65;background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;color:var(--green-dark);}
+  .sentence-box .blank{display:inline-block;border-bottom:3px solid var(--green);min-width:100px;text-align:center;color:var(--green);font-weight:800;}
+  .sentence-box .hl{text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:5px;text-decoration-color:var(--green-dark);}
+  .hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:18px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:14px 8px;border-radius:14px;border:2.5px solid #b8dece;background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;text-align:center;line-height:1.3;}
+  .opts-col .opt-btn{font-size:17px;padding:13px 14px;text-align:left;}
+  .opt-btn:hover:not(:disabled){background:var(--bg);border-color:var(--mint);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .fb-sentence{font-size:17px;font-family:'Nunito',sans-serif;font-weight:700;margin-bottom:6px;}
+  .fb-sentence .err{text-decoration:line-through;color:var(--coral);margin-right:4px;}
+  .fb-sentence .fix{color:#2E8064;font-weight:800;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background 0.2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:36px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:24px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all 0.2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+  .badge-type-test{font-size:11.5px;font-weight:800;background:#E8604C;color:#fff;padding:3px 10px;border-radius:999px;}
+  .sentence-box{font-size:21px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges"><span class="badge-track">기본</span><span class="badge-type-test">TEST</span></div>
+    <h1>JG1-0017T · 내신 TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"Water <span class='blank'>  ?  </span> at 100 degrees Celsius.",hint:"물은 섭씨 100도에서 끓는다.",answer:"boils",options:["boiled","boils","is boiling","will boil"],feedback:"불변의 사실(과학적 사실)은 항상 현재시제로 씁니다. → <b>boils</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"She <span class='blank'>  ?  </span> a new novel last month.",hint:"그녀는 지난달에 새 소설을 썼다.",answer:"wrote",options:["writes","is writing","wrote","write"],feedback:"last month(과거 신호어) → write의 과거형 <b>wrote</b>"},
+  {instruction:"다음 대화의 빈칸에 알맞은 말을 고르세요.",sentence:"A: What are you doing now?\nB: I <span class='blank'>  ?  </span> for the math test.",hint:"나는 지금 수학 시험 공부를 하고 있어.",answer:"am studying",options:["study","studied","am studying","was studying"],feedback:"now(지금) + 진행 중 → 현재진행형 <b>am studying</b>"},
+  {instruction:"밑줄 친 부분 중 어법상 틀린 것을 고르세요.",sentence:"① She is a beautiful girl.\n② You wasn't tall at that time.\n③ The weather isn't good today.\n④ My teachers are very friendly.\n⑤ They were a famous rock band.",hint:"",answer:"② You wasn't tall at that time.",options:["① She is a beautiful girl.","② You wasn't tall at that time.","③ The weather isn't good today.","④ My teachers are very friendly."],feedback:"주어 You + 과거 부정 → <b>weren't</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"My dog <span class='blank'>  ?  </span> in the yard right now.",hint:"내 개는 지금 마당에서 달리고 있다.",answer:"is running",options:["run","runs","is running","was running"],feedback:"right now(지금) → 현재진행형 <b>is running</b>. run → running(자음 겹침)"},
+  {instruction:"다음 문장에서 틀린 부분을 바르게 고친 것을 고르세요.",sentence:"She is knowing the answer.",hint:"그녀는 답을 알고 있다.",answer:"is knowing → knows",options:["is knowing → knows","knowing → known","She → Her","answer → answers"],feedback:"know는 상태동사로 진행형으로 쓰지 않습니다. → <b>knows</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"He <span class='blank'>  ?  </span> his homework two hours ago.",hint:"그는 2시간 전에 숙제를 끝냈다.",answer:"finished",options:["finishes","is finishing","was finishing","finished"],feedback:"two hours ago(과거 신호어) → <b>finished</b>"},
+  {instruction:"다음 ( ) 안에서 알맞은 말을 고르세요.",sentence:"A: (Were / Was) you and Jake at the party last night?\nB: Yes, we (were / was).",hint:"너와 Jake 어젯밤 파티에 있었니?",answer:"Were / were",options:["Were / were","Was / was","Were / was","Was / were"],feedback:"주어가 you and Jake(복수) → <b>Were</b>, we(복수) → <b>were</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"They <span class='blank'>  ?  </span> chess when I called.",hint:"내가 전화했을 때 그들은 체스를 두고 있었다.",answer:"were playing",options:["play","played","are playing","were playing"],feedback:"과거 특정 시점(when I called)에 진행 중 → 과거진행형 <b>were playing</b>"},
+  {instruction:"다음 중 어법상 올바른 것을 고르세요.",sentence:"",hint:"",answer:"③ She was preparing dinner then.",options:["① He runed in the park yesterday.","② I was study English at that time.","③ She was preparing dinner then.","④ They stoped the car suddenly."],feedback:"① runed → ran, ② was study → was studying, ④ stoped → stopped, ⑤ are went → went. <b>③</b>이 올바릅니다."},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"The Earth <span class='blank'>  ?  </span> around the Sun.",hint:"지구는 태양 주위를 돈다.",answer:"moves",options:["moved","is moving","moves","was moving"],feedback:"불변의 사실 → 현재시제 <b>moves</b>"},
+  {instruction:"우리말과 뜻이 같도록 빈칸을 채우세요.",sentence:"나는 어제 내 방을 청소했다.\n→ I <span class='blank'>  ?  </span> my room yesterday.",hint:"clean의 과거형을 쓰세요.",answer:"cleaned",options:["clean","cleans","cleaned","is cleaning"],feedback:"yesterday(과거 신호어) → clean의 규칙 과거형 <b>cleaned</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"A: What <span class='blank'>  ?  </span> you doing at 8 last night?\nB: I was watching a movie.",hint:"어젯밤 8시에 뭐 하고 있었어?",answer:"were",options:["are","is","was","were"],feedback:"과거진행형 의문문 + 주어 you → <b>were</b>"},
+  {instruction:"다음 밑줄 친 부분 중 어법상 틀린 것을 고르세요.",sentence:"① I posted my photo online yesterday.\n② She sees it now.\n③ He was reading a book then.\n④ They play soccer every weekend.\n⑤ The store opens at 9 every morning.",hint:"",answer:"② She sees it now.",options:["① I posted my photo online yesterday.","② She sees it now.","③ He was reading a book then.","④ They play soccer every weekend."],feedback:"now(지금)는 진행형 신호어입니다. → She <b>is seeing</b> it now."},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"Two years ago, she <span class='blank'>  ?  </span> a new machine.",hint:"2년 전에 그녀는 새 기계를 발명했다.",answer:"invented",options:["invent","invents","invented","is inventing"],feedback:"two years ago(과거 신호어) → <b>invented</b>"},
+  {instruction:"다음 ( ) 안에서 알맞은 말을 고르세요.",sentence:"She (studies / studied) hard last year.\nNow she (relaxes / is relaxing) at home.",hint:"그녀는 작년에 열심히 공부했다. 지금 집에서 쉬고 있다.",answer:"studied / is relaxing",options:["studies / relaxes","studied / is relaxing","studied / relaxes","studies / is relaxing"],feedback:"last year → 과거 <b>studied</b>, now+진행 → <b>is relaxing</b>"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"My sister <span class='blank'>  ?  </span> very fast. She wins every race.",hint:"내 여동생은 매우 빠르게 달린다.",answer:"runs",options:["run","ran","runs","is running"],feedback:"현재의 사실/습관 + 3인칭 단수(My sister) → <b>runs</b>"},
+  {instruction:"다음 중 어법상 틀린 것을 모두 고른 것을 고르세요.",sentence:"ⓐ I am listening to music now.\nⓑ She was not preparing not her lunch.\nⓒ He was swiming in the pool then.\nⓓ They played soccer yesterday.",hint:"",answer:"ⓑ, ⓒ",options:["ⓐ, ⓑ","ⓑ, ⓒ","ⓒ, ⓓ","ⓐ, ⓒ"],feedback:"ⓑ not이 두 번 → was not preparing, ⓒ swiming → <b>swimming</b>(m 겹침). ⓐⓓ는 올바릅니다."},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"It was really cold last winter. We <span class='blank'>  ?  </span> gloves every day.",hint:"지난 겨울은 정말 추웠다. 우리는 매일 장갑을 꼈다.",answer:"wore",options:["wear","wears","wore","is wearing"],feedback:"last winter(과거) + 과거의 반복 습관 → wear의 과거형 <b>wore</b>"},
+  {instruction:"빈칸에 들어갈 말이 바르게 짝지어진 것을 고르세요.",sentence:"She usually _____ up early, but this morning she _____ up late.",hint:"그녀는 보통 일찍 일어나지만, 오늘 아침에는 늦게 일어났다.",answer:"gets / got",options:["gets / got","get / got","gets / gets","got / got"],feedback:"현재 습관(3인칭 단수) → <b>gets</b>, this morning(과거) → <b>got</b>"}
+];
+const IS_C=false;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById("quizCard").style.display="";document.getElementById("resultScreen").style.display="none";showQuestion();}
+function showQuestion(){const q=questions[current],total=questions.length;document.getElementById("qnum").textContent=`${current+1} / ${total}`;document.getElementById("progressBar").style.width=`${(current/total)*100}%`;document.getElementById("cardInstruction").textContent=q.instruction;if(IS_C){document.getElementById("sentenceBox").textContent=q.sentence;}else{document.getElementById("sentenceBox").innerHTML=q.sentence;}document.getElementById("hint").textContent=q.hint?"💡 "+q.hint:"";const fb=document.getElementById("feedback");fb.style.display="none";fb.className="feedback";document.getElementById("nextBtn").style.display="none";const fbS=document.getElementById("fbSentence");if(fbS)fbS.style.display="none";const grid=document.getElementById("optsGrid");grid.innerHTML="";grid.className=IS_C?"opts-col":"opts-col";shuffleNoFirstAnswer(q.options,q.answer).forEach(opt=>{const btn=document.createElement("button");btn.className="opt-btn";btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,btn);grid.appendChild(btn);});}
+function selectAnswer(selected,clickedBtn){const q=questions[current];document.querySelectorAll(".opt-btn").forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add("correct");});const fb=document.getElementById("feedback");const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect){score++;clickedBtn.classList.add("correct");fb.className="feedback correct";document.getElementById("fbTitle").textContent="✅ 정답!";}else{clickedBtn.classList.add("wrong");fb.className="feedback wrong";document.getElementById("fbTitle").textContent="❌ 오답";wrongIndexes.push(current);}const fbS=document.getElementById("fbSentence");if(fbS&&q.fbSentence){fbS.innerHTML=q.fbSentence;fbS.style.display="block";}document.getElementById("fbBody").innerHTML=q.feedback;fb.style.display="block";const nextBtn=document.getElementById("nextBtn");nextBtn.style.display="block";nextBtn.textContent=current+1<questions.length?"다음 문제 →":"결과 보기 🏁";}
+function nextQuestion(){current++;if(current<questions.length)showQuestion();else showResult();}
+function showResult(){document.getElementById("quizCard").style.display="none";const rs=document.getElementById("resultScreen");rs.style.display="block";const total=questions.length,pct=score/total;document.getElementById("resultStars").textContent=pct>=0.9?"⭐⭐⭐":pct>=0.6?"⭐⭐":"⭐";document.getElementById("resultScore").textContent=`${score} / ${total} 정답`;document.getElementById("resultSub").textContent=pct>=0.9?'완벽해요! 내신 TEST 마스터! 🏆 🎉':pct>=0.6?"잘했어요! 조금만 더 연습해봐요.":"다시 한번 도전해봐요!";document.getElementById("progressBar").style.width="100%";document.getElementById("retryWrongBtn").style.display=wrongIndexes.length>0?"block":"none";}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+function retryWrong(){if(!wrongIndexes.length)return;startQuiz(shuffle(wrongIndexes.map(i=>questions[i])));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

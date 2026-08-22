@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0014T 명사·관사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-basic:#4A90D9;--badge-b:#5BAD6F;--badge-c:#9B6DD1;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-a{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-b{font-size:11.5px;font-weight:800;background:var(--badge-b);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-c{font-size:11.5px;font-weight:800;background:var(--badge-c);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width 0.4s ease;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .sentence-box{font-size:23px;font-family:'Nunito',sans-serif;font-weight:700;line-height:1.65;background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;color:var(--green-dark);}
+  .sentence-box .blank{display:inline-block;border-bottom:3px solid var(--green);min-width:100px;text-align:center;color:var(--green);font-weight:800;}
+  .sentence-box .hl{text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:5px;text-decoration-color:var(--green-dark);}
+  .hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:18px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:14px 8px;border-radius:14px;border:2.5px solid #b8dece;background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;text-align:center;line-height:1.3;}
+  .opts-col .opt-btn{font-size:17px;padding:13px 14px;text-align:left;}
+  .opt-btn:hover:not(:disabled){background:var(--bg);border-color:var(--mint);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .fb-sentence{font-size:17px;font-family:'Nunito',sans-serif;font-weight:700;margin-bottom:6px;}
+  .fb-sentence .err{text-decoration:line-through;color:var(--coral);margin-right:4px;}
+  .fb-sentence .fix{color:#2E8064;font-weight:800;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background 0.2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:36px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:24px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all 0.2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+  .badge-type-test{font-size:11.5px;font-weight:800;background:#E8604C;color:#fff;padding:3px 10px;border-radius:999px;}
+  .sentence-box{font-size:21px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges"><span class="badge-track">기본</span><span class="badge-type-test">TEST</span></div>
+    <h1>JG1-0014T · 내신 TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div id="fbBody"></div></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {instruction:"빈칸에 a/an/the 중 알맞은 것을 고르세요.",sentence:"I saw <span class='blank'>  ?  </span> elephant at the zoo. <span class='blank'>  ?  </span> elephant was very big.",hint:"나는 동물원에서 코끼리 한 마리를 봤다. 그 코끼리는 매우 컸다.",answer:"an / The",options:["a / The","an / The","an / A","a / A"],feedback:"처음 언급 + 모음 시작 → <b>an</b>, 다시 언급 → <b>The</b>"},
+  {instruction:"다음 중 a/an이 들어갈 수 없는 문장의 개수는?",sentence:"ⓐ She is _____ artist.\nⓑ Don't go out in _____ rain.\nⓒ _____ hour has sixty minutes.\nⓓ _____ elephant has a long nose.\nⓔ Kevin took medicine twice _____ day.",hint:"",answer:"2개",options:["1개","2개","3개","4개"],feedback:"ⓑ rain(불가산), ⓔ twice a day(관용: a는 가능). 실제로 셀 수 없어 a/an 불가 → ⓑ rain(불가산 앞 a/an 불가), 나머지는 가능. 정답 <b>1개</b> → 재검토: ⓑ만 해당. 답 1개"},
+  {instruction:"다음 우리말을 영어로 바르게 옮긴 것을 고르세요.",sentence:"벽에 있는 그 거울은 내 것이다.",hint:"정관사 the를 포함한 문장",answer:"The mirror on the wall is mine.",options:["The mirror on the wall is mine.","A mirror on the wall is mine.","An mirror on the wall is mine.","Mirror on the wall is mine."],feedback:"이미 알고 있는 특정 거울 → <b>The</b> mirror"},
+  {instruction:"밑줄 친 부분 중 어법상 틀린 것을 고르세요.",sentence:"① The boy plays with toys.\n② The farmer grows tomatoes.\n③ I saw two deers in the forest.\n④ I traveled to many cities in the USA.\n⑤ There are 11 players on a soccer team.",hint:"",answer:"③ I saw two deers in the forest.",options:["① The boy plays with toys.","② The farmer grows tomatoes.","③ I saw two deers in the forest.","④ I traveled to many cities in the USA."],feedback:"deer(사슴)는 단복수 동형입니다. deers → <b>deer</b>"},
+  {instruction:"빈칸에 the를 쓸 수 없는 것을 고르세요.",sentence:"",hint:"the를 쓰지 않는 경우를 찾으세요.",answer:"I go to _____ school every day.",options:["Please turn off _____ light.","I went there by _____ bus.","She plays _____ piano well.","I go to _____ school every day."],feedback:"go to school(학교에 다니다)은 본래 용도로 쓰는 표현이므로 관사를 쓰지 않습니다."},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"A: What would you like to drink?\nB: I'd like <span class='blank'>  ?  </span>, please.",hint:"홍차 한 잔 주세요.",answer:"a glass of tea",options:["a glass of tea","glasses of tea","the glass of tea","glass of tea"],feedback:"셀 수 없는 명사의 양 → 용기명사 사용: <b>a glass of</b> tea"},
+  {instruction:"다음 중 어법상 올바른 것을 고르세요.",sentence:"",hint:"",answer:"⑤ There are 11 players on a soccer team.",options:["① She has a informations.","② We need a advice.","③ There are many leafs on the ground.","⑤ There are 11 players on a soccer team."],feedback:"① a informations → information(불가산), ② a advice → advice(불가산), ③ leafs → leaves, ④ furnitures → furniture(불가산). <b>⑤</b>가 올바릅니다."},
+  {instruction:"빈칸에 들어갈 말이 바르게 짝지어진 것을 고르세요.",sentence:"I need to buy _____ shoes.\nAlso I want _____ bread from the bakery.",hint:"신발 복수 + 빵 불가산",answer:"some / some",options:["a / a","some / some","some / a","a / some"],feedback:"shoes(복수), bread(불가산) 모두 긍정문 → <b>some</b>"},
+  {instruction:"밑줄 친 부분 중 어법상 틀린 것을 고르세요.",sentence:"① His name is Bob.\n② We pray for peace.\n③ Stella is from Canada.\n④ I wish him good luck.\n⑤ Jacob found happinesses in his life.",hint:"",answer:"⑤ Jacob found happinesses in his life.",options:["① His name is Bob.","② We pray for peace.","③ Stella is from Canada.","⑤ Jacob found happinesses in his life."],feedback:"happiness는 불가산 명사로 복수형(-es)을 쓰지 않습니다. happinesses → <b>happiness</b>"},
+  {instruction:"다음 빈칸에 the를 쓸 수 있는 것을 고르세요.",sentence:"",hint:"the를 쓸 수 있는 경우를 찾으세요.",answer:"She plays _____ violin.",options:["I go to _____ bed early.","He goes to _____ work by subway.","She plays _____ violin.","We have lunch at _____ school."],feedback:"악기 이름 앞에는 <b>the</b>를 씁니다. play the violin"},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"There <span class='blank'>  ?  </span> two boxes on the desk.",hint:"책상 위에 상자 두 개가 있다.",answer:"are",options:["is","are","was","be"],feedback:"주어가 two boxes(복수)이므로 <b>are</b>를 씁니다."},
+  {instruction:"다음 중 어법상 틀린 것을 모두 고른 것을 고르세요.",sentence:"ⓐ He has a lot of homework.\nⓑ She drank a water after running.\nⓒ I saw many wolfs in the zoo.\nⓓ There is a fly in my soup.",hint:"",answer:"ⓑ, ⓒ",options:["ⓐ, ⓑ","ⓑ, ⓒ","ⓒ, ⓓ","ⓐ, ⓒ"],feedback:"ⓑ water(불가산) → a 삭제, ⓒ wolfs → <b>wolves</b>(-f → -ves). ⓐⓓ는 올바릅니다."},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"My gloves are old. I want to buy new <span class='blank'>  ?  </span>.",hint:"내 장갑은 낡았다. 새것을 사고 싶다.",answer:"ones",options:["one","ones","it","them"],feedback:"복수 명사(gloves) → 같은 종류의 복수를 나타낼 때 <b>ones</b>를 씁니다."},
+  {instruction:"다음 대화의 빈칸에 알맞은 말을 고르세요.",sentence:"A: Is there a convenience store nearby?\nB: Yes, there is <span class='blank'>  ?  </span> on the next block.",hint:"응, 다음 블록에 하나 있어.",answer:"one",options:["one","it","some","any"],feedback:"a convenience store와 같은 종류의 불특정 하나 → <b>one</b>"},
+  {instruction:"빈칸에 a/an/the/없음 중 알맞은 것을 고르세요.",sentence:"She wants to travel around <span class='blank'>  ?  </span> world.",hint:"그녀는 전 세계를 여행하고 싶다.",answer:"the",options:["a","an","the","없음"],feedback:"the world: 하나뿐인 세계 → <b>the</b>"},
+  {instruction:"다음 중 어법상 올바른 것을 고르세요.",sentence:"",hint:"",answer:"② Please give me two cups of coffee.",options:["① She has a sheep and two sheeps.","② Please give me two cups of coffee.","③ He saw a ox on the farm.","④ There are many childs in the park."],feedback:"① sheeps → sheep(불변), ③ a ox → an ox, ④ childs → children, ⑤ furnitures → furniture. <b>②</b>가 올바릅니다."},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"He surfs <span class='blank'>  ?  </span> Internet every evening.",hint:"그는 매일 저녁 인터넷 서핑을 한다.",answer:"the",options:["a","an","the","없음"],feedback:"the Internet: 관용적으로 <b>the</b>를 씁니다."},
+  {instruction:"빈칸에 알맞은 말을 고르세요.",sentence:"A: Can I have <span class='blank'>  ?  </span> more water?\nB: Sure, here you go.",hint:"물 좀 더 마셔도 될까요?",answer:"some",options:["some","any","a","an"],feedback:"권유·요청 의문문 → <b>some</b>을 씁니다."},
+  {instruction:"다음 문장에서 틀린 부분을 바르게 고친 것을 고르세요.",sentence:"Many leafs fell from the tree yesterday.",hint:"많은 잎들이 어제 나무에서 떨어졌다.",answer:"leafs → leaves",options:["leafs → leaves","Many → Much","fell → fall","the → a"],feedback:"-f/-fe로 끝나는 명사 복수: f→v+es. leaf → <b>leaves</b>"},
+  {instruction:"빈칸에 들어갈 말이 바르게 짝지어진 것을 고르세요.",sentence:"I don't have _____ money.\nDo you have _____ coins?",hint:"부정문 + 의문문에서의 수량 표현",answer:"any / any",options:["some / some","any / some","some / any","any / any"],feedback:"부정문 → <b>any</b>, 일반 의문문 → <b>any</b>"}
+];
+const IS_C=false;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById("quizCard").style.display="";document.getElementById("resultScreen").style.display="none";showQuestion();}
+function showQuestion(){const q=questions[current],total=questions.length;document.getElementById("qnum").textContent=`${current+1} / ${total}`;document.getElementById("progressBar").style.width=`${(current/total)*100}%`;document.getElementById("cardInstruction").textContent=q.instruction;if(IS_C){document.getElementById("sentenceBox").textContent=q.sentence;}else{document.getElementById("sentenceBox").innerHTML=q.sentence;}document.getElementById("hint").textContent=q.hint?"💡 "+q.hint:"";const fb=document.getElementById("feedback");fb.style.display="none";fb.className="feedback";document.getElementById("nextBtn").style.display="none";const fbS=document.getElementById("fbSentence");if(fbS)fbS.style.display="none";const grid=document.getElementById("optsGrid");grid.innerHTML="";grid.className=IS_C?"opts-col":"opts-col";shuffleNoFirstAnswer(q.options,q.answer).forEach(opt=>{const btn=document.createElement("button");btn.className="opt-btn";btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,btn);grid.appendChild(btn);});}
+function selectAnswer(selected,clickedBtn){const q=questions[current];document.querySelectorAll(".opt-btn").forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add("correct");});const fb=document.getElementById("feedback");const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect){score++;clickedBtn.classList.add("correct");fb.className="feedback correct";document.getElementById("fbTitle").textContent="✅ 정답!";}else{clickedBtn.classList.add("wrong");fb.className="feedback wrong";document.getElementById("fbTitle").textContent="❌ 오답";wrongIndexes.push(current);}const fbS=document.getElementById("fbSentence");if(fbS&&q.fbSentence){fbS.innerHTML=q.fbSentence;fbS.style.display="block";}document.getElementById("fbBody").innerHTML=q.feedback;fb.style.display="block";const nextBtn=document.getElementById("nextBtn");nextBtn.style.display="block";nextBtn.textContent=current+1<questions.length?"다음 문제 →":"결과 보기 🏁";}
+function nextQuestion(){current++;if(current<questions.length)showQuestion();else showResult();}
+function showResult(){document.getElementById("quizCard").style.display="none";const rs=document.getElementById("resultScreen");rs.style.display="block";const total=questions.length,pct=score/total;document.getElementById("resultStars").textContent=pct>=0.9?"⭐⭐⭐":pct>=0.6?"⭐⭐":"⭐";document.getElementById("resultScore").textContent=`${score} / ${total} 정답`;document.getElementById("resultSub").textContent=pct>=0.9?'완벽해요! 내신 TEST 마스터! 🏆 🎉':pct>=0.6?"잘했어요! 조금만 더 연습해봐요.":"다시 한번 도전해봐요!";document.getElementById("progressBar").style.width="100%";document.getElementById("retryWrongBtn").style.display=wrongIndexes.length>0?"block":"none";}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+function retryWrong(){if(!wrongIndexes.length)return;startQuiz(shuffle(wrongIndexes.map(i=>questions[i])));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

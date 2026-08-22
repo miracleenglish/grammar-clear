@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0039 대명사 문장 점검</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-basic:#4A90D9;--badge-b:#5BAD6F;--badge-c:#9B6DD1;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-a{font-size:11.5px;font-weight:800;background:var(--badge-basic);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-b{font-size:11.5px;font-weight:800;background:var(--badge-b);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-c{font-size:11.5px;font-weight:800;background:var(--badge-c);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width 0.4s ease;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .sentence-box{font-size:23px;font-family:'Nunito',sans-serif;font-weight:700;line-height:1.65;background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;color:var(--green-dark);}
+  .sentence-box .blank{display:inline-block;border-bottom:3px solid var(--green);min-width:100px;text-align:center;color:var(--green);font-weight:800;}
+  .sentence-box .hl{text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:5px;text-decoration-color:var(--green-dark);}
+  .hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:18px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:14px 8px;border-radius:14px;border:2.5px solid #b8dece;background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;text-align:center;line-height:1.3;}
+  .opts-col .opt-btn{font-size:17px;padding:13px 14px;text-align:left;}
+  .opt-btn:hover:not(:disabled){background:var(--bg);border-color:var(--mint);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .fb-sentence{font-size:17px;font-family:'Nunito',sans-serif;font-weight:700;margin-bottom:6px;}
+  .fb-sentence .err{text-decoration:line-through;color:var(--coral);margin-right:4px;}
+  .fb-sentence .fix{color:#2E8064;font-weight:800;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background 0.2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:36px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:24px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all 0.2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges"><span class="badge-track">기본</span><span class="badge-type-c">C형</span></div>
+    <h1>JG1-0039 · 문장 점검</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div class="fb-sentence" id="fbSentence" style="display:none"></div><div id="fbBody"></div></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"I did my homework by me.",hint:"나는 혼자서 숙제를 했다.",answer:"me",options:["did","by","me"],correction:"myself",fbSentence:"I did my homework by <span class='err'>me</span> <span class='fix'>myself</span>.",feedback:"'혼자서'는 by oneself입니다. 주어가 I이므로 by <b>myself</b>를 씁니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"It is warm and sunny yesterday.",hint:"어제는 따뜻하고 화창했다.",answer:"is",options:["warm","is","sunny"],correction:"was",fbSentence:"It <span class='err'>is</span> <span class='fix'>was</span> warm and sunny yesterday.",feedback:"yesterday는 과거이므로 <b>was</b>를 씁니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"I don't have some money.",hint:"나는 돈이 전혀 없다.",answer:"some",options:["don't","some","money"],correction:"any",fbSentence:"I don't have <span class='err'>some</span> <span class='fix'>any</span> money.",feedback:"부정문에서는 some 대신 <b>any</b>를 씁니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"My shoes are old. I need new it.",hint:"내 신발은 낡았다. 새것이 필요하다.",answer:"it",options:["old","new","it"],correction:"ones",fbSentence:"My shoes are old. I need new <span class='err'>it</span> <span class='fix'>ones</span>.",feedback:"복수 명사(shoes)를 대신할 때는 <b>ones</b>를 씁니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"This dress is too small. Give me a big it.",hint:"이 드레스는 너무 작다. 큰 것을 주세요.",answer:"it",options:["small","big","it"],correction:"one",fbSentence:"This dress is too small. Give me a big <span class='err'>it</span> <span class='fix'>one</span>.",feedback:"같은 종류의 불특정 단수를 가리킬 때는 <b>one</b>을 씁니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"She cut her while cooking.",hint:"그녀는 요리하다가 스스로를 베었다.",answer:"her",options:["cut","her","cooking"],correction:"herself",fbSentence:"She cut <span class='err'>her</span> <span class='fix'>herself</span> while cooking.",feedback:"주어(She)와 목적어가 같은 대상일 때는 재귀대명사 <b>herself</b>를 씁니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"Is there some milk in the fridge?",hint:"냉장고에 우유가 좀 있니? (일반 질문)",answer:"some",options:["there","some","fridge"],correction:"any",fbSentence:"Is there <span class='err'>some</span> <span class='fix'>any</span> milk in the fridge?",feedback:"일반 의문문에서는 <b>any</b>를 씁니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"The kids enjoyed theirselves at the beach.",hint:"아이들은 해변에서 즐거운 시간을 보냈다.",answer:"theirselves",options:["enjoyed","theirselves","beach"],correction:"themselves",fbSentence:"The kids enjoyed <span class='err'>theirselves</span> <span class='fix'>themselves</span> at the beach.",feedback:"themselves가 올바른 재귀대명사입니다. theirselves는 없는 형태입니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"We talked to each other by ourself.",hint:"우리는 서로 이야기했다.",answer:"ourself",options:["talked","each","ourself"],correction:"ourselves",fbSentence:"We talked to each other by <span class='err'>ourself</span> <span class='fix'>ourselves</span>.",feedback:"주어가 We이므로 재귀대명사는 <b>ourselves</b>입니다. ourself는 없는 형태입니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"He himself wrote the letter, didn't her?",hint:"그가 직접 편지를 썼어, 그렇지 않니?",answer:"her",options:["himself","wrote","her"],correction:"he",fbSentence:"He himself wrote the letter, didn't <span class='err'>her</span> <span class='fix'>he</span>?",feedback:"부가의문문의 대명사는 주어(He)와 일치해야 합니다. didn't her → <b>didn't he</b>"},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"He did it hisself.",hint:"그는 혼자서 그것을 했다.",answer:"hisself",options:["did","hisself","it"],correction:"himself",fbSentence:"He did it <span class='err'>hisself</span> <span class='fix'>himself</span>.",feedback:"hisself는 존재하지 않는 형태입니다. <b>himself</b>가 올바른 재귀대명사입니다."},
+  {instruction:"문장에서 틀린 단어를 고르세요.",sentence:"Not any of the students passed.",hint:"학생들 중 아무도 통과하지 못했다.",answer:"Not any",options:["Not any","students","passed"],correction:"None",fbSentence:"<span class='err'>Not any</span> <span class='fix'>None</span> of the students passed.",feedback:"주어 자리에서 '아무도 ~않다'는 <b>None</b>을 씁니다. Not any는 주어로 단독으로 쓰지 않습니다."}
+];
+const IS_C=true;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById("quizCard").style.display="";document.getElementById("resultScreen").style.display="none";showQuestion();}
+function showQuestion(){const q=questions[current],total=questions.length;document.getElementById("qnum").textContent=`${current+1} / ${total}`;document.getElementById("progressBar").style.width=`${(current/total)*100}%`;document.getElementById("cardInstruction").textContent=q.instruction;if(IS_C){document.getElementById("sentenceBox").textContent=q.sentence;}else{document.getElementById("sentenceBox").innerHTML=q.sentence;}document.getElementById("hint").textContent="💡 "+q.hint;const fb=document.getElementById("feedback");fb.style.display="none";fb.className="feedback";document.getElementById("nextBtn").style.display="none";const fbS=document.getElementById("fbSentence");if(fbS)fbS.style.display="none";const grid=document.getElementById("optsGrid");grid.innerHTML="";grid.className=IS_C?"opts-col":"opts-grid";shuffleNoFirstAnswer(q.options,q.answer).forEach(opt=>{const btn=document.createElement("button");btn.className="opt-btn";btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,btn);grid.appendChild(btn);});}
+function selectAnswer(selected,clickedBtn){const q=questions[current];document.querySelectorAll(".opt-btn").forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add("correct");});const fb=document.getElementById("feedback");const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect){score++;clickedBtn.classList.add("correct");fb.className="feedback correct";document.getElementById("fbTitle").textContent="✅ 정답!";}else{clickedBtn.classList.add("wrong");fb.className="feedback wrong";document.getElementById("fbTitle").textContent="❌ 오답";wrongIndexes.push(current);}const fbS=document.getElementById("fbSentence");if(fbS&&q.fbSentence){fbS.innerHTML=q.fbSentence;fbS.style.display="block";}document.getElementById("fbBody").innerHTML=q.feedback;fb.style.display="block";const nextBtn=document.getElementById("nextBtn");nextBtn.style.display="block";nextBtn.textContent=current+1<questions.length?"다음 문제 →":"결과 보기 🏁";}
+function nextQuestion(){current++;if(current<questions.length)showQuestion();else showResult();}
+function showResult(){document.getElementById("quizCard").style.display="none";const rs=document.getElementById("resultScreen");rs.style.display="block";const total=questions.length,pct=score/total;document.getElementById("resultStars").textContent=pct>=0.9?"⭐⭐⭐":pct>=0.6?"⭐⭐":"⭐";document.getElementById("resultScore").textContent=`${score} / ${total} 정답`;document.getElementById("resultSub").textContent=pct>=0.9?'완벽해요! 대명사 문장 점검 마스터! 🎉':pct>=0.6?"잘했어요! 조금만 더 연습해봐요.":"다시 한번 도전해봐요!";document.getElementById("progressBar").style.width="100%";document.getElementById("retryWrongBtn").style.display=wrongIndexes.length>0?"block":"none";}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+function retryWrong(){if(!wrongIndexes.length)return;startQuiz(shuffle(wrongIndexes.map(i=>questions[i])));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
