@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG1-0043y 형용사·부사·비교 문장점검 심화</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-basic:#4A90D9;--badge-b:#5BAD6F;--badge-c:#9B6DD1;--badge-deep:#9B6DD1;--badge-sub:#E07B39;--badge-test:#E8604C;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:var(--badge-deep);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-mix{font-size:11.5px;font-weight:800;background:var(--badge-deep);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-c{font-size:11.5px;font-weight:800;background:var(--badge-c);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type-test{font-size:11.5px;font-weight:800;background:var(--badge-test);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-sub{font-size:11.5px;font-weight:800;background:var(--badge-sub);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width 0.4s ease;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .qnum .tag{display:inline-block;margin-left:6px;font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;}
+  .qnum .tag.mc{background:var(--mint-light);color:#2E8064;}
+  .qnum .tag.sub{background:#FCEADC;color:#B8551F;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .sentence-box{font-size:23px;font-family:'Nunito',sans-serif;font-weight:700;line-height:1.65;background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:10px;color:var(--green-dark);}
+  .sentence-box .blank{display:inline-block;border-bottom:3px solid var(--green);min-width:100px;text-align:center;color:var(--green);font-weight:800;}
+  .sentence-box .hl{text-decoration:underline;text-decoration-thickness:2.5px;text-underline-offset:5px;text-decoration-color:var(--green-dark);}
+  .hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:18px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:14px 8px;border-radius:14px;border:2.5px solid #b8dece;background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;text-align:center;line-height:1.3;}
+  .opts-col .opt-btn{font-size:17px;padding:13px 14px;text-align:left;}
+  .opt-btn:hover:not(:disabled){background:var(--bg);border-color:var(--mint);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .sub-wrap{margin-bottom:14px;}
+  .sub-input{font-size:16px;padding:12px 14px;border-radius:12px;border:2px solid #b8dece;width:100%;font-family:'Nunito','Noto Sans KR',sans-serif;}
+  .sub-input:focus{outline:none;border-color:var(--badge-sub);}
+  .sub-check-btn{width:100%;margin-top:10px;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--badge-sub);color:#fff;border:none;cursor:pointer;}
+  .sub-check-btn:hover{background:#C8661F;}
+  .model-answer-box{display:none;border-radius:14px;padding:14px;margin-top:12px;background:#FCEADC;color:#7A3E12;font-size:15.5px;line-height:1.6;}
+  .model-answer-box .ma-title{font-size:15px;font-weight:800;margin-bottom:6px;color:#B8551F;}
+  .model-answer-box .ma-sentence{font-size:18px;font-family:'Nunito',sans-serif;font-weight:700;margin-bottom:8px;color:var(--green-dark);}
+  .self-check-row{display:flex;gap:8px;margin-top:12px;}
+  .self-check-row button{flex:1;padding:12px;border-radius:12px;font-size:14.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:2px solid #ddd;background:#fff;cursor:pointer;}
+  .self-check-row button.ok.active{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .self-check-row button.no.active{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .fb-sentence{font-size:17px;font-family:'Nunito',sans-serif;font-weight:700;margin-bottom:6px;}
+  .fb-sentence .err{text-decoration:line-through;color:var(--coral);margin-right:4px;}
+  .fb-sentence .fix{color:#2E8064;font-weight:800;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background 0.2s;margin-top:6px;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:36px 18px;box-shadow:0 4px 16px rgba(0,0,0,0.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-score-sub{font-size:15px;font-weight:700;color:var(--badge-sub);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:24px;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all 0.2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges"><span class="badge-track">심화</span><span class="badge-type-c">C형</span></div>
+    <h1>JG1-0043y · 형용사·부사·비교 문장점검 심화</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback"><div class="fb-title" id="fbTitle"></div><div class="fb-sentence" id="fbSentence" style="display:none;"></div><div id="fbBody"></div></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [{"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "I want something <span class='hl'>coldly</span>.", "hint": "나는 차가운 것을 원한다.", "answer": "cold", "options": ["cold", "colder", "coldness"], "feedback": "-thing을 꾸며주는 것은 부사가 아니라 형용사이므로 <b>cold</b>로 써야 합니다.", "fbSentence": "I want something <span class='err'>coldly</span> <span class='fix'>cold</span>."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "We have <span class='hl'>much</span> friends.", "hint": "우리는 친구가 많다.", "answer": "many", "options": ["many", "a little", "little"], "feedback": "friends는 셀 수 있는 명사이므로 much가 아니라 <b>many</b>로 써야 합니다.", "fbSentence": "We have <span class='err'>much</span> <span class='fix'>many</span> friends."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "There isn't <span class='hl'>many</span> water in the bottle.", "hint": "병에 물이 많지 않다.", "answer": "much", "options": ["much", "a few", "few"], "feedback": "water는 셀 수 없는 명사이므로 many가 아니라 <b>much</b>로 써야 합니다.", "fbSentence": "There isn't <span class='err'>many</span> <span class='fix'>much</span> water in the bottle."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "He answered the question <span class='hl'>kind</span>.", "hint": "그는 질문에 친절하게 답했다.", "answer": "kindly", "options": ["kindly", "kindness", "kinder"], "feedback": "동사(answered)를 꾸며주는 것은 형용사가 아니라 부사이므로 <b>kindly</b>로 써야 합니다.", "fbSentence": "He answered the question <span class='err'>kind</span> <span class='fix'>kindly</span>."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "I <span class='hl'>hard</span> know her.", "hint": "나는 그녀를 거의 알지 못한다.", "answer": "hardly", "options": ["hardly", "harder", "hardness"], "feedback": "'거의 ~않는'이라는 뜻은 hard가 아니라 <b>hardly</b>로 써야 합니다.", "fbSentence": "I <span class='err'>hard</span> <span class='fix'>hardly</span> know her."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "Tom plays <span class='hl'>sometimes</span> the guitar.", "hint": "톰은 가끔 기타를 연주한다.", "answer": "sometimes plays", "options": ["sometimes plays", "plays always sometimes", "play sometimes"], "feedback": "빈도부사는 일반동사 앞에 위치하므로 <b>sometimes plays</b>로 써야 합니다.", "fbSentence": "Tom <span class='err'>plays sometimes</span> <span class='fix'>sometimes plays</span> the guitar."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "This question is <span class='hl'>more easier</span> than that one.", "hint": "이 문제가 저것보다 더 쉽다.", "answer": "easier", "options": ["easier", "more easy", "easiest"], "feedback": "easy의 비교급은 more와 -er를 함께 쓰지 않고 <b>easier</b>로만 써야 합니다.", "fbSentence": "This question is <span class='err'>more easier</span> <span class='fix'>easier</span> than that one."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "This is the <span class='hl'>gooder</span> camera in the shop.", "hint": "이것은 가게에서 가장 좋은 카메라이다.", "answer": "best", "options": ["best", "goodest", "more good"], "feedback": "good의 불규칙 최상급은 gooder가 아니라 <b>best</b>로 써야 합니다.", "fbSentence": "This is the <span class='err'>gooder</span> <span class='fix'>best</span> camera in the shop."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "She is the <span class='hl'>most tall</span> student in the class.", "hint": "그녀는 반에서 가장 키가 크다.", "answer": "tallest", "options": ["tallest", "taller", "more tallest"], "feedback": "tall은 1음절 형용사이므로 most가 아니라 -est를 붙여 <b>tallest</b>로 써야 합니다.", "fbSentence": "She is the <span class='err'>most tall</span> <span class='fix'>tallest</span> student in the class."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "My phone is <span class='hl'>very</span> smaller than yours.", "hint": "내 전화기는 네 것보다 훨씬 작다.", "answer": "much", "options": ["much", "so", "too"], "feedback": "비교급을 강조할 때는 very가 아니라 <b>much</b>(또는 far, a lot, even)를 써야 합니다.", "fbSentence": "My phone is <span class='err'>very</span> <span class='fix'>much</span> smaller than yours."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "He greeted us <span class='hl'>friendly</span>.", "hint": "그는 우리를 상냥하게 맞이했다.(동사 수식 자리)", "answer": "in a friendly way", "options": ["in a friendly way", "friend way", "friends"], "feedback": "friendly는 형용사이므로 동사를 꾸밀 때는 그대로 부사처럼 쓸 수 없고 <b>in a friendly way</b> 같은 구를 씁니다.", "fbSentence": "He greeted us <span class='err'>friendly</span> <span class='fix'>in a friendly way</span>."}, {"instruction": "밑줄 친 부분을 바르게 고친 것을 고르세요.", "sentence": "We had <span class='hl'>a little</span> snow last winter.", "hint": "지난겨울에는 눈이 거의 오지 않았다.(부정적 의미)", "answer": "little", "options": ["little", "a few", "few"], "feedback": "'거의 없는'이라는 부정적 의미이므로 a little이 아니라 <b>little</b>로 써야 합니다.", "fbSentence": "We had <span class='err'>a little</span> <span class='fix'>little</span> snow last winter."}];
+const IS_C=true;
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffleNoFirstAnswer(arr,answer){let result;let tries=0;do{result=shuffle(arr);tries++;}while(result[0].toLowerCase()===answer.toLowerCase()&&tries<20);return result;}
+let questions=[],current=0,score=0,wrongIndexes=[];
+function startQuiz(qs){questions=qs;current=0;score=0;wrongIndexes=[];document.getElementById("quizCard").style.display="";document.getElementById("resultScreen").style.display="none";showQuestion();}
+function showQuestion(){const q=questions[current],total=questions.length;document.getElementById("qnum").textContent=`${current+1} / ${total}`;document.getElementById("progressBar").style.width=`${(current/total)*100}%`;document.getElementById("cardInstruction").textContent=q.instruction;document.getElementById("sentenceBox").innerHTML=q.sentence;document.getElementById("hint").textContent="💡 "+q.hint;const fb=document.getElementById("feedback");fb.style.display="none";fb.className="feedback";const fbS=document.getElementById("fbSentence");fbS.style.display="none";document.getElementById("nextBtn").style.display="none";const grid=document.getElementById("optsGrid");grid.innerHTML="";shuffleNoFirstAnswer(q.options,q.answer).forEach(opt=>{const btn=document.createElement("button");btn.className="opt-btn";btn.textContent=opt;btn.onclick=()=>selectAnswer(opt,btn);grid.appendChild(btn);});}
+function selectAnswer(selected,clickedBtn){const q=questions[current];document.querySelectorAll(".opt-btn").forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add("correct");});const fb=document.getElementById("feedback");const isCorrect=selected.toLowerCase()===q.answer.toLowerCase();if(isCorrect){score++;clickedBtn.classList.add("correct");fb.className="feedback correct";document.getElementById("fbTitle").textContent="✅ 정답!";}else{clickedBtn.classList.add("wrong");fb.className="feedback wrong";document.getElementById("fbTitle").textContent="❌ 오답";wrongIndexes.push(current);}if(q.fbSentence){const fbS=document.getElementById("fbSentence");fbS.innerHTML=q.fbSentence;fbS.style.display="block";}document.getElementById("fbBody").innerHTML=q.feedback;fb.style.display="block";const nextBtn=document.getElementById("nextBtn");nextBtn.style.display="block";nextBtn.textContent=current+1<questions.length?"다음 문제 →":"결과 보기 🏁";}
+function nextQuestion(){current++;if(current<questions.length)showQuestion();else showResult();}
+function showResult(){document.getElementById("quizCard").style.display="none";const rs=document.getElementById("resultScreen");rs.style.display="block";const total=questions.length,pct=score/total;document.getElementById("resultStars").textContent=pct>=0.9?"⭐⭐⭐":pct>=0.6?"⭐⭐":"⭐";document.getElementById("resultScore").textContent=`${score} / ${total} 정답`;document.getElementById("resultSub").textContent=pct>=0.9?'완벽해요! 형용사·부사·비교 문장점검 심화 마스터! 🎉':pct>=0.6?"잘했어요! 조금만 더 연습해봐요.":"다시 한번 도전해봐요!";document.getElementById("progressBar").style.width="100%";document.getElementById("retryWrongBtn").style.display=wrongIndexes.length>0?"block":"none";}
+function retryAll(){startQuiz(shuffle([...ALL_QUESTIONS]));}
+function retryWrong(){if(!wrongIndexes.length)return;startQuiz(shuffle(wrongIndexes.map(i=>questions[i])));}
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
