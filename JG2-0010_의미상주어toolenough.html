@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0010 의미상 주어, too~to, enough to</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-basic: #4A90D9;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-basic); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-basic); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 21px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.6; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 18px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+      <span class="badge-type">A형</span>
+    </div>
+    <h1>JG2-0010 · 의미상 주어, too~to, enough to</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "It is important <span class='blank'>  ?  </span> to save money.",
+    hint: "네가 돈을 저축하는 것은 중요하다.",
+    answer: "for you",
+    options: ["for you", "of you", "you", "to you"],
+    feedback: "to부정사의 의미상 주어는 일반적으로 「for+목적격」 형태로 씁니다. 정답은 <b>for you</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "It was wise <span class='blank'>  ?  </span> to ask for help.",
+    hint: "그녀가 도움을 요청한 것은 현명했다.",
+    answer: "of her",
+    options: ["of her", "for her", "her", "to her"],
+    feedback: "사람의 성격을 나타내는 형용사(wise) 뒤에서는 의미상 주어를 「of+목적격」으로 씁니다. 정답은 <b>of her</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "It was foolish <span class='blank'>  ?  </span> to trust that stranger.",
+    hint: "그가 그 낯선 사람을 믿은 것은 어리석었다.",
+    answer: "of him",
+    options: ["of him", "for him", "him", "to him"],
+    feedback: "foolish는 사람의 성격을 나타내는 형용사이므로 의미상 주어를 「of+목적격」으로 씁니다. 정답은 <b>of him</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "It takes time <span class='blank'>  ?  </span> to learn a new language.",
+    hint: "새로운 언어를 배우는 데는 시간이 걸린다.",
+    answer: "for people",
+    options: ["for people", "of people", "people", "to people"],
+    feedback: "일반적인 성질을 나타내는 형용사가 아니므로 의미상 주어를 「for+목적격」으로 씁니다. 정답은 <b>for people</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Kevin was <span class='blank'>  ?  </span> to finish the marathon.",
+    hint: "Kevin은 너무 지쳐서 마라톤을 끝낼 수 없었다.",
+    answer: "too tired",
+    options: ["too tired", "tired too", "tired enough", "so tired"],
+    feedback: "「too+형용사+to-v」는 '너무 ~해서 ~할 수 없다'라는 뜻입니다. 정답은 <b>too tired</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "This box is <span class='blank'>  ?  </span> for me to carry.",
+    hint: "이 상자는 내가 들기에 너무 무겁다.",
+    answer: "too heavy",
+    options: ["too heavy", "heavy too", "heavy enough", "enough heavy"],
+    feedback: "「too+형용사+for+의미상주어+to-v」 어순입니다. 정답은 <b>too heavy</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "He is strong <span class='blank'>  ?  </span> the sofa by himself.",
+    hint: "그는 혼자서 소파를 옮길 만큼 충분히 힘이 세다.",
+    answer: "enough to move",
+    options: ["enough to move", "to move enough", "enough moving", "move enough to"],
+    feedback: "「형용사+enough to-v」는 '~할 만큼 충분히 ~하다'라는 뜻입니다. 정답은 <b>enough to move</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The musical is simple <span class='blank'>  ?  </span> for children to understand.",
+    hint: "그 뮤지컬은 아이들이 이해할 만큼 충분히 간단하다.",
+    answer: "enough",
+    options: ["enough", "too", "so", "very"],
+    feedback: "「형용사+enough to-v」 구조입니다. simple 뒤에 <b>enough</b>가 와야 합니다."
+  },
+  {
+    instruction: "다음 문장과 뜻이 같도록 빈칸에 알맞은 것을 고르세요.",
+    sentence: "This class is too difficult for me to follow. = This class is so difficult that I <span class='blank'>  ?  </span> follow it.",
+    hint: "이 수업은 너무 어려워서 나는 따라갈 수 없다.",
+    answer: "can't",
+    options: ["can't", "can", "don't have to", "should"],
+    feedback: "「too~to」는 「so~that+주어+can't[cannot]」로 바꿀 수 있습니다. 정답은 <b>can't</b>입니다."
+  },
+  {
+    instruction: "다음 문장과 뜻이 같도록 빈칸에 알맞은 것을 고르세요.",
+    sentence: "He is strong enough to move the sofa. = He is so strong <span class='blank'>  ?  </span> he can move the sofa.",
+    hint: "그는 매우 힘이 세서 소파를 옮길 수 있다.",
+    answer: "that",
+    options: ["that", "as", "for", "to"],
+    feedback: "「형용사+enough to」는 「so+형용사+that+주어+can」으로 바꿀 수 있습니다. 정답은 <b>that</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "It was too cold for us <span class='blank'>  ?  </span> outside yesterday.",
+    hint: "어제는 우리가 밖에 나가기에 너무 추웠다.",
+    answer: "to go",
+    options: ["to go", "go", "going", "went"],
+    feedback: "「too+형용사+for+의미상주어+to-v」 구조입니다. 정답은 <b>to go</b>입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "다음 중 의미상 주어의 형태가 나머지 셋과 다른 하나는?",
+    hint: "",
+    answer: "It was kind of him to help the old man.",
+    options: ["It was kind of him to help the old man.", "It is important for us to recycle.", "It takes courage for her to speak up.", "It is necessary for them to rest."],
+    feedback: "kind는 사람의 성격을 나타내는 형용사라서 의미상 주어를 「of+목적격」으로 씁니다. 나머지 셋은 모두 「for+목적격」을 씁니다. 정답은 <b>It was kind of him to help the old man.</b>입니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence;
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.textContent = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 의미상 주어 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0025M 동사구·by 이외 전치사 수동태 암기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-mem:#E07B39;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:#4A90D9;color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type{font-size:11.5px;font-weight:800;background:var(--badge-mem);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width .4s ease;}
+  .instruction-box{background:#FDF1E7;border-left:4px solid var(--badge-mem);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#7a3800;margin-bottom:14px;font-weight:700;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .phrase-box{font-size:21px;font-family:'Nunito',sans-serif;font-weight:800;line-height:1.5;background:var(--bg);border-radius:12px;padding:16px;margin-bottom:10px;color:var(--green-dark);text-align:center;}
+  .phrase-box .blank{display:inline-block;border-bottom:3px solid var(--badge-mem);min-width:90px;text-align:center;color:var(--badge-mem);font-weight:800;}
+  .kr-hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;text-align:center;}
+  .ex-hl{color:var(--badge-mem);font-weight:800;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:17px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:13px 14px;border-radius:14px;border:2.5px solid #f0d5b8;background:#fff;color:var(--text);cursor:pointer;transition:all .15s;text-align:left;line-height:1.3;}
+  .opt-btn:hover:not(:disabled){background:#FDF1E7;border-color:var(--badge-mem);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background .2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:30px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:18px;}
+  .wrong-list{text-align:left;margin-bottom:18px;}
+  .wrong-item{background:var(--coral-light);border-left:3px solid var(--coral);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13.5px;line-height:1.7;color:#7a2418;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all .2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+      <span class="badge-type">암기형</span>
+    </div>
+    <h1>JG2-0025M · 동사구·by 이외 전치사 수동태 암기</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="instruction-box">📌 동사구 수동태와 by 대신 다른 전치사를 쓰는 수동태 표현을 암기해요!</div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 36</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="phrase-box" id="phraseBox"></div>
+    <div class="kr-hint" id="krHint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="wrong-list" id="wrongList"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 틀린 표현만 다시 풀기</button>
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+// 교재 1316그래머 2권 p.62 "by 이외의 전치사를 쓸 수 있는 수동태" 9개 기준
+const IDIOMS = [
+  { phrase: "be filled with", meaning: "~로 가득 차다", example: "The room <span class='ex-hl'>was filled with</span> flowers.", exampleKr: "그 방은 꽃으로 가득 차 있었다." },
+  { phrase: "be satisfied with", meaning: "~에 만족하다", example: "He <span class='ex-hl'>is satisfied with</span> his new job.", exampleKr: "그는 새 직장에 만족한다." },
+  { phrase: "be disappointed at[with]", meaning: "~에 실망하다", example: "She <span class='ex-hl'>was disappointed at</span> the result.", exampleKr: "그녀는 결과에 실망했다." },
+  { phrase: "be interested in", meaning: "~에 관심이 있다", example: "My son <span class='ex-hl'>is interested in</span> pop music.", exampleKr: "내 아들은 팝 음악에 관심이 있다." },
+  { phrase: "be known to", meaning: "~에게 알려지다", example: "This singer <span class='ex-hl'>is known to</span> many teenagers.", exampleKr: "이 가수는 많은 십대들에게 알려져 있다." },
+  { phrase: "be made of", meaning: "~로 만들어지다 (원형이 남음)", example: "This chair <span class='ex-hl'>is made of</span> wood.", exampleKr: "이 의자는 나무로 만들어져 있다." },
+  { phrase: "be made from", meaning: "~로 만들어지다 (원형이 변형됨)", example: "Wine <span class='ex-hl'>is made from</span> grapes.", exampleKr: "와인은 포도로 만들어진다." },
+  { phrase: "be covered with[in]", meaning: "~로 덮여 있다", example: "The mountain top <span class='ex-hl'>is covered with</span> snow.", exampleKr: "산꼭대기는 눈으로 덮여 있다." },
+  { phrase: "be pleased with", meaning: "~로 즐거워하다", example: "The teacher <span class='ex-hl'>was pleased with</span> the students' effort.", exampleKr: "선생님은 학생들의 노력에 기뻐하셨다." },
+  { phrase: "be surprised at", meaning: "~에 놀라다", example: "I <span class='ex-hl'>was surprised at</span> the news.", exampleKr: "나는 그 소식에 놀랐다." }
+];
+
+// 교재 1316그래머 2권 p.62 "여러 가지 동사구" 8개 기준 (동사구 수동태: 전체를 하나의 동사로 묶어 취급)
+const PHRASAL = [
+  { phrase: "look after", meaning: "~을 돌보다", example: "The child <span class='ex-hl'>was looked after</span> by the doctor.", exampleKr: "그 아이는 의사에게 돌봄을 받았다." },
+  { phrase: "ask for", meaning: "~을 요청하다", example: "More information <span class='ex-hl'>was asked for</span> by the client.", exampleKr: "고객에 의해 더 많은 정보가 요청되었다." },
+  { phrase: "put off", meaning: "~을 연기하다[미루다]", example: "The meeting <span class='ex-hl'>was put off</span> until next week.", exampleKr: "회의는 다음 주로 연기되었다." },
+  { phrase: "laugh at", meaning: "~을 비웃다", example: "Dylan <span class='ex-hl'>was laughed at</span> by his classmates.", exampleKr: "Dylan은 반 친구들에게 비웃음을 당했다." },
+  { phrase: "look down on", meaning: "~을 낮춰 보다[얕보다]", example: "He <span class='ex-hl'>was looked down on</span> by his coworkers.", exampleKr: "그는 동료들에게 얕보였다." },
+  { phrase: "run over", meaning: "(차가) ~을 치다", example: "The cat <span class='ex-hl'>was run over</span> by a car.", exampleKr: "그 고양이는 차에 치였다." },
+  { phrase: "bring up", meaning: "~을 키우다", example: "She <span class='ex-hl'>was brought up</span> by her grandparents.", exampleKr: "그녀는 조부모님 손에 자랐다." },
+  { phrase: "make use of", meaning: "~을 이용[활용]하다", example: "This old building <span class='ex-hl'>was made use of</span> as a museum.", exampleKr: "이 오래된 건물은 박물관으로 활용되었다." }
+];
+
+const ALL_QUESTIONS = [];
+IDIOMS.forEach(function(idm){
+  // 방향1: 뜻 → 표현 고르기
+  ALL_QUESTIONS.push({
+    direction: 'toPhrase',
+    instruction: "다음 뜻에 알맞은 수동태 표현을 고르세요.",
+    display: "'" + idm.meaning + "'",
+    krHint: "",
+    answer: idm.phrase,
+    options: shuffleFourFrom(IDIOMS.map(i => i.phrase), idm.phrase),
+    feedback: "<span class='ex-hl'>" + idm.phrase + "</span>는 '" + idm.meaning + "'라는 뜻입니다.<br>예문: " + idm.example + " (" + idm.exampleKr + ")"
+  });
+  // 방향2: 표현 → 뜻 고르기
+  ALL_QUESTIONS.push({
+    direction: 'toMeaning',
+    instruction: "다음 수동태 표현의 뜻으로 알맞은 것을 고르세요.",
+    display: idm.phrase,
+    krHint: "예문: " + idm.example,
+    answer: idm.meaning,
+    options: shuffleFourFrom(IDIOMS.map(i => i.meaning), idm.meaning),
+    feedback: "<span class='ex-hl'>" + idm.phrase + "</span>는 '" + idm.meaning + "'라는 뜻입니다.<br>예문: " + idm.example + " (" + idm.exampleKr + ")"
+  });
+});
+PHRASAL.forEach(function(idm){
+  ALL_QUESTIONS.push({
+    direction: 'toPhrase',
+    instruction: "다음 뜻에 알맞은 동사구를 고르세요. (동사구 수동태는 전체를 하나의 동사로 묶어 취급해요)",
+    display: "'" + idm.meaning + "'",
+    krHint: "",
+    answer: idm.phrase,
+    options: shuffleFourFrom(PHRASAL.map(i => i.phrase), idm.phrase),
+    feedback: "<span class='ex-hl'>" + idm.phrase + "</span>는 '" + idm.meaning + "'라는 뜻입니다.<br>예문: " + idm.example + " (" + idm.exampleKr + ")"
+  });
+  ALL_QUESTIONS.push({
+    direction: 'toMeaning',
+    instruction: "다음 동사구의 뜻으로 알맞은 것을 고르세요.",
+    display: idm.phrase,
+    krHint: "예문: " + idm.example,
+    answer: idm.meaning,
+    options: shuffleFourFrom(PHRASAL.map(i => i.meaning), idm.meaning),
+    feedback: "<span class='ex-hl'>" + idm.phrase + "</span>는 '" + idm.meaning + "'라는 뜻입니다.<br>예문: " + idm.example + " (" + idm.exampleKr + ")"
+  });
+});
+
+function shuffleFourFrom(pool, correct) {
+  const others = pool.filter(function(p){ return p !== correct; });
+  const wrong = shuffle(others).slice(0, 3);
+  return shuffle([correct].concat(wrong));
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('phraseBox').innerHTML = q.display;
+  const hintEl = document.getElementById('krHint');
+  if (q.krHint) { hintEl.style.display = ''; hintEl.innerHTML = q.krHint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 수동태 표현 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 외워봐요.' : '다시 한번 외워봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  const wl = document.getElementById('wrongList'); wl.innerHTML = '';
+  if (wrongIndexes.length) {
+    wrongIndexes.forEach(i => {
+      const q = questions[i];
+      const div = document.createElement('div');
+      div.className = 'wrong-item';
+      div.innerHTML = q.display + ' → <span class="ex-hl">' + q.answer + '</span>';
+      wl.appendChild(div);
+    });
+  }
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

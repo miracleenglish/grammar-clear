@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0032M 재귀대명사 관용표현 암기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-mem:#E07B39;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:#4A90D9;color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type{font-size:11.5px;font-weight:800;background:var(--badge-mem);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width .4s ease;}
+  .instruction-box{background:#FDF1E7;border-left:4px solid var(--badge-mem);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#7a3800;margin-bottom:14px;font-weight:700;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .phrase-box{font-size:21px;font-family:'Nunito',sans-serif;font-weight:800;line-height:1.5;background:var(--bg);border-radius:12px;padding:16px;margin-bottom:10px;color:var(--green-dark);text-align:center;}
+  .kr-hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;text-align:center;}
+  .ex-hl{color:var(--badge-mem);font-weight:800;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:17px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:13px 14px;border-radius:14px;border:2.5px solid #f0d5b8;background:#fff;color:var(--text);cursor:pointer;transition:all .15s;text-align:left;line-height:1.3;}
+  .opt-btn:hover:not(:disabled){background:#FDF1E7;border-color:var(--badge-mem);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background .2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:30px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:18px;}
+  .wrong-list{text-align:left;margin-bottom:18px;}
+  .wrong-item{background:var(--coral-light);border-left:3px solid var(--coral);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13.5px;line-height:1.7;color:#7a2418;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all .2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+      <span class="badge-type">암기형</span>
+    </div>
+    <h1>JG2-0032M · 재귀대명사 관용표현 암기</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="instruction-box">📌 재귀대명사(oneself)가 들어간 관용표현 12개를 암기해요!</div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 24</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="phrase-box" id="phraseBox"></div>
+    <div class="kr-hint" id="krHint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="wrong-list" id="wrongList"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 틀린 표현만 다시 풀기</button>
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+// 교재 1316그래머 2권 p.82 "재귀대명사를 포함한 표현" 6개 + "재귀대명사가 쓰인 관용 표현" 6개 = 12개
+const SET1 = [
+  { phrase: "seat oneself", meaning: "앉다", example: "He <span class='ex-hl'>seated himself</span> by the window.", exampleKr: "그는 창가에 앉았다." },
+  { phrase: "dress oneself", meaning: "옷을 입다", example: "The little boy can <span class='ex-hl'>dress himself</span> now.", exampleKr: "그 어린 남자아이는 이제 혼자 옷을 입을 수 있다." },
+  { phrase: "burn oneself", meaning: "데다, 화상을 입다", example: "She <span class='ex-hl'>burned herself</span> while cooking.", exampleKr: "그녀는 요리하다가 화상을 입었다." },
+  { phrase: "talk to oneself", meaning: "혼잣말하다", example: "He often <span class='ex-hl'>talks to himself</span> when he's nervous.", exampleKr: "그는 긴장하면 자주 혼잣말을 한다." },
+  { phrase: "enjoy oneself", meaning: "즐거운 시간을 보내다", example: "We <span class='ex-hl'>enjoyed ourselves</span> at the party.", exampleKr: "우리는 파티에서 즐거운 시간을 보냈다." },
+  { phrase: "excuse oneself", meaning: "변명하다, 양해를 구하고 자리를 뜨다", example: "She <span class='ex-hl'>excused herself</span> from the meeting.", exampleKr: "그녀는 양해를 구하고 회의 자리를 떴다." }
+];
+const SET2 = [
+  { phrase: "by oneself", meaning: "혼자서, 혼자 힘으로", example: "I traveled to Jeju <span class='ex-hl'>by myself</span>.", exampleKr: "나는 혼자서 제주도로 여행했다." },
+  { phrase: "for oneself", meaning: "스스로, 스스로를 위해", example: "You should decide it <span class='ex-hl'>for yourself</span>.", exampleKr: "너는 그것을 스스로 결정해야 한다." },
+  { phrase: "beside oneself", meaning: "제정신이 아닌", example: "She was <span class='ex-hl'>beside herself</span> with joy.", exampleKr: "그녀는 기쁨으로 제정신이 아니었다." },
+  { phrase: "make oneself at home", meaning: "편하게 지내다[쉬다]", example: "Please <span class='ex-hl'>make yourself at home</span>.", exampleKr: "편하게 계세요." },
+  { phrase: "help oneself (to)", meaning: "(~을) 마음껏 먹다", example: "Please <span class='ex-hl'>help yourself to</span> the snacks.", exampleKr: "간식을 마음껏 드세요." },
+  { phrase: "between ourselves", meaning: "우리끼리 얘기지만, 비밀이지만", example: "<span class='ex-hl'>Between ourselves</span>, I don't trust him.", exampleKr: "우리끼리 얘기지만, 나는 그를 믿지 않는다." }
+];
+const ALL_ITEMS = SET1.concat(SET2);
+
+const ALL_QUESTIONS = [];
+ALL_ITEMS.forEach(function(idm){
+  ALL_QUESTIONS.push({
+    direction: 'toPhrase',
+    instruction: "다음 뜻에 알맞은 재귀대명사 표현을 고르세요.",
+    display: "'" + idm.meaning + "'",
+    krHint: "",
+    answer: idm.phrase,
+    options: shuffleFourFrom(ALL_ITEMS.map(i => i.phrase), idm.phrase),
+    feedback: "<span class='ex-hl'>" + idm.phrase + "</span>는 '" + idm.meaning + "'라는 뜻입니다.<br>예문: " + idm.example + " (" + idm.exampleKr + ")"
+  });
+  ALL_QUESTIONS.push({
+    direction: 'toMeaning',
+    instruction: "다음 재귀대명사 표현의 뜻으로 알맞은 것을 고르세요.",
+    display: idm.phrase,
+    krHint: "예문: " + idm.example,
+    answer: idm.meaning,
+    options: shuffleFourFrom(ALL_ITEMS.map(i => i.meaning), idm.meaning),
+    feedback: "<span class='ex-hl'>" + idm.phrase + "</span>는 '" + idm.meaning + "'라는 뜻입니다.<br>예문: " + idm.example + " (" + idm.exampleKr + ")"
+  });
+});
+
+function shuffleFourFrom(pool, correct) {
+  const others = pool.filter(function(p){ return p !== correct; });
+  const wrong = shuffle(others).slice(0, 3);
+  return shuffle([correct].concat(wrong));
+}
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('phraseBox').innerHTML = q.display;
+  const hintEl = document.getElementById('krHint');
+  if (q.krHint) { hintEl.style.display = ''; hintEl.innerHTML = q.krHint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 재귀대명사 표현 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 외워봐요.' : '다시 한번 외워봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  const wl = document.getElementById('wrongList'); wl.innerHTML = '';
+  if (wrongIndexes.length) {
+    wrongIndexes.forEach(i => {
+      const q = questions[i];
+      const div = document.createElement('div');
+      div.className = 'wrong-item';
+      div.innerHTML = q.display + ' → <span class="ex-hl">' + q.answer + '</span>';
+      wl.appendChild(div);
+    });
+  }
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

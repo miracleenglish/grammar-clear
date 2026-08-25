@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0040 접속사 문장점검</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-basic: #4A90D9; --badge-c: #9B6DD1;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-basic); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-c); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 18px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 17px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 13px 14px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .fb-sentence { font-family: 'Nunito', sans-serif; font-weight: 700; margin-bottom: 6px; }
+  .fb-sentence del { color: #B84534; opacity: 0.7; }
+  .fb-sentence b { color: #2E8064; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+      <span class="badge-type">C형</span>
+    </div>
+    <h1>JG2-0040 · 접속사 문장점검</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div class="fb-sentence" id="fbSentence"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "I will go directly home after the movie <span class='hl'>will be</span> over.",
+    hint: "영화가 끝난 후에 나는 곧장 집에 갈 것이다.",
+    answer: "is",
+    options: ["is", "was", "would be"],
+    fbBefore: "I will go directly home after the movie <del>will be</del> over.",
+    fbAfter: "I will go directly home after the movie <b>is</b> over.",
+    feedback: "시간의 부사절에서는 미래를 나타내도 현재시제를 씁니다. will be 대신 <b>is</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "We will go to his party if he <span class='hl'>will invite</span> us.",
+    hint: "그가 우리를 초대하면, 우리는 그의 파티에 갈 것이다.",
+    answer: "invites",
+    options: ["invites", "invited", "will have invited"],
+    fbBefore: "We will go to his party if he <del>will invite</del> us.",
+    fbAfter: "We will go to his party if he <b>invites</b> us.",
+    feedback: "조건의 부사절에서는 미래 대신 현재시제를 씁니다. will invite 대신 <b>invites</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "I missed the train <span class='hl'>because</span> the heavy traffic.",
+    hint: "나는 심한 교통 체증 때문에 기차를 놓쳤다.",
+    answer: "because of",
+    options: ["because of", "since", "so"],
+    fbBefore: "I missed the train <del>because</del> the heavy traffic.",
+    fbAfter: "I missed the train <b>because of</b> the heavy traffic.",
+    feedback: "뒤에 명사구(the heavy traffic)가 오므로 because of를 씁니다. because 대신 <b>because of</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "Tom was hungry, <span class='hl'>because</span> he ate a sandwich.",
+    hint: "Tom은 배가 고파서, 샌드위치를 먹었다.",
+    answer: "so",
+    options: ["so", "since", "as"],
+    fbBefore: "Tom was hungry, <del>because</del> he ate a sandwich.",
+    fbAfter: "Tom was hungry, <b>so</b> he ate a sandwich.",
+    feedback: "결과를 나타낼 때는 so를 씁니다. because 대신 <b>so</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "The novel was <span class='hl'>such</span> impressive that I read it twice.",
+    hint: "그 소설은 매우 인상 깊어서 나는 그것을 두 번 읽었다.",
+    answer: "so",
+    options: ["so", "very", "too"],
+    fbBefore: "The novel was <del>such</del> impressive that I read it twice.",
+    fbAfter: "The novel was <b>so</b> impressive that I read it twice.",
+    feedback: "「so+형용사+that」 구조입니다. such 대신 <b>so</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "Unless I <span class='hl'>am not busy</span>, I will cook dinner for you.",
+    hint: "내가 바쁘지 않으면, 너에게 저녁을 해 줄게.",
+    answer: "am",
+    options: ["am", "will be", "was"],
+    fbBefore: "Unless I <del>am not busy</del>, I will cook dinner for you.",
+    fbAfter: "Unless I <b>am busy</b>, I will cook dinner for you.",
+    feedback: "unless는 이미 '~하지 않으면'이라는 부정의 의미를 포함하므로 not과 함께 쓰지 않습니다. am not busy 대신 <b>am busy</b>가 되어야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "If Jessica <span class='hl'>will miss</span> the last subway, she'll take a taxi.",
+    hint: "Jessica가 마지막 지하철을 놓치면, 택시를 탈 것이다.",
+    answer: "misses",
+    options: ["misses", "missed", "will have missed"],
+    fbBefore: "If Jessica <del>will miss</del> the last subway, she'll take a taxi.",
+    fbAfter: "If Jessica <b>misses</b> the last subway, she'll take a taxi.",
+    feedback: "조건의 부사절에서는 현재시제로 미래를 나타냅니다. will miss 대신 <b>misses</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "If Joe apologized, I <span class='hl'>can't</span> forgive him.",
+    hint: "Joe가 사과한다면, 나는 그를 용서할 수 있다.",
+    answer: "can",
+    options: ["can", "couldn't", "won't"],
+    fbBefore: "If Joe apologized, I <del>can't</del> forgive him.",
+    fbAfter: "If Joe apologized, I <b>can</b> forgive him.",
+    feedback: "문맥상 '용서할 수 있다'라는 긍정의 의미가 되어야 합니다. can't 대신 <b>can</b>을 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "I heard <span class='hl'>unless</span> she left the town this morning.",
+    hint: "나는 그녀가 오늘 아침 마을을 떠났다고 들었다.",
+    answer: "that",
+    options: ["that", "if", "although"],
+    fbBefore: "I heard <del>unless</del> she left the town this morning.",
+    fbAfter: "I heard <b>that</b> she left the town this morning.",
+    feedback: "동사(heard)의 목적어 역할을 하는 명사절에는 that을 씁니다. unless 대신 <b>that</b>을 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "Turn right at the corner, <span class='hl'>if</span> you'll see the gas station.",
+    hint: "모퉁이에서 우회전해라, 그러면 주유소가 보일 것이다.",
+    answer: "and",
+    options: ["and", "or", "unless"],
+    fbBefore: "Turn right at the corner, <del>if</del> you'll see the gas station.",
+    fbAfter: "Turn right at the corner, <b>and</b> you'll see the gas station.",
+    feedback: "「명령문+and」는 '~해라, 그러면 ~할 것이다'라는 뜻입니다. if 대신 <b>and</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "My grandmother could neither read <span class='hl'>or</span> write French.",
+    hint: "할머니는 프랑스어를 읽지도 쓰지도 못하셨다.",
+    answer: "nor",
+    options: ["nor", "and", "but"],
+    fbBefore: "My grandmother could neither read <del>or</del> write French.",
+    fbAfter: "My grandmother could neither read <b>nor</b> write French.",
+    feedback: "「neither A nor B」구조입니다. or 대신 <b>nor</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "The book was not only interesting <span class='hl'>and</span> also educational.",
+    hint: "그 책은 흥미로울 뿐만 아니라 교육적이기도 했다.",
+    answer: "but",
+    options: ["but", "or", "nor"],
+    fbBefore: "The book was not only interesting <del>and</del> also educational.",
+    fbAfter: "The book was not only interesting <b>but</b> also educational.",
+    feedback: "「not only A but also B」구조입니다. and 대신 <b>but</b>을 써야 합니다."
+  }
+];
+const IS_C = true;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence;
+  document.getElementById('hint').textContent = '💡 ' + q.hint;
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbSentence').innerHTML = q.fbBefore + ' → ' + q.fbAfter;
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 문장 점검 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

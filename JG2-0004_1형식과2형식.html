@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0004 1형식과 2형식</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-basic: #4A90D9;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-basic); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-basic); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 23px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 18px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+      <span class="badge-type">A형</span>
+    </div>
+    <h1>JG2-0004 · 1형식과 2형식</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The baby <span class='blank'>  ?  </span> suddenly.",
+    hint: "그 아기는 갑자기 울었다.",
+    answer: "cried",
+    options: ["cried", "cry", "crying", "cries"],
+    feedback: "1형식(주어+동사)은 별도의 보충어 없이 동사만으로 문장이 성립합니다. 과거시제 주어에 맞는 <b>cried</b>가 정답입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "My uncle <span class='blank'>  ?  </span> to Canada last year.",
+    hint: "우리 삼촌은 작년에 캐나다로 이사했다.",
+    answer: "moved",
+    options: ["moved", "moves", "is moving", "move"],
+    feedback: "1형식 문장에서 동사의 뜻을 보충해 주는 표현(to Canada)이 함께 쓰였습니다. 과거를 나타내는 last year와 어울리는 <b>moved</b>가 정답입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Nathan <span class='blank'>  ?  </span> a firefighter.",
+    hint: "Nathan은 소방관이 되었다.",
+    answer: "became",
+    options: ["became", "become", "becomes", "becoming"],
+    feedback: "2형식(주어+동사+주격보어)에서 주격보어(a firefighter)의 성질·신분을 설명해 줍니다. 과거시제 <b>became</b>이 정답입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "This blanket <span class='blank'>  ?  </span> so soft.",
+    hint: "이 담요는 아주 부드럽게 느껴진다.",
+    answer: "feels",
+    options: ["feels", "feel", "is feeling", "felt"],
+    feedback: "감각동사 feel은 「feel+형용사」로 '~하게 느껴지다'라는 뜻의 2형식 문장을 만듭니다. 주어가 3인칭 단수·현재이므로 <b>feels</b>가 정답입니다."
+  },
+  {
+    instruction: "빈칸에 들어갈 수 없는 것을 고르세요.",
+    sentence: "The soup <span class='blank'>  ?  </span> spicy.",
+    hint: "그 수프는 매운 맛이 난다. (매운 냄새가 나지 않는다에 유의)",
+    answer: "sounds",
+    options: ["tastes", "smells", "sounds", "seems"],
+    feedback: "감각동사 뒤에는 형용사가 와서 2형식 문장을 만들지만, sound(들리다)는 소리와 관련된 뜻이라 spicy(매운)와 의미가 어울리지 않습니다. 정답은 <b>sounds</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "You <span class='blank'>  ?  </span> exhausted after the trip.",
+    hint: "너는 여행 후에 지쳐 보인다.",
+    answer: "look",
+    options: ["look", "looks", "looking", "are looking"],
+    feedback: "감각동사 look은 「look+형용사」로 '~하게 보이다'라는 뜻입니다. 주어가 You이므로 <b>look</b>이 정답입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 용법이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "다음 중 밑줄 친 동사의 쓰임이 다른 하나는?",
+    hint: "",
+    answer: "The kids laughed loudly.",
+    options: ["The kids laughed loudly.", "She looked nervous.", "The milk tasted sour.", "He became a doctor."],
+    feedback: "①은 1형식(주어+동사+부사)이고, 나머지는 모두 2형식(주어+동사+주격보어)입니다. 정답은 <b>The kids laughed loudly.</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The bread in the oven <span class='blank'>  ?  </span> amazing.",
+    hint: "오븐 속의 빵에서 놀라운 냄새가 난다.",
+    answer: "smells",
+    options: ["smells", "smell", "smelling", "is smell"],
+    feedback: "감각동사 smell은 「smell+형용사」로 '~한 냄새가 나다'라는 뜻입니다. 주어가 3인칭 단수이므로 <b>smells</b>가 정답입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The stars <span class='blank'>  ?  </span> brightly in the sky.",
+    hint: "별들이 하늘에서 밝게 빛났다.",
+    answer: "shone",
+    options: ["shone", "shine", "shining", "shines"],
+    feedback: "1형식 문장으로, 동사의 뜻을 보충해 주는 부사(brightly)가 쓰였습니다. 과거시제 <b>shone</b>이 정답입니다."
+  },
+  {
+    instruction: "우리말과 뜻이 같도록 빈칸에 알맞은 것을 고르세요.",
+    sentence: "그녀는 마치 영화배우처럼 보인다. → She <span class='blank'>  ?  </span> a movie star.",
+    hint: "감각동사 뒤에 명사(구)가 오려면 like가 필요합니다.",
+    answer: "looks like",
+    options: ["looks like", "looks", "looks as", "looks for"],
+    feedback: "감각동사 뒤에 명사(구)를 쓰려면 「감각동사+like+명사(구)」 형태가 되어야 합니다. 정답은 <b>looks like</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Her voice <span class='blank'>  ?  </span> calm during the interview.",
+    hint: "그녀의 목소리는 인터뷰 동안 차분하게 들렸다.",
+    answer: "sounded",
+    options: ["sounded", "sound", "sounding", "is sounded"],
+    feedback: "감각동사 sound는 「sound+형용사」로 '~하게 들리다'라는 뜻의 2형식 문장을 만듭니다. 과거시제이므로 <b>sounded</b>가 정답입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임이 나머지 셋과 다른 것을 고르세요.",
+    sentence: "다음 중 밑줄 친 형태가 문법적으로 어색한 하나는?",
+    hint: "",
+    answer: "The cake tastes sweetly.",
+    options: ["The cake tastes sweetly.", "He looks tired.", "This towel feels rough.", "The plan sounds perfect."],
+    feedback: "감각동사 뒤에는 부사가 아니라 형용사가 와야 합니다. sweetly(부사) 대신 sweet(형용사)을 써야 하므로 어색한 문장은 <b>The cake tastes sweetly.</b>입니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence;
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.textContent = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 문장 형식 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0027 현재분사와 동명사</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-basic: #4A90D9; --badge-b: #5BAD6F;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-basic); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-b); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 21px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.6; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 17px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 13px 14px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+      <span class="badge-type">B형</span>
+    </div>
+    <h1>JG2-0027 · 현재분사와 동명사</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "We saw a <span class='hl'>flying</span> bird.",
+    hint: "우리는 날고 있는 새를 보았다.",
+    answer: "명사를 수식하는 현재분사 (능동·진행)",
+    options: ["명사를 수식하는 현재분사 (능동·진행)", "명사의 용도를 나타내는 동명사", "주어로 쓰인 동명사", "보어로 쓰인 동명사"],
+    feedback: "flying bird는 '날고 있는 새'라는 뜻으로, bird가 직접 나는 동작을 하고 있는 능동·진행을 나타내는 <b>현재분사</b>입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "There is a <span class='hl'>swimming</span> pool at his house.",
+    hint: "그의 집에는 수영장이 있다.",
+    answer: "명사의 용도를 나타내는 동명사",
+    options: ["명사의 용도를 나타내는 동명사", "명사를 수식하는 현재분사 (능동·진행)", "목적어로 쓰인 동명사", "보어로 쓰인 동명사"],
+    feedback: "swimming pool은 '수영을 위한 풀'이라는 뜻으로, 용도를 나타내는 <b>동명사</b>입니다. (pool이 직접 수영하는 것이 아님)"
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "<span class='hl'>Becoming</span> a model is her dream.",
+    hint: "모델이 되는 것이 그녀의 꿈이다.",
+    answer: "주어로 쓰인 동명사",
+    options: ["주어로 쓰인 동명사", "명사를 수식하는 현재분사 (능동·진행)", "목적어로 쓰인 동명사", "보어로 쓰인 동명사"],
+    feedback: "Becoming a model이 문장의 주어 역할을 하는 <b>동명사</b>입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "I like <span class='hl'>looking</span> in the mirror.",
+    hint: "나는 거울을 보는 것을 좋아한다.",
+    answer: "목적어로 쓰인 동명사",
+    options: ["목적어로 쓰인 동명사", "명사를 수식하는 현재분사 (능동·진행)", "주어로 쓰인 동명사", "진행형을 만드는 현재분사"],
+    feedback: "looking이 동사 like의 목적어 역할을 하는 <b>동명사</b>입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "My job was <span class='hl'>taking</span> care of the plants.",
+    hint: "내 일은 식물을 돌보는 것이었다.",
+    answer: "보어로 쓰인 동명사",
+    options: ["보어로 쓰인 동명사", "진행형을 만드는 현재분사", "명사를 수식하는 현재분사 (능동·진행)", "목적어로 쓰인 동명사"],
+    feedback: "taking이 be동사 뒤에서 주어(job)를 보충 설명하는 보어 역할을 하는 <b>동명사</b>입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "Mike is <span class='hl'>crying</span> on the phone.",
+    hint: "Mike는 전화로 울고 있다.",
+    answer: "진행형을 만드는 현재분사",
+    options: ["진행형을 만드는 현재분사", "보어로 쓰인 동명사", "명사를 수식하는 현재분사 (능동·진행)", "목적어로 쓰인 동명사"],
+    feedback: "「be동사+현재분사」로 '~하고 있는 중이다'라는 <b>진행형</b>을 만듭니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "One of my hobbies is <span class='hl'>listening</span> to rock music.",
+    hint: "내 취미 중 하나는 록 음악을 듣는 것이다.",
+    answer: "보어로 쓰인 동명사",
+    options: ["보어로 쓰인 동명사", "진행형을 만드는 현재분사", "명사를 수식하는 현재분사 (능동·진행)", "목적어로 쓰인 동명사"],
+    feedback: "listening이 주어(hobbies)를 보충 설명하는 보어 역할을 하는 <b>동명사</b>입니다. (hobby ≠ listening 상태가 아니라 hobby = listening 관계)"
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "Look at the <span class='hl'>swimming</span> man.",
+    hint: "저 수영하고 있는 남자를 봐.",
+    answer: "명사를 수식하는 현재분사 (능동·진행)",
+    options: ["명사를 수식하는 현재분사 (능동·진행)", "명사의 용도를 나타내는 동명사", "목적어로 쓰인 동명사", "보어로 쓰인 동명사"],
+    feedback: "the swimming man은 '수영하고 있는 남자'로, man이 직접 수영하는 동작을 나타내는 <b>현재분사</b>입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "The man <span class='hl'>swimming</span> with dolphins is my boyfriend.",
+    hint: "돌고래와 함께 수영하고 있는 남자는 내 남자친구다.",
+    answer: "명사를 수식하는 현재분사 (능동·진행)",
+    options: ["명사를 수식하는 현재분사 (능동·진행)", "명사의 용도를 나타내는 동명사", "주어로 쓰인 동명사", "보어로 쓰인 동명사"],
+    feedback: "수식어구(with dolphins)와 함께 명사(man)를 뒤에서 꾸며주는 <b>현재분사</b>입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "Don't forget to bring <span class='hl'>drinking</span> water when you go hiking.",
+    hint: "하이킹 갈 때 마실 물을 가져오는 것을 잊지 마.",
+    answer: "명사의 용도를 나타내는 동명사",
+    options: ["명사의 용도를 나타내는 동명사", "명사를 수식하는 현재분사 (능동·진행)", "목적어로 쓰인 동명사", "보어로 쓰인 동명사"],
+    feedback: "drinking water는 '마시기 위한 물'이라는 용도를 나타내는 <b>동명사</b>입니다. (물이 직접 마시는 것이 아님)"
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "There isn't a <span class='hl'>smoking</span> room in this building.",
+    hint: "이 건물에는 흡연실이 없다.",
+    answer: "명사의 용도를 나타내는 동명사",
+    options: ["명사의 용도를 나타내는 동명사", "명사를 수식하는 현재분사 (능동·진행)", "진행형을 만드는 현재분사", "목적어로 쓰인 동명사"],
+    feedback: "smoking room은 '흡연을 위한 방'이라는 용도를 나타내는 <b>동명사</b>입니다."
+  },
+  {
+    instruction: "밑줄 친 부분의 쓰임으로 알맞은 것을 고르세요.",
+    sentence: "Ella is <span class='hl'>drinking</span> water in the kitchen.",
+    hint: "Ella는 부엌에서 물을 마시고 있다.",
+    answer: "진행형을 만드는 현재분사",
+    options: ["진행형을 만드는 현재분사", "명사의 용도를 나타내는 동명사", "보어로 쓰인 동명사", "목적어로 쓰인 동명사"],
+    feedback: "「be동사+현재분사」로 지금 하고 있는 동작을 나타내는 <b>진행형</b>입니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence;
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.textContent = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 현재분사·동명사 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0044 관계사 문장점검</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-basic: #4A90D9; --badge-c: #9B6DD1;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-basic); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-c); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 18px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 17px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 13px 14px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .fb-sentence { font-family: 'Nunito', sans-serif; font-weight: 700; margin-bottom: 6px; }
+  .fb-sentence del { color: #B84534; opacity: 0.7; }
+  .fb-sentence b { color: #2E8064; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+      <span class="badge-type">C형</span>
+    </div>
+    <h1>JG2-0044 · 관계사 문장점검</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div class="fb-sentence" id="fbSentence"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "I know a boy <span class='hl'>whose</span> is interested in art.",
+    hint: "나는 예술에 관심이 있는 소년을 안다.",
+    answer: "who",
+    options: ["who", "whom", "which"],
+    fbBefore: "I know a boy <del>whose</del> is interested in art.",
+    fbAfter: "I know a boy <b>who</b> is interested in art.",
+    feedback: "관계사절 내에서 주어 역할을 하므로 주격 관계대명사가 필요합니다. whose 대신 <b>who</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "John met a woman <span class='hl'>who</span> job is teaching mathematics.",
+    hint: "John은 직업이 수학을 가르치는 것인 여자를 만났다.",
+    answer: "whose",
+    options: ["whose", "whom", "which"],
+    fbBefore: "John met a woman <del>who</del> job is teaching mathematics.",
+    fbAfter: "John met a woman <b>whose</b> job is teaching mathematics.",
+    feedback: "명사(job)의 소유격 역할이므로 소유격 관계대명사가 필요합니다. who 대신 <b>whose</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "The movie is about a boy and a tiger <span class='hl'>who</span> survived on the ocean.",
+    hint: "그 영화는 바다에서 살아남은 소년과 호랑이에 관한 것이다.",
+    answer: "that",
+    options: ["that", "whom", "whose"],
+    fbBefore: "The movie is about a boy and a tiger <del>who</del> survived on the ocean.",
+    fbAfter: "The movie is about a boy and a tiger <b>that</b> survived on the ocean.",
+    feedback: "선행사가 「사람+동물」일 때는 주로 that을 씁니다. who 대신 <b>that</b>을 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "Emily is the most beautiful bride <span class='hl'>who</span> I've ever seen.",
+    hint: "Emily는 내가 본 가장 아름다운 신부이다.",
+    answer: "that",
+    options: ["that", "whose", "which"],
+    fbBefore: "Emily is the most beautiful bride <del>who</del> I've ever seen.",
+    fbAfter: "Emily is the most beautiful bride <b>that</b> I've ever seen.",
+    feedback: "선행사가 최상급의 수식을 받을 때는 주로 that을 씁니다. who 대신 <b>that</b>을 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "<span class='hl'>That</span> you believe is completely wrong.",
+    hint: "네가 믿는 것은 완전히 틀렸다.",
+    answer: "What",
+    options: ["What", "Which", "Who"],
+    fbBefore: "<del>That</del> you believe is completely wrong.",
+    fbAfter: "<b>What</b> you believe is completely wrong.",
+    feedback: "선행사가 없는 명사절을 이끌 때는 what을 씁니다. That 대신 <b>What</b>을 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "Tell me <span class='hl'>that</span> you want for your birthday.",
+    hint: "네 생일에 원하는 것을 말해줘.",
+    answer: "what",
+    options: ["what", "which", "who"],
+    fbBefore: "Tell me <del>that</del> you want for your birthday.",
+    fbAfter: "Tell me <b>what</b> you want for your birthday.",
+    feedback: "'~하는 것'이라는 뜻으로 선행사를 포함하는 관계대명사는 what입니다. that 대신 <b>what</b>을 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "This is the apartment <span class='hl'>in that</span> he lives.",
+    hint: "이것은 그가 사는 아파트이다.",
+    answer: "in which",
+    options: ["in which", "that", "which in"],
+    fbBefore: "This is the apartment <del>in that</del> he lives.",
+    fbAfter: "This is the apartment <b>in which</b> he lives.",
+    feedback: "「전치사+관계대명사」일 때는 that을 쓸 수 없습니다. in that 대신 <b>in which</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "The girl <span class='hl'>who leans</span> against the wall is my sister.",
+    hint: "벽에 기대어 있는 소녀는 내 여동생이다.",
+    answer: "leaning",
+    options: ["leaning", "who lean", "leaned"],
+    fbBefore: "The girl <del>who leans</del> against the wall is my sister.",
+    fbAfter: "The girl <b>leaning</b> against the wall is my sister.",
+    feedback: "「주격 관계대명사+be동사」가 생략되면 동사는 현재분사(v-ing) 형태로 남습니다. who leans 대신 <b>leaning</b>을 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "I remember the day <span class='hl'>where</span> I first met Jake.",
+    hint: "나는 처음 Jake를 만났던 날을 기억한다.",
+    answer: "when",
+    options: ["when", "why", "how"],
+    fbBefore: "I remember the day <del>where</del> I first met Jake.",
+    fbAfter: "I remember the day <b>when</b> I first met Jake.",
+    feedback: "시간을 나타내는 명사(the day)가 선행사이므로 관계부사 when을 씁니다. where 대신 <b>when</b>을 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "Is this the town <span class='hl'>when</span> you grew up?",
+    hint: "여기가 네가 자란 마을이니?",
+    answer: "where",
+    options: ["where", "why", "how"],
+    fbBefore: "Is this the town <del>when</del> you grew up?",
+    fbAfter: "Is this the town <b>where</b> you grew up?",
+    feedback: "장소를 나타내는 명사(the town)가 선행사이므로 관계부사 where를 씁니다. when 대신 <b>where</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "I don't know the reason <span class='hl'>how</span> she shouted at me.",
+    hint: "나는 그녀가 나에게 왜 소리쳤는지 모른다.",
+    answer: "why",
+    options: ["why", "when", "where"],
+    fbBefore: "I don't know the reason <del>how</del> she shouted at me.",
+    fbAfter: "I don't know the reason <b>why</b> she shouted at me.",
+    feedback: "이유를 나타내는 명사(the reason)가 선행사이므로 관계부사 why를 씁니다. how 대신 <b>why</b>를 써야 합니다."
+  },
+  {
+    instruction: "밑줄 친 부분을 바르게 고친 것을 고르세요.",
+    sentence: "This is <span class='hl'>the way how</span> my friend trains his dog.",
+    hint: "이것이 내 친구가 개를 훈련시키는 방법이다.",
+    answer: "how",
+    options: ["how", "the way", "the way when"],
+    fbBefore: "This is <del>the way how</del> my friend trains his dog.",
+    fbAfter: "This is <b>how</b> my friend trains his dog.",
+    feedback: "선행사 the way와 관계부사 how는 함께 쓰지 않습니다. the way how 대신 <b>how</b> 하나만 써야 합니다."
+  }
+];
+const IS_C = true;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence;
+  document.getElementById('hint').textContent = '💡 ' + q.hint;
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbSentence').innerHTML = q.fbBefore + ' → ' + q.fbAfter;
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 문장 점검 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
