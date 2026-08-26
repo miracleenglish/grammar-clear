@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0045Tx 관계사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-test: #E8604C;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 19px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; display: none; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 15.5px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">내신TEST</span>
+    </div>
+    <h1>JG2-0045Tx · 관계사 내신TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"My parents know a woman <span class='blank'> ? </span> owns a bookstore.", hint:"", answer:"who", options:["who","whom","whose","which"], feedback:"선행사(a woman)가 사람이고 주어 역할이므로 who를 씁니다. 정답은 <b>who</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"George is the man <span class='blank'> ? </span> house has 10 rooms.", hint:"", answer:"whose", options:["whose","who","whom","which"], feedback:"his house를 대신하는 소유격 관계대명사입니다. 정답은 <b>whose</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"A: Would you like something to eat?\nB: The only thing <span class='blank'> ? </span> I want is water.", hint:"", answer:"that", options:["that","whose","who","whom"], feedback:"선행사에 the only가 포함되면 관계대명사 that을 주로 씁니다. 정답은 <b>that</b>입니다." },
+  { instruction:"빈칸에 들어갈 말이 순서대로 알맞게 짝지어진 것을 고르세요.", sentence:"· It's the book <span class='blank'> ? </span> Harry borrowed from the library.\n· Have you seen the guy to <span class='blank'> ? </span> I was talking?", hint:"", answer:"which - whom", options:["which - whom","whose - that","whose - whom","whom - that"], feedback:"동사의 목적어는 which, 전치사 뒤에는 whom입니다. 정답은 <b>which - whom</b>입니다." },
+  { instruction:"빈칸에 들어갈 말이 순서대로 알맞게 짝지어진 것을 고르세요.", sentence:"· The thief was seen <span class='blank'> ? </span> the necklace.\n· They were ordered <span class='blank'> ? </span> there on time.", hint:"", answer:"to take - to be", options:["to take - to be","take - being","to take - be","taking - be"], feedback:"지각동사·5형식 동사의 목적격 보어는 수동태에서 to부정사로 바뀝니다. 정답은 <b>to take - to be</b>입니다." },
+  { instruction:"빈칸에 들어갈 말이 순서대로 알맞게 짝지어진 것을 고르세요.", sentence:"· This is the very sweater <span class='blank'> ? </span> my mom made for me.\n· He is the man <span class='blank'> ? </span> car is parked over there.", hint:"", answer:"that - whose", options:["that - whose","that - which","whose - which","that - who"], feedback:"선행사에 the very가 포함되면 that을 주로 쓰고, 소유격은 whose입니다. 정답은 <b>that - whose</b>입니다." },
+  { instruction:"빈칸에 공통으로 들어갈 말을 고르세요.", sentence:"· I don't know <span class='blank'> ? </span> our homeroom teacher is.\n· The man <span class='blank'> ? </span> gave the lecture was very smart.", hint:"", answer:"who", options:["who","whom","that","which"], feedback:"첫 번째는 의문사 who('누구'), 두 번째는 주격 관계대명사 who입니다. 정답은 <b>who</b>입니다." },
+  { instruction:"빈칸에 공통으로 들어갈 말을 고르세요.", sentence:"· It is true <span class='blank'> ? </span> she is alive.\n· Arnold was the only person <span class='blank'> ? </span> called me to say \"Happy birthday!\"", hint:"", answer:"that", options:["that","who","which","whom"], feedback:"첫 번째는 종속 접속사 that, 두 번째는 선행사에 the only가 있어 관계대명사 that입니다. 정답은 <b>that</b>입니다." },
+  { instruction:"다음 우리말을 영어로 바르게 옮긴 것을 고르세요.", sentence:"나는 지붕이 파란 저 집이 좋다.", hint:"", answer:"I like that house whose roof is blue.", options:["I like that house whose roof is blue.","I like that house that roof is blue.","I like that house the roof which is blue.","I like the roof of that house is blue."], feedback:"소유격 관계대명사 whose를 사용해 표현합니다. 정답은 <b>I like that house whose roof is blue.</b>입니다." },
+  { instruction:"다음 빈칸에 that이 들어갈 수 없는 것을 고르세요.", sentence:"다음 빈칸에 that이 들어갈 수 없는 것은?", hint:"", answer:"I met the man ___ brother is a painter.", options:["I met the man ___ brother is a painter.","He didn't know the girl ___ John likes.","Where is the shop ___ sells medicine?","I forgot to bring the books ___ I bought."], feedback:"소유격 자리에는 that을 쓸 수 없습니다. whose를 써야 합니다." },
+  { instruction:"다음 문장에서 어법상 틀린 부분을 찾아 바르게 고치세요.", sentence:"Joe saw the girl <span class='hl'>who smile</span> was bright.", hint:"", answer:"whose smile", options:["whose smile","who was smile","whom smile","that smile"], feedback:"her smile을 대신하는 소유격 관계대명사가 필요합니다. 정답은 <b>whose smile</b>입니다." },
+  { instruction:"다음 문장에서 어법상 틀린 부분을 찾아 바르게 고치세요.", sentence:"The necklace that you lost <span class='hl'>are</span> under the desk.", hint:"", answer:"is", options:["is","was","were","being"], feedback:"주어(The necklace)가 단수이므로 동사도 단수형이어야 합니다. 정답은 <b>is</b>입니다." },
+  { instruction:"다음 중 who의 쓰임이 나머지 셋과 다른 것을 고르세요.", sentence:"다음 중 who의 쓰임이 나머지 셋과 다른 것은?", hint:"", answer:"Please tell me who spilled water on the floor.", options:["Please tell me who spilled water on the floor.","The man who is standing on that hill is my uncle.","She is the girl who I usually walk to school with.","The teacher praised the boy who cleaned the classroom himself."], feedback:"①의 who는 선행사가 없는 의문사이고, 나머지 셋은 모두 앞의 선행사를 수식하는 관계대명사입니다." },
+  { instruction:"다음 중 어법상 옳은 것을 고르세요.", sentence:"다음 중 어법상 옳은 것은?", hint:"", answer:"He's an actor who was in Star Wars.", options:["He's an actor who was in Star Wars.","I helped the kid that leg is broken.","Julie is the girl whom scored the final goal.","This is a hit song what he sang."], feedback:"주격 관계대명사 who가 올바르게 쓰였습니다. 나머지는 각각 whose, who, that으로 고쳐야 합니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"Show me <span class='blank'> ? </span> you bought.", hint:"", answer:"what", options:["what","that","which","who"], feedback:"선행사를 포함한 관계대명사 what은 '~하는 것'이라고 해석됩니다. 정답은 <b>what</b>입니다." },
+  { instruction:"다음 중 목적격 관계대명사를 생략할 수 없는 문장을 고르세요.", sentence:"다음 중 목적격 관계대명사를 생략할 수 없는 문장은?", hint:"", answer:"This is the house in which I grew up.", options:["This is the house in which I grew up.","I liked the notebook whose cover is red.","The train that goes to Seoul leaves in 15 minutes.","I lost the textbook that I borrowed from her."], feedback:"전치사(in)가 관계대명사 바로 앞에 오면 목적격 관계대명사를 생략할 수 없습니다. ②는 소유격이라 애초에 생략 대상이 아니고, ③④는 동사의 목적어로 쓰인 목적격 관계대명사라 생략 가능합니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"The city <span class='blank'> ? </span> I was born has a lot of trees.", hint:"", answer:"where", options:["where","when","why","how"], feedback:"선행사가 장소(the city)이므로 관계부사 where를 씁니다. 정답은 <b>where</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"Sunday is the only day <span class='blank'> ? </span> my family has dinner together.", hint:"", answer:"when", options:["when","where","why","how"], feedback:"선행사가 시간(the day)이므로 관계부사 when을 씁니다. 정답은 <b>when</b>입니다." },
+  { instruction:"다음 문장에서 어법상 틀린 것을 고르세요.", sentence:"다음 중 어법상 틀린 것은?", hint:"", answer:"I don't like the way how my sister speaks.", options:["I don't like the way how my sister speaks.","Please tell me the way you downloaded the program.","She wants to know the reason why she failed the exam.","My boyfriend doesn't know the reason for which I was nervous."], feedback:"선행사 the way와 관계부사 how는 함께 쓸 수 없습니다. 'the way'만 쓰거나 'how'만 써야 합니다." },
+  { instruction:"( ) 안의 말을 배열할 때 3번째로 오는 단어를 고르세요.", sentence:"그는 그 산을 등반한 첫 번째 사람이었다.\nHe was the (person, mountain, climbed, first, that, the).", hint:"", answer:"first", options:["first","person","that","climbed"], feedback:"완성된 문장은 'He was the first person that climbed the mountain.'입니다. 3번째 단어는 <b>first</b>입니다." }
+];
+const IS_C = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  document.getElementById('hint').style.display = 'none';
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 내신TEST 만점 도전! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

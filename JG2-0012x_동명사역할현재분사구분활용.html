@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0012x 동명사의 역할과 현재분사 구분</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-apply: #5BAD6F;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-apply); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: #4A90D9; color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 19px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 16.5px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 13px 14px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">A형</span>
+    </div>
+    <h1>JG2-0012x · 동명사의 역할과 현재분사 구분</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요. (주어 역할)",
+    sentence: "<span class='blank'>  ?  </span> money regularly is a good habit.",
+    hint: "돈을 규칙적으로 저축하는 것은 좋은 습관이다.",
+    answer: "Saving",
+    options: ["Saving", "Save", "To saving", "Saved"],
+    feedback: "동명사가 문장의 주어로 쓰여 '~하는 것은'이라고 해석됩니다. 정답은 <b>Saving</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요. (보어 역할)",
+    sentence: "Her job is <span class='blank'>  ?  </span> care of the animals.",
+    hint: "그녀의 직업은 동물들을 돌보는 것이다.",
+    answer: "taking",
+    options: ["taking", "take", "to taking", "took"],
+    feedback: "be동사 뒤에서 동명사가 보어로 쓰여 '~하는 것(이다)'라고 해석됩니다. 정답은 <b>taking</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요. (동사의 목적어)",
+    sentence: "My sister enjoys <span class='blank'>  ?  </span> traditional songs.",
+    hint: "내 여동생은 전통 노래 부르는 것을 즐긴다.",
+    answer: "singing",
+    options: ["singing", "sing", "to sing", "sang"],
+    feedback: "enjoy는 동명사를 목적어로 취하는 동사입니다. 정답은 <b>singing</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요. (전치사의 목적어)",
+    sentence: "She is interested in <span class='blank'>  ?  </span> poor people.",
+    hint: "그녀는 가난한 사람들을 돕는 것에 관심이 있다.",
+    answer: "helping",
+    options: ["helping", "help", "to help", "helped"],
+    feedback: "전치사(in) 뒤에는 동명사가 옵니다. 정답은 <b>helping</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요. (동명사의 부정)",
+    sentence: "I hate <span class='blank'>  ?  </span> on time.",
+    hint: "나는 시간을 지키지 않는 것이 싫다.",
+    answer: "not being",
+    options: ["not being", "being not", "no being", "not to being"],
+    feedback: "동명사의 부정형은 「not/never+v-ing」로 씁니다. 정답은 <b>not being</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르고, 동명사인지 현재분사인지 구별하세요.",
+    sentence: "They were <span class='blank'>  ?  </span> a break in the lounge.",
+    hint: "그들은 라운지에서 휴식을 취하고 있었다. (진행형)",
+    answer: "taking (현재분사)",
+    options: ["taking (현재분사)", "taking (동명사)", "to take (현재분사)", "took (현재분사)"],
+    feedback: "was/were 뒤에서 진행형을 만드는 v-ing는 현재분사입니다. 정답은 <b>taking (현재분사)</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르고, 동명사인지 현재분사인지 구별하세요.",
+    sentence: "He has a bad habit of <span class='blank'>  ?  </span> late at night.",
+    hint: "그는 밤늦게 먹는 나쁜 습관이 있다. (전치사의 목적어)",
+    answer: "eating (동명사)",
+    options: ["eating (동명사)", "eating (현재분사)", "eat (동명사)", "to eat (동명사)"],
+    feedback: "전치사(of)의 목적어로 쓰인 v-ing는 동명사입니다. 정답은 <b>eating (동명사)</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The girl is wearing <span class='blank'>  ?  </span> shoes.",
+    hint: "그 소녀는 춤을 위한 신발(무용화)을 신고 있다.",
+    answer: "dancing",
+    options: ["dancing", "danced", "dance", "danced to"],
+    feedback: "명사 앞에서 '~을 위한'이라는 용도를 나타내는 v-ing는 동명사입니다. 정답은 <b>dancing</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Look at the <span class='blank'>  ?  </span> girl on the stage.",
+    hint: "무대 위에서 춤추고 있는 소녀를 봐.",
+    answer: "dancing",
+    options: ["dancing", "danced", "dance", "to dance"],
+    feedback: "명사 앞에서 '~하고 있는'이라는 진행·능동을 나타내는 v-ing는 현재분사입니다. 정답은 <b>dancing</b>입니다."
+  },
+  {
+    instruction: "빈칸에 어법상 알맞은 것을 고르세요.",
+    sentence: "These are non-<span class='blank'>  ?  </span> seats.",
+    hint: "이곳은 금연석이다.",
+    answer: "smoking",
+    options: ["smoking", "smoked", "smoke", "smokes"],
+    feedback: "명사(seats)를 수식하며 '~을 위한'이라는 용도를 나타내는 동명사입니다. 정답은 <b>smoking</b>입니다."
+  },
+  {
+    instruction: "다음 문장을 우리말로 해석할 때 밑줄 친 부분에 유의하여 알맞은 것을 고르세요.",
+    sentence: "I like that <span class='hl'>swimming</span> dolphin.",
+    hint: "",
+    answer: "헤엄치고 있는 저 돌고래를 좋아한다",
+    options: ["헤엄치고 있는 저 돌고래를 좋아한다", "수영을 위한 저 돌고래를 좋아한다", "돌고래가 수영하는 것을 좋아한다", "돌고래 수영장을 좋아한다"],
+    feedback: "swimming이 dolphin을 수식하며 '헤엄치고 있는'이라는 진행·능동의 의미를 나타내는 현재분사입니다."
+  },
+  {
+    instruction: "다음 문장을 우리말로 해석할 때 밑줄 친 부분에 유의하여 알맞은 것을 고르세요.",
+    sentence: "There are many children in the <span class='hl'>swimming</span> pool.",
+    hint: "",
+    answer: "수영을 위한 수영장에 아이들이 많다",
+    options: ["수영을 위한 수영장에 아이들이 많다", "헤엄치고 있는 수영장에 아이들이 많다", "수영장이 수영하고 있다", "아이들이 수영을 가르친다"],
+    feedback: "swimming이 pool을 수식하며 '수영을 위한'이라는 용도를 나타내는 동명사입니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 동명사·현재분사 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

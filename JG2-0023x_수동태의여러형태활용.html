@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0023x 수동태의 여러 형태</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-apply: #5BAD6F;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-apply); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: #4A90D9; color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 18.5px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 16.5px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 13px 14px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">A형</span>
+    </div>
+    <h1>JG2-0023x · 수동태의 여러 형태</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "I <span class='blank'>  ?  </span> a birthday present by Tina.",
+    hint: "나는 Tina로부터 생일 선물을 받았다.",
+    answer: "was given",
+    options: ["was given", "gave", "was gave", "given"],
+    feedback: "4형식 문장의 간접목적어를 주어로 하면 「be동사+p.p.+직접목적어」가 됩니다. 정답은 <b>was given</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "A birthday present <span class='blank'>  ?  </span> me by Tina.",
+    hint: "생일 선물은 Tina에 의해 나에게 주어졌다.",
+    answer: "was given to",
+    options: ["was given to", "was given for", "given to", "was given of"],
+    feedback: "직접목적어를 주어로 하는 수동태는 간접목적어 앞에 전치사가 필요합니다. give류 동사는 to를 씁니다. 정답은 <b>was given to</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Some French toast <span class='blank'>  ?  </span> me by Celine.",
+    hint: "프렌치토스트가 Celine에 의해 나를 위해 만들어졌다.",
+    answer: "was made for",
+    options: ["was made for", "was made to", "made for", "was made of"],
+    feedback: "make류 동사는 직접목적어를 주어로 하는 수동태에서 for를 씁니다. 정답은 <b>was made for</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Our dog <span class='blank'>  ?  </span> Max by us.",
+    hint: "우리 강아지는 우리에 의해 Max라고 이름 붙여졌다.",
+    answer: "was named",
+    options: ["was named", "named", "was name", "is naming"],
+    feedback: "5형식 문장의 목적격 보어는 「be동사+p.p.」 뒤에 그대로 둡니다. 정답은 <b>was named</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "I <span class='blank'>  ?  </span> to get some rest by Ray.",
+    hint: "나는 Ray에게 좀 쉬라는 충고를 받았다.",
+    answer: "was advised",
+    options: ["was advised", "advised", "was advise", "advising"],
+    feedback: "목적격 보어가 to부정사(구)일 때도 「be동사+p.p.」 뒤에 그대로 둡니다. 정답은 <b>was advised</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Someone <span class='blank'>  ?  </span> a glass by me.",
+    hint: "누군가가 나에 의해 유리잔을 깨는 것이 목격되었다.",
+    answer: "was seen to break",
+    options: ["was seen to break", "was seen break", "saw to break", "seen to break"],
+    feedback: "지각동사의 목적격 보어로 쓰인 동사원형은 수동태에서 to부정사로 바뀝니다. 정답은 <b>was seen to break</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "I <span class='blank'>  ?  </span> the books by the teacher.",
+    hint: "나는 선생님에 의해 책을 반납하도록 되었다.",
+    answer: "was made to return",
+    options: ["was made to return", "was made return", "made to return", "was make to return"],
+    feedback: "사역동사 make의 목적격 보어로 쓰인 동사원형은 수동태에서 to부정사로 바뀝니다. 정답은 <b>was made to return</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "My nephew <span class='blank'>  ?  </span> by me for two weeks.",
+    hint: "내 조카는 2주 동안 나에 의해 보살핌을 받았다.",
+    answer: "was taken care of",
+    options: ["was taken care of", "was taken of care", "taken care of", "was take care of"],
+    feedback: "동사구를 수동태로 쓸 때는 동사구 전체를 묶어서 씁니다. 정답은 <b>was taken care of</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The cat <span class='blank'>  ?  </span> by a bus this morning.",
+    hint: "그 고양이는 오늘 아침 버스에 치였다.",
+    answer: "was run over",
+    options: ["was run over", "was over run", "run over", "was ran over"],
+    feedback: "동사구 run over(~을 치다)를 수동태로 쓸 때 전치사를 빠뜨리지 않습니다. 정답은 <b>was run over</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The game <span class='blank'>  ?  </span> because of the rain.",
+    hint: "그 경기는 우천으로 연기되었다.",
+    answer: "was put off",
+    options: ["was put off", "was put", "put off", "was off put"],
+    feedback: "동사구 put off(~을 미루다)의 수동태입니다. 정답은 <b>was put off</b>입니다."
+  },
+  {
+    instruction: "다음 문장을 수동태로 바르게 바꾼 것을 고르세요.",
+    sentence: "Steve told Jenny to go to the ice rink.",
+    hint: "",
+    answer: "Jenny was told to go to the ice rink.",
+    options: ["Jenny was told to go to the ice rink.", "Jenny was told go to the ice rink.", "Jenny was told to going to the ice rink.", "Jenny told to go to the ice rink."],
+    feedback: "5형식 문장을 수동태로 바꿀 때 목적격 보어(to go)는 그대로 둡니다. 정답은 <b>Jenny was told to go to the ice rink.</b>입니다."
+  },
+  {
+    instruction: "다음 문장에서 어법상 틀린 것을 고르세요.",
+    sentence: "다음 중 어법상 틀린 문장은?",
+    hint: "",
+    answer: "The player was laughed by the crowd.",
+    options: ["The player was laughed by the crowd.", "The music was turned down by his mother.", "I was looked down on by him.", "These dogs will be taken care of by Sarah."],
+    feedback: "laugh at은 동사구이므로 수동태에서 전치사 at을 빠뜨리면 안 됩니다. 'was laughed at'으로 고쳐야 합니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 수동태 여러 형태 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0007Tx 문장의 형태 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-test: #E8604C;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 20px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; display: none; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 18px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">내신TEST</span>
+    </div>
+    <h1>JG2-0007Tx · 문장의 형태 내신TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"My grandmother <span class='blank'> ? </span> in a quiet village.", hint:"", answer:"lives", options:["lives","is","does","has"], feedback:"「주어+동사」만으로 뜻이 완전한 1형식 문장입니다. 정답은 <b>lives</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"This soup <span class='blank'> ? </span> too salty for me.", hint:"", answer:"tastes", options:["tastes","tastes to","is tasting","tastes of"], feedback:"taste 뒤에 형용사가 바로 오면 '~한 맛이 나다'라는 뜻입니다. 정답은 <b>tastes</b>입니다." },
+  { instruction:"빈칸에 어법상 알맞은 것을 고르세요.", sentence:"His answer sounded <span class='blank'> ? </span>.", hint:"", answer:"strange", options:["strange","strangely","stranger","strangeness"], feedback:"감각동사 sound 뒤 보어 자리에는 형용사가 옵니다. 정답은 <b>strange</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"That cloud <span class='blank'> ? </span> a rabbit.", hint:"", answer:"looks like", options:["looks like","looks","sees like","watches like"], feedback:"look 뒤에 명사(구)가 오려면 like를 함께 써야 합니다. 정답은 <b>looks like</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"My brother <span class='blank'> ? </span> me his old guitar.", hint:"", answer:"gave", options:["gave","gave to","was given","giving"], feedback:"4형식 문장은 동사 뒤에 전치사 없이 바로 간접목적어가 옵니다. 정답은 <b>gave</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"He showed his painting <span class='blank'> ? </span> the visitors.", hint:"", answer:"to", options:["to","for","of","at"], feedback:"show는 4형식을 3형식으로 바꿀 때 전치사 to를 씁니다. 정답은 <b>to</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"My sister made a scarf <span class='blank'> ? </span> me.", hint:"", answer:"for", options:["for","to","of","with"], feedback:"make는 4형식을 3형식으로 바꿀 때 전치사 for를 씁니다. 정답은 <b>for</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"I asked a question <span class='blank'> ? </span> the guide.", hint:"", answer:"of", options:["of","to","for","from"], feedback:"ask는 목적어가 a favor/a question일 때 전치사 of를 씁니다. 정답은 <b>of</b>입니다." },
+  { instruction:"다음 문장을 3형식으로 바르게 바꾼 것을 고르세요.", sentence:"The clerk handed her the receipt.", hint:"", answer:"The clerk handed the receipt to her.", options:["The clerk handed the receipt to her.","The clerk handed the receipt for her.","The clerk handed the receipt of her.","The clerk handed to her the receipt."], feedback:"hand는 to를 쓰는 동사이며, 3형식은 직접목적어 뒤에 「to+간접목적어」로 씁니다. 정답은 <b>The clerk handed the receipt to her.</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"My grandpa <span class='blank'> ? </span> me his old watch last year.", hint:"", answer:"lent", options:["lent","borrowed","rented","loaned to"], feedback:"'~을 빌려주다'는 lend(과거형 lent)입니다. 정답은 <b>lent</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"The magician made the coin <span class='blank'> ? </span>.", hint:"", answer:"disappear", options:["disappear","to disappear","disappearing","disappeared"], feedback:"사역동사 make의 목적격 보어는 동사원형이 와야 합니다. 정답은 <b>disappear</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"My parents want me <span class='blank'> ? </span> abroad someday.", hint:"", answer:"to study", options:["to study","study","studying","studied"], feedback:"want는 목적격 보어로 to부정사를 취하는 동사입니다. 정답은 <b>to study</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"The teacher allowed the students <span class='blank'> ? </span> the classroom early.", hint:"", answer:"to leave", options:["to leave","leave","leaving","left"], feedback:"allow는 목적격 보어로 to부정사를 취하는 동사입니다. 정답은 <b>to leave</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"I heard someone <span class='blank'> ? </span> my name from the hallway.", hint:"", answer:"calling", options:["calling","to call","called","calls"], feedback:"지각동사 hear 뒤 목적격 보어로 진행 중인 동작을 강조할 때는 현재분사(v-ing)를 씁니다. 정답은 <b>calling</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"She got her son <span class='blank'> ? </span> his room.", hint:"", answer:"to clean", options:["to clean","clean","cleaning","cleaned"], feedback:"get은 목적격 보어로 to부정사를 씁니다. 정답은 <b>to clean</b>입니다." },
+  { instruction:"다음 중 어법상 틀린 문장을 고르세요.", sentence:"다음 중 어법상 틀린 문장은?", hint:"", answer:"My boss made me to work overtime yesterday.", options:["My boss made me to work overtime yesterday.","I helped my friend move the sofa.","She let her kids watch cartoons.","We saw the plane take off from the runway."], feedback:"사역동사 make의 목적격 보어는 동사원형이 와야 합니다. 'made me work'로 고쳐야 합니다." },
+  { instruction:"다음 문장의 형식이 나머지 셋과 다른 것을 고르세요.", sentence:"다음 중 문장의 형식이 나머지 셋과 다른 하나는?", hint:"", answer:"The baby slept quietly all night.", options:["The baby slept quietly all night.","My father bought me a new backpack.","She told him an interesting story.","The clerk showed us several options."], feedback:"①은 「주어+동사+부사구」로 이루어진 1형식 문장이고, 나머지 셋은 모두 「주어+동사+간접목적어+직접목적어」의 4형식 문장입니다."},
+  { instruction:"( ) 안의 말을 배열할 때 3번째로 오는 단어를 고르세요.", sentence:"그는 우리에게 그 소식을 전화로 알려주었다.\nHe (the news, us, told) on the phone.", hint:"", answer:"told", options:["told","us","the news","on"], feedback:"완성된 문장은 'He told us the news on the phone.'입니다. 4형식 어순(주어+동사+간접목적어+직접목적어)에 따라 3번째 단어는 <b>told</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"Could you pass the salt <span class='blank'> ? </span> me?", hint:"", answer:"to", options:["to","for","of","from"], feedback:"pass는 4형식을 3형식으로 바꿀 때 전치사 to를 쓰는 동사입니다. 정답은 <b>to</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"This blanket <span class='blank'> ? </span> warm even in winter.", hint:"", answer:"feels", options:["feels","feels like","is feeling","touches"], feedback:"feel 뒤에 형용사가 바로 오면 '~한 느낌이 들다'라는 뜻입니다. 정답은 <b>feels</b>입니다." }
+];
+const IS_C = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  document.getElementById('hint').style.display = 'none';
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 내신TEST 만점 도전! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

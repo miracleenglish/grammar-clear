@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0035x 비교구문 문장점검</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-apply: #5BAD6F; --badge-c: #9B6DD1;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-apply); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-c); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 18px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.7; background: var(--bg); border-radius: 12px; padding: 16px; margin-bottom: 16px; color: var(--green-dark); }
+  .sentence-box .err { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 4px; }
+  .sentence-box .err.reveal-wrong { color: var(--coral); text-decoration-line: line-through; }
+  .opts-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 17px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 13px 14px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">C형</span>
+    </div>
+    <h1>JG2-0035x · 비교구문 문장점검</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction">다음 문장에서 밑줄 친 부분을 어법에 맞게 고치세요.</div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  { before: "African elephants are not ", err: "heavy as", after: " blue whales.", answer: "as heavy as", options: ["as heavy as", "heavy than", "so heavy than"], feedback: "원급 비교는 「as+원급+as」입니다. <b>as heavy as</b>로 고쳐야 합니다." },
+  { before: "Ethan is ", err: "more cute than", after: " his brother.", answer: "cuter than", options: ["cuter than", "cutest than", "cute than"], feedback: "1음절 단어의 비교급은 「단어+er」입니다. <b>cuter than</b>으로 고쳐야 합니다." },
+  { before: "This theater has ", err: "more large", after: " screens than the other theater.", answer: "larger", options: ["larger", "large", "largest"], feedback: "-e로 끝나는 단어의 비교급은 「단어+r」입니다. <b>larger</b>로 고쳐야 합니다." },
+  { before: "Jessica is ", err: "smartest", after: " student in my class.", answer: "the smartest", options: ["the smartest", "smarter", "more smart"], feedback: "최상급 앞에는 the를 씁니다. <b>the smartest</b>로 고쳐야 합니다." },
+  { before: "It was ", err: "the baddest", after: " mistake of my life.", answer: "the worst", options: ["the worst", "the bad", "worse"], feedback: "bad의 최상급은 불규칙 변화로 worst입니다. <b>the worst</b>로 고쳐야 합니다." },
+  { before: "You have to go a lot ", err: "farer", after: " to get to the bus stop.", answer: "farther", options: ["farther", "far", "farthest"], feedback: "far의 비교급(거리)은 불규칙 변화로 farther입니다. <b>farther</b>로 고쳐야 합니다." },
+  { before: "This bridge is three times ", err: "long than", after: " that bridge.", answer: "longer than", options: ["longer than", "long as", "as long than"], feedback: "「배수사+비교급+than」의 어순입니다. <b>longer than</b>으로 고쳐야 합니다." },
+  { before: "My uncle is ", err: "twice older than", after: " me.", answer: "twice as old as", options: ["twice as old as", "twice more old than", "as twice old as"], feedback: "twice는 「twice+as+원급+as」로만 씁니다. <b>twice as old as</b>로 고쳐야 합니다." },
+  { before: "It's getting ", err: "dark and dark", after: " outside.", answer: "darker and darker", options: ["darker and darker", "more dark and dark", "dark and darker"], feedback: "「비교급+and+비교급」이 되어야 합니다. <b>darker and darker</b>로 고쳐야 합니다." },
+  { before: "Mozart is one of the greatest ", err: "musician", after: " in history.", answer: "musicians", options: ["musicians", "a musician", "musician's"], feedback: "「one of the+최상급」 뒤에는 복수명사가 옵니다. <b>musicians</b>로 고쳐야 합니다." },
+  { before: "This rose is more beautiful than ", err: "all other", after: " flower in this garden.", answer: "any other", options: ["any other", "the other", "another"], feedback: "「비교급+than any other+단수명사」의 형태입니다. <b>any other</b>로 고쳐야 합니다." },
+  { before: "The blood pressure of giraffes is ", err: "twice high as", after: " that of humans.", answer: "twice as high as", options: ["twice as high as", "twice higher as", "as twice high as"], feedback: "twice는 「twice+as+원급+as」로만 씁니다. <b>twice as high as</b>로 고쳐야 합니다." }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('sentenceBox').innerHTML = q.before + '<span class="err" id="errSpan">' + q.err + '</span>' + q.after;
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  document.getElementById('errSpan').classList.add('reveal-wrong');
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 비교구문 완전 정복! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

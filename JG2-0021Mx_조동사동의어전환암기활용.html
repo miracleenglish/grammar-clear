@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0021Mx 조동사 동의어 전환 암기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#EAF6F1;--green:#1E5A46;--green-dark:#16432F;--mint:#4CAF93;--mint-light:#E7F7F0;--coral:#E8604C;--coral-light:#FDEAE6;--badge-apply:#5BAD6F;--badge-mem:#E07B39;--card-bg:#fff;--text:#1a1a1a;--gray:#888;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:'Noto Sans KR','Nunito',sans-serif;color:var(--text);min-height:100vh;display:flex;justify-content:center;padding:16px;padding-bottom:40px;}
+  .app{width:100%;max-width:480px;}
+  .header{text-align:center;margin-bottom:18px;padding-top:8px;}
+  .header-badges{display:flex;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .badge-track{font-size:11.5px;font-weight:800;background:var(--badge-apply);color:#fff;padding:3px 10px;border-radius:999px;}
+  .badge-type{font-size:11.5px;font-weight:800;background:var(--badge-mem);color:#fff;padding:3px 10px;border-radius:999px;}
+  h1{font-size:19px;font-weight:800;color:var(--green);line-height:1.3;}
+  .progress-wrap{height:12px;border-radius:999px;background:#d4ece3;box-shadow:inset 0 0 0 2px #b8dece;margin:14px 0 18px;overflow:hidden;}
+  .progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green));transition:width .4s ease;}
+  .instruction-box{background:#FDF1E7;border-left:4px solid var(--badge-mem);border-radius:10px;padding:10px 14px;font-size:13.5px;color:#7a3800;margin-bottom:14px;font-weight:700;}
+  .card{background:var(--card-bg);border-radius:20px;padding:22px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);}
+  .qnum{font-size:13px;color:#999;margin-bottom:6px;}
+  .card-instruction{font-size:16.5px;color:#555;margin-bottom:12px;line-height:1.5;}
+  .phrase-box{font-size:21px;font-family:'Nunito',sans-serif;font-weight:800;line-height:1.5;background:var(--bg);border-radius:12px;padding:16px;margin-bottom:10px;color:var(--green-dark);text-align:center;}
+  .kr-hint{font-size:16px;color:#666;line-height:1.5;margin-bottom:16px;text-align:center;}
+  .ex-hl{color:var(--badge-mem);font-weight:800;}
+  .opts-col{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .opt-btn{font-size:16.5px;font-weight:700;font-family:'Nunito','Noto Sans KR',sans-serif;padding:13px 14px;border-radius:14px;border:2.5px solid #f0d5b8;background:#fff;color:var(--text);cursor:pointer;transition:all .15s;text-align:left;line-height:1.3;}
+  .opt-btn:hover:not(:disabled){background:#FDF1E7;border-color:var(--badge-mem);}
+  .opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:#2E8064;}
+  .opt-btn.wrong{background:var(--coral-light);border-color:var(--coral);color:#B84534;}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{display:none;border-radius:14px;padding:14px;margin-bottom:14px;font-size:15.5px;line-height:1.6;}
+  .feedback.correct{background:var(--mint-light);color:#2E8064;}
+  .feedback.wrong{background:var(--coral-light);color:#B84534;}
+  .fb-title{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .next-btn{width:100%;padding:14px;border-radius:14px;font-size:16px;font-weight:800;font-family:'Noto Sans KR',sans-serif;background:var(--green);color:#fff;border:none;cursor:pointer;display:none;transition:background .2s;}
+  .next-btn:hover{background:var(--green-dark);}
+  .result-screen{display:none;background:var(--card-bg);border-radius:20px;padding:30px 18px;box-shadow:0 4px 16px rgba(0,0,0,.10);text-align:center;}
+  .result-stars{font-size:44px;margin-bottom:12px;}
+  .result-score{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;}
+  .result-sub{font-size:13.5px;color:var(--gray);margin-bottom:18px;}
+  .wrong-list{text-align:left;margin-bottom:18px;}
+  .wrong-item{background:var(--coral-light);border-left:3px solid var(--coral);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13.5px;line-height:1.7;color:#7a2418;}
+  .result-btns{display:flex;flex-direction:column;gap:10px;}
+  .result-btn{padding:14px;border-radius:14px;font-size:15.5px;font-weight:800;font-family:'Noto Sans KR',sans-serif;border:none;cursor:pointer;transition:all .2s;}
+  .btn-retry{background:var(--green);color:#fff;}
+  .btn-retry:hover{background:var(--green-dark);}
+  .btn-wrong{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);}
+  .btn-wrong:hover{background:#f9d4ce;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">암기형</span>
+    </div>
+    <h1>JG2-0021Mx · 조동사 동의어 전환 암기</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="instruction-box">📌 조동사와 바꿔 쓸 수 있는 표현, 헷갈리기 쉬운 조동사 구분을 암기해요!</div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 16</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="phrase-box" id="phraseBox"></div>
+    <div class="kr-hint" id="krHint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="wrong-list" id="wrongList"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 틀린 것만 다시 풀기</button>
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+// 문마중2 p.80~87 조동사 단원 기준
+// ★ 원칙: 서로 다른 카테고리(동의어 전환/구분 포인트)를 뭉치지 않고
+//   처음부터 섞어서 배치함(품질관리 공통원칙 섹션2(L) 참조)
+const ITEMS = [
+  { q: "can (능력)", a: "be able to", cat: "canBeAbleTo",
+    example: "Jeremy <span class='ex-hl'>can</span> make computer programs. = Jeremy <span class='ex-hl'>is able to</span> make computer programs.",
+    exampleKr: "Jeremy는 컴퓨터 프로그램을 만들 수 있다." },
+  { q: "must (의무)", a: "have to", cat: "mustHaveTo",
+    example: "You <span class='ex-hl'>must</span> listen to me. = You <span class='ex-hl'>have to</span> listen to me.",
+    exampleKr: "너는 내 말을 들어야 한다." },
+  { q: "would like to", a: "want to (더 정중함)", cat: "wouldLikeWant",
+    example: "I <span class='ex-hl'>would like to</span> try on those shoes. ≈ I <span class='ex-hl'>want to</span> try on those shoes.",
+    exampleKr: "나는 저 신발을 신어보고 싶다." },
+  { q: "used to+동사원형 (상태)", a: "would로 바꿀 수 없음", cat: "usedToState",
+    example: "There <span class='ex-hl'>used to be</span> a bookstore near my house.",
+    exampleKr: "내 집 근처에 전에는 서점이 있었다. (would be로 바꿀 수 없음)" },
+  { q: "have to의 부정형", a: "don't have to (~할 필요가 없다)", cat: "dontHaveTo",
+    example: "You <span class='ex-hl'>don't have to</span> leave now.",
+    exampleKr: "너는 지금 떠날 필요가 없다. (must not과 뜻이 다름)" },
+  { q: "must의 부정형(강한 부정적 추측)", a: "cannot[can't] (~일 리가 없다)", cat: "mustCant",
+    example: "She <span class='ex-hl'>can't</span> be in China. I met her this morning.",
+    exampleKr: "그녀가 중국에 있을 리가 없다. 오늘 아침에 만났다." },
+  { q: "had better의 부정형", a: "had better not (~하지 않는 게 좋겠다)", cat: "hadBetterNot",
+    example: "You <span class='ex-hl'>had better not</span> stay here.",
+    exampleKr: "너는 여기 머물지 않는 게 좋겠다." },
+  { q: "must의 과거형", a: "had to (must는 과거형이 없음)", cat: "mustPast",
+    example: "I <span class='ex-hl'>had to</span> study hard for a test.",
+    exampleKr: "나는 시험을 위해 열심히 공부해야 했다." }
+];
+
+const ALL_QUESTIONS = [];
+ITEMS.forEach(function(item){
+  ALL_QUESTIONS.push({
+    direction: 'toA',
+    instruction: "다음과 관련된 표현·설명으로 알맞은 것을 고르세요.",
+    display: item.q,
+    krHint: "",
+    answer: item.a,
+    options: shuffleFourAnswers(item.a),
+    feedback: "<span class='ex-hl'>" + item.q + "</span> → <span class='ex-hl'>" + item.a + "</span><br>예문: " + item.example + " (" + item.exampleKr + ")"
+  });
+  ALL_QUESTIONS.push({
+    direction: 'toQ',
+    instruction: "다음 설명·표현에 해당하는 것을 고르세요.",
+    display: item.a,
+    krHint: "",
+    answer: item.q,
+    options: shuffleFourQuestions(item.q),
+    feedback: "<span class='ex-hl'>" + item.q + "</span> → <span class='ex-hl'>" + item.a + "</span><br>예문: " + item.example + " (" + item.exampleKr + ")"
+  });
+});
+
+function shuffleFourAnswers(correct) {
+  const pool = ITEMS.map(function(i){ return i.a; }).filter(function(a){ return a !== correct; });
+  const wrong = shuffle(pool).slice(0, 3);
+  return shuffle([correct].concat(wrong));
+}
+function shuffleFourQuestions(correct) {
+  const pool = ITEMS.map(function(i){ return i.q; }).filter(function(q){ return q !== correct; });
+  const wrong = shuffle(pool).slice(0, 3);
+  return shuffle([correct].concat(wrong));
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('phraseBox').innerHTML = q.display;
+  const hintEl = document.getElementById('krHint');
+  if (q.krHint) { hintEl.style.display = ''; hintEl.innerHTML = q.krHint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 조동사 전환 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 외워봐요.' : '다시 한번 외워봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  const wl = document.getElementById('wrongList'); wl.innerHTML = '';
+  if (wrongIndexes.length) {
+    wrongIndexes.forEach(i => {
+      const q = questions[i];
+      const div = document.createElement('div');
+      div.className = 'wrong-item';
+      div.innerHTML = q.display + ' → <span class="ex-hl">' + q.answer + '</span>';
+      wl.appendChild(div);
+    });
+  }
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

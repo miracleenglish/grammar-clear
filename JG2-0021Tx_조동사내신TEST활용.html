@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0021Tx 조동사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-test: #E8604C;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 19px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; display: none; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 17px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">내신TEST</span>
+    </div>
+    <h1>JG2-0021Tx · 조동사 내신TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"You <span class='blank'> ? </span> make noise in a library.", hint:"", answer:"can't", options:["can't","mustn't to","don't can","won't to"], feedback:"can의 부정형은 「cannot[can't]+동사원형」입니다. 정답은 <b>can't</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"<span class='blank'> ? </span> you turn off the TV?", hint:"", answer:"Can", options:["Can","Do","Are","Does"], feedback:"can의 의문형은 「Can+주어+동사원형 ~?」입니다. 정답은 <b>Can</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"You <span class='blank'> ? </span> drive my car, but please be careful.", hint:"", answer:"can", options:["can","must","should","will"], feedback:"can은 '~해도 좋다'는 허가를 나타냅니다. 정답은 <b>can</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"He <span class='blank'> ? </span> come to school late today.", hint:"", answer:"may", options:["may","can","will","must"], feedback:"may는 '~일지도 모른다'는 불확실한 추측을 나타냅니다. 정답은 <b>may</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"It <span class='blank'> ? </span> rain this afternoon.", hint:"", answer:"is going to", options:["is going to","will to","is will","going to be"], feedback:"be going to는 가까운 미래의 예측을 나타냅니다. 정답은 <b>is going to</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"You <span class='blank'> ? </span> turn off your cell phone in class.", hint:"", answer:"must", options:["must","may","can","will"], feedback:"must는 '~해야 한다'는 의무를 나타냅니다. 정답은 <b>must</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"She is absent today. She <span class='blank'> ? </span> be very sick.", hint:"", answer:"must", options:["must","may","can","should"], feedback:"must는 '~임이 틀림없다'는 강한 추측을 나타냅니다. 정답은 <b>must</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"You <span class='blank'> ? </span> leave now.", hint:"", answer:"don't have to", options:["don't have to","must not","haven't to","don't must"], feedback:"「don't have to」는 '~할 필요가 없다'는 뜻입니다. 정답은 <b>don't have to</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"I <span class='blank'> ? </span> study hard for a test yesterday.", hint:"", answer:"had to", options:["had to","musted","have had to","must had"], feedback:"must는 과거형이 없으므로 had to를 씁니다. 정답은 <b>had to</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"I think you <span class='blank'> ? </span> apologize to her first.", hint:"", answer:"should", options:["should","must","can","may"], feedback:"'I think'로 시작하는 개인적 제안·충고에는 should가 자연스럽습니다. 정답은 <b>should</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"I <span class='blank'> ? </span> try on those shoes.", hint:"", answer:"would like to", options:["would like to","would like","like to would","would to like"], feedback:"「would like to+동사원형」은 '~하고 싶다'는 정중한 표현입니다. 정답은 <b>would like to</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"You <span class='blank'> ? </span> go to school on foot today.", hint:"", answer:"had better", options:["had better","had better to","have better","better had"], feedback:"「had better+동사원형」은 강한 충고를 나타냅니다. 정답은 <b>had better</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"He <span class='blank'> ? </span> play tennis every morning.", hint:"", answer:"used to", options:["used to","use to","was used to","used"], feedback:"「used to+동사원형」은 과거의 습관을 나타냅니다. 정답은 <b>used to</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"There <span class='blank'> ? </span> a photo studio here.", hint:"", answer:"used to be", options:["used to be","would be","used be","was used to"], feedback:"과거의 상태는 would로 나타낼 수 없으므로 used to be를 씁니다. 정답은 <b>used to be</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"When I was a child, I <span class='blank'> ? </span> go camping with my friends.", hint:"", answer:"would", options:["would","used","will","should"], feedback:"「would+동사원형」은 과거의 습관을 나타냅니다. 정답은 <b>would</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"Jeremy <span class='blank'> ? </span> make computer programs.", hint:"", answer:"is able to", options:["is able to","can to","able to","is can"], feedback:"능력을 나타내는 can은 be able to로 바꿔 쓸 수 있습니다. 정답은 <b>is able to</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"She <span class='blank'> ? </span> be in China. I met her this morning.", hint:"", answer:"can't", options:["can't","must not","may not","won't"], feedback:"「can't」는 '~일 리가 없다'는 강한 부정적 추측을 나타냅니다. 정답은 <b>can't</b>입니다." },
+  { instruction:"빈칸에 들어갈 수 없는 것을 고르세요.", sentence:"You <span class='blank'> ? </span> touch paintings in the gallery.", hint:"", answer:"can", options:["can","should not","shouldn't","must not"], feedback:"'만지면 안 된다'는 금지의 의미이므로 허가를 나타내는 can은 들어갈 수 없습니다. 정답은 <b>can</b>입니다." },
+  { instruction:"다음 문장에서 어법상 틀린 것을 고르세요.", sentence:"다음 중 어법상 틀린 문장은?", hint:"", answer:"George is sick. He must to be at school.", options:["George is sick. He must to be at school.","Ted has lived here for 20 years. He must know many people here.","You should not make noise in the classroom.","You don't have to pick up the phone."], feedback:"조동사 must 뒤에는 to 없이 동사원형이 바로 옵니다. 'must be'로 고쳐야 합니다." },
+  { instruction:"( ) 안의 말을 배열할 때 3번째로 오는 단어를 고르세요.", sentence:"나는 어렸을 때 친구들과 캠핑을 가곤 했다.\nWhen I was a child, I (with, camping, would, go) my friends.", hint:"", answer:"go", options:["go","would","camping","with"], feedback:"완성된 문장은 'I would go camping with my friends.'입니다. 3번째 단어는 <b>go</b>입니다." }
+];
+const IS_C = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  document.getElementById('hint').style.display = 'none';
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 내신TEST 만점 도전! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

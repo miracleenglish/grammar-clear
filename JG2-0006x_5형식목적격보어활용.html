@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0006x 5형식 목적격 보어</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-apply: #5BAD6F;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-apply); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: #4A90D9; color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 20px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.6; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 17px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">A형</span>
+    </div>
+    <h1>JG2-0006x · 5형식 목적격 보어</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The loud music made him <span class='blank'>  ?  </span>.",
+    hint: "시끄러운 음악은 그를 짜증나게 만들었다.",
+    answer: "annoyed",
+    options: ["annoyed", "annoy", "to annoy", "annoying"],
+    feedback: "5형식 동사 make 뒤 목적격 보어로 감정을 나타내는 과거분사형 형용사가 옵니다. 정답은 <b>annoyed</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "We elected him <span class='blank'>  ?  </span> of our club.",
+    hint: "우리는 그를 우리 동아리의 회장으로 선출했다.",
+    answer: "president",
+    options: ["president", "presidently", "to president", "presiding"],
+    feedback: "elect(선출하다)는 목적격 보어로 명사가 오는 5형식 동사입니다. 정답은 <b>president</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "My parents want me <span class='blank'>  ?  </span> a doctor.",
+    hint: "부모님은 내가 의사가 되기를 원하신다.",
+    answer: "to become",
+    options: ["to become", "become", "becoming", "became"],
+    feedback: "want는 목적격 보어로 to부정사를 취하는 5형식 동사입니다. 정답은 <b>to become</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The teacher allowed us <span class='blank'>  ?  </span> the library after school.",
+    hint: "선생님은 우리가 방과 후에 도서관을 이용하는 것을 허락하셨다.",
+    answer: "to use",
+    options: ["to use", "use", "using", "used"],
+    feedback: "allow는 목적격 보어로 to부정사를 취하는 동사입니다. 정답은 <b>to use</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "My mom had me <span class='blank'>  ?  </span> the dishes.",
+    hint: "엄마는 내가 설거지를 하게 하셨다.",
+    answer: "wash",
+    options: ["wash", "to wash", "washing", "washed"],
+    feedback: "사역동사 have는 목적격 보어로 동사원형을 씁니다. 정답은 <b>wash</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Her joke made everyone <span class='blank'>  ?  </span> loudly.",
+    hint: "그녀의 농담은 모두를 크게 웃게 만들었다.",
+    answer: "laugh",
+    options: ["laugh", "to laugh", "laughing", "laughs"],
+    feedback: "사역동사 make는 목적격 보어로 동사원형을 씁니다. 정답은 <b>laugh</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "She got her brother <span class='blank'>  ?  </span> the printer.",
+    hint: "그녀는 남동생에게 프린터를 고치게 했다.",
+    answer: "to fix",
+    options: ["to fix", "fix", "fixing", "fixed"],
+    feedback: "get은 사역의 의미가 있지만 목적격 보어로 to부정사를 씁니다. 정답은 <b>to fix</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "I saw the cat <span class='blank'>  ?  </span> up the tree.",
+    hint: "나는 고양이가 나무에 오르는 것을 보았다.",
+    answer: "climbing",
+    options: ["climbing", "to climb", "climbed", "climbs"],
+    feedback: "지각동사 see 뒤에 진행 중인 동작을 강조할 때는 현재분사(v-ing)를 목적격 보어로 쓸 수 있습니다. 정답은 <b>climbing</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Did you hear someone <span class='blank'>  ?  </span> your name?",
+    hint: "누군가 네 이름을 부르는 것을 들었니?",
+    answer: "call",
+    options: ["call", "to call", "called", "calls"],
+    feedback: "지각동사 hear 뒤에는 동사원형이나 현재분사가 목적격 보어로 옵니다. 정답은 <b>call</b>입니다."
+  },
+  {
+    instruction: "다음 문장에서 어법상 틀린 것을 고르세요.",
+    sentence: "다음 중 어법상 틀린 문장은?",
+    hint: "",
+    answer: "My boss made me to finish the report today.",
+    options: ["My boss made me to finish the report today.", "I helped my sister carry the boxes.", "He let his dog run in the park.", "We watched the sun rise over the hill."],
+    feedback: "사역동사 make의 목적격 보어는 to부정사가 아닌 동사원형이 와야 합니다. 'made me finish'로 고쳐야 합니다."
+  },
+  {
+    instruction: "( ) 안의 말을 배열할 때 4번째로 오는 단어를 고르세요.",
+    sentence: "그 코치는 선수들이 매일 아침 뛰게 한다.\nThe coach (every, morning, the players, run, has) .",
+    hint: "",
+    answer: "run",
+    options: ["run", "has", "the players", "every"],
+    feedback: "완성된 문장은 'The coach has the players run every morning.'입니다. 사역동사 have 뒤 목적격 보어(run)는 동사원형이며, 4번째 단어는 <b>run</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "This app keeps our schedule <span class='blank'>  ?  </span>.",
+    hint: "이 앱은 우리 일정을 정리된 상태로 유지해준다.",
+    answer: "organized",
+    options: ["organized", "organize", "to organize", "organizes"],
+    feedback: "keep은 목적격 보어로 형용사(구)를 취하는 5형식 동사입니다. organized는 '정리된'이라는 뜻의 형용사로 쓰였습니다. 정답은 <b>organized</b>입니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 5형식 목적격 보어 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0017x 시제 문장점검</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-apply: #5BAD6F; --badge-c: #9B6DD1;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-apply); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-c); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 18.5px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.7; background: var(--bg); border-radius: 12px; padding: 16px; margin-bottom: 16px; color: var(--green-dark); }
+  .sentence-box .err { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 4px; }
+  .sentence-box .err.reveal-wrong { color: var(--coral); text-decoration-line: line-through; }
+  .opts-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 17px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 13px 14px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">C형</span>
+    </div>
+    <h1>JG2-0017x · 시제 문장점검</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction">다음 문장에서 밑줄 친 부분을 어법에 맞게 고치세요.</div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  { before: "Why ", err: "are you sit", after: " at my desk?", answer: "are you sitting", options: ["are you sitting", "do you sit", "did you sit"], feedback: "현재진행형 의문문은 「Be동사+주어+v-ing」 순서입니다. <b>are you sitting</b>으로 고쳐야 합니다." },
+  { before: "When the bell rang, I ", err: "am taking", after: " a shower.", answer: "was taking", options: ["was taking", "am taking", "took"], feedback: "과거의 특정 시점에 진행 중이던 일이므로 과거진행형을 써야 합니다. <b>was taking</b>으로 고쳐야 합니다." },
+  { before: "Ray ", err: "has lost", after: " his ring yesterday.", answer: "lost", options: ["lost", "has lost", "was lost"], feedback: "yesterday처럼 특정 과거 시점을 나타내는 말과는 현재완료를 쓸 수 없습니다. <b>lost</b>로 고쳐야 합니다." },
+  { before: "I ", err: "don't play", after: " table tennis before.", answer: "haven't played", options: ["haven't played", "didn't play", "am not playing"], feedback: "before와 함께 쓰여 현재까지의 경험을 나타낼 때는 현재완료를 씁니다. <b>haven't played</b>로 고쳐야 합니다." },
+  { before: "I ", err: "know him since", after: " I was ten.", answer: "have known him since", options: ["have known him since", "knew him since", "am knowing him since"], feedback: "since와 함께 쓰여 과거부터 계속되는 상태를 나타낼 때는 현재완료를 씁니다. <b>have known him since</b>로 고쳐야 합니다." },
+  { before: "A: Can I take away your plate?\nB: No, I ", err: "don't finish", after: " eating yet.", answer: "haven't finished", options: ["haven't finished", "didn't finish", "am not finishing"], feedback: "yet과 함께 쓰여 '아직 ~하지 않았다'라는 완료를 나타낼 때는 현재완료를 씁니다. <b>haven't finished</b>로 고쳐야 합니다." },
+  { before: "They ", err: "were", after: " friends for three years.", answer: "have been", options: ["have been", "are", "had been"], feedback: "for와 함께 쓰여 과거부터 현재까지 계속되는 상태를 나타낼 때는 현재완료를 씁니다. <b>have been</b>으로 고쳐야 합니다." },
+  { before: "He ", err: "goes", after: " to Busan, so he isn't here now.", answer: "has gone", options: ["has gone", "went", "has been"], feedback: "「have/has gone to」는 '~에 가버려서 지금 없다'라는 결과를 나타냅니다. <b>has gone</b>으로 고쳐야 합니다." },
+  { before: "Sorry, I ", err: "leave", after: " my notebook at home.", answer: "have left", options: ["have left", "left it", "am leaving"], feedback: "과거에 놓고 온 일의 결과가 현재까지 영향을 미치므로 현재완료(결과)를 씁니다. <b>have left</b>로 고쳐야 합니다." },
+  { before: "Look at the elephants! They ", err: "drink", after: " water.", answer: "are drinking", options: ["are drinking", "drank", "were drinking"], feedback: "지금 진행 중인 일이므로 현재진행형을 써야 합니다. <b>are drinking</b>으로 고쳐야 합니다." },
+  { before: "I ", err: "am having", after: " a headache since this morning.", answer: "have had", options: ["have had", "had", "was having"], feedback: "have가 '겪다, 아프다'라는 소유·상태의 의미로 계속을 나타낼 때는 진행형이 아닌 현재완료를 씁니다. <b>have had</b>로 고쳐야 합니다." },
+  { before: "I ", err: "have visited", after: " my grandmother last weekend.", answer: "visited", options: ["visited", "have visit", "was visiting"], feedback: "last weekend는 특정 과거 시점을 나타내는 말이므로 현재완료와 함께 쓸 수 없습니다. 과거시제 <b>visited</b>로 고쳐야 합니다." }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('sentenceBox').innerHTML = (q.before + '<span class="err" id="errSpan">' + q.err + '</span>' + q.after).replace(/\n/g, '<br>');
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  document.getElementById('errSpan').classList.add('reveal-wrong');
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 시제 완전 정복! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

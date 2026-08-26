@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0052x 간접의문문</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-apply: #5BAD6F;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-apply); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: #4A90D9; color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 18px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+  .opts-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 15px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 13px 14px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">A형</span>
+    </div>
+    <h1>JG2-0052x · 간접의문문</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Do you know <span class='blank'>  ?  </span> the train leaves?",
+    hint: "그 기차가 언제 떠나는지 아니?",
+    answer: "when",
+    options: ["when", "if", "that", "what"],
+    feedback: "의문사가 있는 간접의문문은 「의문사+주어+동사」의 어순입니다. 정답은 <b>when</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "I don't know <span class='blank'>  ?  </span> ate my yogurt.",
+    hint: "나는 누가 내 요구르트를 먹었는지 모른다.",
+    answer: "who",
+    options: ["who", "who did", "that who", "did who"],
+    feedback: "의문사가 주어인 경우 「의문사+동사」의 어순을 그대로 씁니다. 정답은 <b>who</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "Please tell me <span class='blank'>  ?  </span> you will come to the party.",
+    hint: "네가 파티에 올지 나에게 말해줘.",
+    answer: "if",
+    options: ["if", "that", "what", "when"],
+    feedback: "의문사가 없는 간접의문문은 「if[whether]+주어+동사」입니다. 정답은 <b>if</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "I don't know <span class='blank'>  ?  </span> your name is.",
+    hint: "나는 네 이름이 무엇인지 모른다.",
+    answer: "what",
+    options: ["what", "if", "that", "who"],
+    feedback: "간접의문문은 「의문사+주어+동사」입니다. 정답은 <b>what</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "He wonders <span class='blank'>  ?  </span> Carrie and her sister study at the library.",
+    hint: "그는 Carrie와 그녀의 여동생이 도서관에서 공부하는지 궁금해한다.",
+    answer: "if",
+    options: ["if", "that", "what", "when"],
+    feedback: "의문사가 없으므로 if를 씁니다. 정답은 <b>if</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "The reporter wants to know <span class='blank'>  ?  </span> will arrive at the airport.",
+    hint: "그 기자는 누가 공항에 도착할지 알고 싶어한다.",
+    answer: "who",
+    options: ["who", "who does", "if who", "that who"],
+    feedback: "의문사(who)가 주어이므로 「의문사+동사」의 어순을 그대로 씁니다. 정답은 <b>who</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요. (동사가 think일 때)",
+    sentence: "<span class='blank'>  ?  </span> do you think he will buy?",
+    hint: "너는 그가 무엇을 살 거라고 생각하니?",
+    answer: "What",
+    options: ["What", "That", "If", "Whether"],
+    feedback: "주절의 동사가 think, believe 등일 때는 의문사가 문장 맨 앞에 옵니다. 정답은 <b>What</b>입니다."
+  },
+  {
+    instruction: "빈칸에 알맞은 것을 고르세요.",
+    sentence: "<span class='blank'>  ?  </span> do you think caused the accident?",
+    hint: "너는 무엇이 그 사고를 일으켰다고 생각하니?",
+    answer: "What",
+    options: ["What", "That", "If", "Whether"],
+    feedback: "think 뒤에 오는 간접의문문의 의문사는 문장 앞으로 이동합니다. 정답은 <b>What</b>입니다."
+  },
+  {
+    instruction: "다음 두 문장을 하나의 간접의문문으로 바르게 연결한 것을 고르세요.",
+    sentence: "I don't know. + What is your name?",
+    hint: "",
+    answer: "I don't know what your name is.",
+    options: ["I don't know what your name is.", "I don't know what is your name.", "I don't know your name what is.", "I don't know that your name is."],
+    feedback: "간접의문문은 「의문사+주어+동사」 어순입니다. 정답은 <b>I don't know what your name is.</b>입니다."
+  },
+  {
+    instruction: "다음 두 문장을 하나의 간접의문문으로 바르게 연결한 것을 고르세요.",
+    sentence: "The child knows. + What is his father doing?",
+    hint: "",
+    answer: "The child knows what his father is doing.",
+    options: ["The child knows what his father is doing.", "The child knows what is his father doing.", "The child knows his father what is doing.", "The child knows if his father is doing."],
+    feedback: "「의문사+주어+동사」의 어순으로 연결합니다. 정답은 <b>The child knows what his father is doing.</b>입니다."
+  },
+  {
+    instruction: "다음 두 문장을 하나의 간접의문문으로 바르게 연결한 것을 고르세요.",
+    sentence: "Do you think? + Why was the hockey game canceled?",
+    hint: "",
+    answer: "Why do you think the hockey game was canceled?",
+    options: ["Why do you think the hockey game was canceled?", "Do you think why was the hockey game canceled?", "Do you think why the hockey game was canceled?", "Why do you think was the hockey game canceled?"],
+    feedback: "think가 있으므로 의문사가 문장 맨 앞으로 이동합니다. 정답은 <b>Why do you think the hockey game was canceled?</b>입니다."
+  },
+  {
+    instruction: "다음 문장에서 어법상 틀린 것을 고르세요.",
+    sentence: "다음 중 어법상 틀린 것은?",
+    hint: "",
+    answer: "She doesn't know if will the weather be nice.",
+    options: ["She doesn't know if will the weather be nice.", "I'm not sure which exit we should use.", "Can you tell me how long it takes to get to the hotel?", "The reporter wants to know who will arrive at the airport."],
+    feedback: "간접의문문은 「if+주어+동사」의 평서문 어순이어야 합니다. 'if the weather will be nice'로 고쳐야 합니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 간접의문문 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

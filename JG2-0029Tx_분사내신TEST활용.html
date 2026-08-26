@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0029Tx 분사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+    --mint: #4CAF93; --mint-light: #E7F7F0;
+    --coral: #E8604C; --coral-light: #FDEAE6;
+    --badge-test: #E8604C;
+    --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+  .app { width: 100%; max-width: 480px; }
+  .header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+  .header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  .badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+  h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+  .progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+  .card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+  .card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+  .sentence-box { font-size: 19px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+  .sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+  .sentence-box .hl { text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 5px; text-decoration-color: var(--green-dark); }
+  .hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; display: none; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .opt-btn { font-size: 16.5px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+  .opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+  .opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+  .opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+  .feedback.correct { background: var(--mint-light); color: #2E8064; }
+  .feedback.wrong { background: var(--coral-light); color: #B84534; }
+  .fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: var(--green-dark); }
+  .result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+  .result-stars { font-size: 44px; margin-bottom: 12px; }
+  .result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+  .result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-retry { background: var(--green); color: #fff; }
+  .btn-retry:hover { background: var(--green-dark); }
+  .btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+  .btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">내신TEST</span>
+    </div>
+    <h1>JG2-0029Tx · 분사 내신TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"A woman is looking at her <span class='blank'> ? </span> child.", hint:"", answer:"playing", options:["playing","play","played","to play"], feedback:"명사(child)를 수식하는 현재분사입니다. 정답은 <b>playing</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"The computer program is <span class='blank'> ? </span> in Korea.", hint:"", answer:"made", options:["made","make","making","makes"], feedback:"수동태를 만드는 과거분사입니다. 정답은 <b>made</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"I want that teddy bear <span class='blank'> ? </span> flowers in its hand.", hint:"", answer:"holding", options:["holding","hold","held","to hold"], feedback:"명사(teddy bear)를 뒤에서 수식하는 현재분사입니다. 정답은 <b>holding</b>입니다." },
+  { instruction:"다음 빈칸에 들어갈 말이 순서대로 알맞게 짝지어진 것을 고르세요. (eating가 forgotten과 같은 관계가 되도록)", sentence:"eating - <span class='blank'> ? </span> / forget - forgotten", hint:"", answer:"eaten", options:["eaten","eat","forgot","ate"], feedback:"eating(현재분사)-eaten(과거분사)처럼 forget(원형)-forgotten(과거분사)의 관계와 같습니다. 정답은 <b>eaten</b>입니다." },
+  { instruction:"빈칸에 들어갈 말이 순서대로 알맞게 짝지어진 것을 고르세요.", sentence:"A: Did you see any <span class='blank'> ? </span> TV programs yesterday?\nB: No. <span class='blank'> ? </span>, I went to bed early.", hint:"", answer:"interesting - Being tired", options:["interesting - Being tired","interested - Tired","interesting - Tiring","interested - Tiring"], feedback:"프로그램(사물)을 설명할 때는 현재분사, '피곤해서'는 Being tired(이유의 분사구문)입니다. 정답은 <b>interesting - Being tired</b>입니다." },
+  { instruction:"빈칸에 들어갈 말이 순서대로 알맞게 짝지어진 것을 고르세요.", sentence:"A: Who is the man <span class='blank'> ? </span> there?\nB: I'm not sure. <span class='blank'> ? </span> my glasses, I can't recognize him from here.", hint:"", answer:"standing - Not wearing", options:["standing - Not wearing","stand - Not wearing","standing - Wearing not","standing - Being not wearing"], feedback:"명사(man)를 수식하는 현재분사와, 분사구문의 부정(not+v-ing)입니다. 정답은 <b>standing - Not wearing</b>입니다." },
+  { instruction:"빈칸에 들어갈 말이 순서대로 알맞게 짝지어진 것을 고르세요.", sentence:"· I heard my name <span class='blank'> ? </span> by someone.\n· <span class='blank'> ? </span> young, she has little experience.", hint:"", answer:"called - Being", options:["called - Being","calling - Being","called - Been","calling - Been"], feedback:"목적격 보어로 수동의 의미(불렸다)는 과거분사, '어리기 때문에'는 Being young입니다. 정답은 <b>called - Being</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"The pond is full of <span class='blank'> ? </span> fish.", hint:"", answer:"swimming", options:["swimming","swam","swim","swims"], feedback:"명사를 수식하는 현재분사입니다. 정답은 <b>swimming</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"The man was standing on <span class='blank'> ? </span> leaves.", hint:"", answer:"fallen", options:["fallen","falling","fall","falls"], feedback:"완료의 의미를 나타내는 과거분사입니다. 정답은 <b>fallen</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"There are some pictures <span class='blank'> ? </span> by Monet in the art museum.", hint:"", answer:"painted", options:["painted","painting","paint","paints"], feedback:"수식어구와 함께 명사를 뒤에서 수식하는 과거분사입니다. 정답은 <b>painted</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"Susie is <span class='blank'> ? </span> about winning a prize.", hint:"", answer:"excited", options:["excited","exciting","excite","excites"], feedback:"감정을 느끼는 대상을 설명하는 과거분사입니다. 정답은 <b>excited</b>입니다." },
+  { instruction:"다음 문장을 분사구문으로 바르게 바꾼 것을 고르세요.", sentence:"When he saw the police officer, he ran away.", hint:"", answer:"Seeing the police officer, he ran away.", options:["Seeing the police officer, he ran away.","Saw the police officer, he ran away.","He seeing the police officer, ran away.","To see the police officer, he ran away."], feedback:"분사구문은 접속사를 없애고 동사를 v-ing로 바꿉니다. 정답은 <b>Seeing the police officer, he ran away.</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"<span class='blank'> ? </span> down the book, he looked out the window.", hint:"", answer:"Putting", options:["Putting","Put","To put","Puts"], feedback:"After he put down를 분사구문으로 바꾸면 Putting이 됩니다. 정답은 <b>Putting</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"<span class='blank'> ? </span> his phone number, I sent him an email.", hint:"", answer:"Not knowing", options:["Not knowing","Knowing not","No knowing","Don't knowing"], feedback:"분사구문의 부정은 분사 앞에 not을 씁니다. 정답은 <b>Not knowing</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"While <span class='blank'> ? </span> a shower, I heard my mom calling me.", hint:"", answer:"taking", options:["taking","take","took","to take"], feedback:"접속사를 남긴 분사구문에서도 동사는 v-ing로 씁니다. 정답은 <b>taking</b>입니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"<span class='blank'> ? </span> downstairs, you will see a tall woman.", hint:"", answer:"Going", options:["Going","Go","Went","Gone"], feedback:"조건을 나타내는 분사구문입니다. 정답은 <b>Going</b>입니다." },
+  { instruction:"다음 문장의 우리말 뜻으로 알맞은 것을 고르세요.", sentence:"Though living near his house, she never saw him.", hint:"", answer:"그의 집 근처에 살았을지라도, 그녀는 그를 결코 보지 못했다.", options:["그의 집 근처에 살았을지라도, 그녀는 그를 결코 보지 못했다.","그의 집 근처에 살았기 때문에, 그녀는 그를 결코 보지 못했다.","그의 집 근처에 살면서, 그녀는 그를 결코 보지 못했다.","그의 집 근처에 살았다면, 그녀는 그를 보았을 것이다."], feedback:"양보를 나타내는 분사구문(Though)은 '~일지라도'라고 해석됩니다." },
+  { instruction:"빈칸에 알맞은 것을 고르세요.", sentence:"<span class='blank'> ? </span> TV, she ate dinner.", hint:"", answer:"Watching", options:["Watching","Being watching","Watched","Watches"], feedback:"진행형의 분사구문에서 Being은 보통 생략됩니다. 정답은 <b>Watching</b>입니다." },
+  { instruction:"다음 문장에서 어법상 틀린 것을 고르세요.", sentence:"다음 중 어법상 틀린 문장은?", hint:"", answer:"Susie is exciting about winning a prize.", options:["Susie is exciting about winning a prize.","I have a book written in English.","The food cooked by my brother is always delicious.","My parents were disappointed with the new refrigerator."], feedback:"감정을 느끼는 대상(Susie)을 설명할 때는 과거분사를 써야 합니다. 'is excited'로 고쳐야 합니다." },
+  { instruction:"( ) 안의 말을 배열할 때 3번째로 오는 단어를 고르세요.", sentence:"나와 악수를 하면서 그는 환하게 미소 지었다.\n(hands, with, shaking, me) he smiled brightly.", hint:"", answer:"me", options:["me","with","shaking","hands"], feedback:"완성된 문장은 'Shaking hands with me, he smiled brightly.'입니다. 3번째 단어는 <b>me</b>입니다." }
+];
+const IS_C = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [], isWrongRetry = false;
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  document.getElementById('hint').style.display = 'none';
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 내신TEST 만점 도전! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { isWrongRetry = false; startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; isWrongRetry = true; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
