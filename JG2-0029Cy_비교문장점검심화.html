@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0029Cy 비교 문장점검 심화</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#EAF6F1; --green:#1E5A46; --green-dark:#16432F;
+  --mint:#4CAF93; --mint-light:#E7F7F0;
+  --coral:#E8604C; --coral-light:#FDEAE6;
+  --badge-c:#9B6DD1;
+  --card-bg:#fff; --text:#1a1a1a; --gray:#888;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); font-family:'Noto Sans KR','Nunito',sans-serif; color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:16px; padding-bottom:40px; }
+.app { width:100%; max-width:480px; }
+.header { text-align:center; margin-bottom:18px; padding-top:8px; }
+.header-badges { display:flex; justify-content:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-track { font-size:11.5px; font-weight:800; background:var(--badge-c); color:#fff; padding:3px 10px; border-radius:999px; }
+.badge-type { font-size:11.5px; font-weight:800; background:var(--badge-c); color:#fff; padding:3px 10px; border-radius:999px; }
+h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
+.progress-wrap { height:12px; border-radius:999px; background:#d4ece3; box-shadow:inset 0 0 0 2px #b8dece; margin:14px 0 18px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mint),var(--green)); transition:width .4s ease; }
+.card { background:var(--card-bg); border-radius:20px; padding:22px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size:13px; color:#999; margin-bottom:6px; }
+.card-instruction { font-size:16.5px; color:#555; margin-bottom:12px; line-height:1.5; }
+.sentence-box { font-size:20px; font-family:'Nunito',sans-serif; font-weight:700; line-height:1.65; background:var(--bg); border-radius:12px; padding:14px 16px; margin-bottom:10px; color:var(--green-dark); }
+.sentence-box .hl { text-decoration:underline; text-decoration-thickness:2.5px; text-underline-offset:5px; text-decoration-color:var(--green-dark); }
+.hint { font-size:16px; color:#666; line-height:1.5; margin-bottom:16px; }
+.opts-col { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.opt-btn { font-size:17px; font-weight:700; font-family:'Nunito','Noto Sans KR',sans-serif; padding:13px 14px; border-radius:14px; border:2.5px solid #b8dece; background:#fff; color:var(--text); cursor:pointer; transition:all .15s; text-align:left; line-height:1.3; }
+.opt-btn:hover:not(:disabled) { background:var(--bg); border-color:var(--mint); }
+.opt-btn.correct { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.opt-btn.wrong { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.opt-btn:disabled { cursor:default; }
+.feedback { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; }
+.feedback.correct { background:var(--mint-light); color:#2E8064; }
+.feedback.wrong { background:var(--coral-light); color:#B84534; }
+.fb-title { font-size:15px; font-weight:800; margin-bottom:4px; }
+.fb-sentence { font-size:15.5px; margin-top:8px; padding:10px 12px; background:#fff; border-radius:10px; }
+.fb-sentence .err { text-decoration:line-through; color:#B84534; }
+.fb-sentence .fix { color:#2E8064; font-weight:800; }
+.next-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--green); color:#fff; border:none; cursor:pointer; display:none; transition:background .2s; }
+.next-btn:hover { background:var(--green-dark); }
+.result-screen { display:none; background:var(--card-bg); border-radius:20px; padding:36px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); text-align:center; }
+.result-stars { font-size:44px; margin-bottom:12px; }
+.result-score { font-size:18px; font-weight:800; color:var(--green); margin-bottom:6px; }
+.result-sub { font-size:13.5px; color:var(--gray); margin-bottom:24px; }
+.result-btns { display:flex; flex-direction:column; gap:10px; }
+.result-btn { padding:14px; border-radius:14px; font-size:15.5px; font-weight:800; font-family:'Noto Sans KR',sans-serif; border:none; cursor:pointer; transition:all .2s; }
+.btn-retry { background:var(--green); color:#fff; }
+.btn-retry:hover { background:var(--green-dark); }
+.btn-wrong { background:var(--coral-light); color:var(--coral); border:2px solid var(--coral); }
+.btn-wrong:hover { background:#f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">심화</span>
+      <span class="badge-type">C형</span>
+    </div>
+    <h1>JG2-0029Cy · 비교 문장점검 심화</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 8</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsCol"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+      <div class="fb-sentence" id="fbSentence"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "Nick is as <span class='hl'>taller</span> as his dad.",
+    "hint": "",
+    "answer": "tall",
+    "options": [
+      "tall",
+      "tallest",
+      "more tall"
+    ],
+    "feedback": "「as+원급+as」구문이므로 비교급이 아닌 원급(tall)으로 고쳐야 합니다.",
+    "fixSentence": "Nick is as <span class='err'>taller</span> → <span class='fix'>tall</span> as his dad."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "This road is <span class='hl'>more heavy</span> traveled than that one.",
+    "hint": "",
+    "answer": "heavier",
+    "options": [
+      "heavier",
+      "heaviest",
+      "more heavier"
+    ],
+    "feedback": "heavy(y로 끝나는 단어)는 y를 i로 바꾸고 -er을 붙인 heavier로 고쳐야 합니다.",
+    "fixSentence": "This road is <span class='err'>more heavy</span> → <span class='fix'>heavier</span> traveled than that one."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "This is <span class='hl'>the beautifulest</span> park in the city.",
+    "hint": "",
+    "answer": "the most beautiful",
+    "options": [
+      "the most beautiful",
+      "the more beautiful",
+      "most beautifulest"
+    ],
+    "feedback": "beautiful처럼 3음절 이상의 단어는 원형 그대로 두고 앞에 most를 붙입니다.",
+    "fixSentence": "This is <span class='err'>the beautifulest</span> → <span class='fix'>the most beautiful</span> park in the city."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "Your bag is <span class='hl'>very</span> bigger than mine.",
+    "hint": "",
+    "answer": "much",
+    "options": [
+      "much",
+      "so",
+      "too"
+    ],
+    "feedback": "비교급을 강조할 때는 very가 아니라 much(또는 a lot, even, far)를 씁니다.",
+    "fixSentence": "Your bag is <span class='err'>very</span> → <span class='fix'>much</span> bigger than mine."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "My phone is <span class='hl'>two times</span> as expensive as yours.",
+    "hint": "",
+    "answer": "twice",
+    "options": [
+      "twice",
+      "second",
+      "two"
+    ],
+    "feedback": "'두 배'는 two times가 아니라 twice를 씁니다(세 배 이상부터 times를 씀).",
+    "fixSentence": "My phone is <span class='err'>two times</span> → <span class='fix'>twice</span> as expensive as yours."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "The higher you climb, <span class='hl'>colder</span> it gets.",
+    "hint": "",
+    "answer": "the colder",
+    "options": [
+      "the colder",
+      "more cold",
+      "cold"
+    ],
+    "feedback": "「the+비교급 ~, the+비교급 …」구문이므로 the가 반드시 필요합니다.",
+    "fixSentence": "The higher you climb, <span class='err'>colder</span> → <span class='fix'>the colder</span> it gets."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "This dish is getting <span class='hl'>popular and popular</span> among tourists.",
+    "hint": "",
+    "answer": "more and more popular",
+    "options": [
+      "more and more popular",
+      "popularer and popularer",
+      "most and most popular"
+    ],
+    "feedback": "popular처럼 -ar로 끝나는 2음절 이상 단어는 「more and more+원급」형태로 씁니다.",
+    "fixSentence": "This dish is getting <span class='err'>popular and popular</span> → <span class='fix'>more and more popular</span> among tourists."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "She is one of <span class='hl'>the best singer</span> in the world.",
+    "hint": "",
+    "answer": "the best singers",
+    "options": [
+      "the best singers",
+      "the better singers",
+      "best singer"
+    ],
+    "feedback": "「one of the+최상급+복수명사」구문이므로 singer를 복수형 singers로 고쳐야 합니다.",
+    "fixSentence": "She is one of <span class='err'>the best singer</span> → <span class='fix'>the best singers</span> in the world."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const col = document.getElementById('optsCol');
+  col.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    col.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  document.getElementById('fbSentence').innerHTML = q.fixSentence;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 문장점검 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

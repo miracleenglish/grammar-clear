@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0006Cy 여러가지동사 문장점검 심화</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#EAF6F1; --green:#1E5A46; --green-dark:#16432F;
+  --mint:#4CAF93; --mint-light:#E7F7F0;
+  --coral:#E8604C; --coral-light:#FDEAE6;
+  --badge-c:#9B6DD1;
+  --card-bg:#fff; --text:#1a1a1a; --gray:#888;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); font-family:'Noto Sans KR','Nunito',sans-serif; color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:16px; padding-bottom:40px; }
+.app { width:100%; max-width:480px; }
+.header { text-align:center; margin-bottom:18px; padding-top:8px; }
+.header-badges { display:flex; justify-content:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-track { font-size:11.5px; font-weight:800; background:var(--badge-c); color:#fff; padding:3px 10px; border-radius:999px; }
+.badge-type { font-size:11.5px; font-weight:800; background:var(--badge-c); color:#fff; padding:3px 10px; border-radius:999px; }
+h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
+.progress-wrap { height:12px; border-radius:999px; background:#d4ece3; box-shadow:inset 0 0 0 2px #b8dece; margin:14px 0 18px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mint),var(--green)); transition:width .4s ease; }
+.card { background:var(--card-bg); border-radius:20px; padding:22px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size:13px; color:#999; margin-bottom:6px; }
+.card-instruction { font-size:16.5px; color:#555; margin-bottom:12px; line-height:1.5; }
+.sentence-box { font-size:20px; font-family:'Nunito',sans-serif; font-weight:700; line-height:1.65; background:var(--bg); border-radius:12px; padding:14px 16px; margin-bottom:10px; color:var(--green-dark); }
+.sentence-box .hl { text-decoration:underline; text-decoration-thickness:2.5px; text-underline-offset:5px; text-decoration-color:var(--green-dark); }
+.hint { font-size:16px; color:#666; line-height:1.5; margin-bottom:16px; }
+.opts-col { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.opt-btn { font-size:17px; font-weight:700; font-family:'Nunito','Noto Sans KR',sans-serif; padding:13px 14px; border-radius:14px; border:2.5px solid #b8dece; background:#fff; color:var(--text); cursor:pointer; transition:all .15s; text-align:left; line-height:1.3; }
+.opt-btn:hover:not(:disabled) { background:var(--bg); border-color:var(--mint); }
+.opt-btn.correct { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.opt-btn.wrong { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.opt-btn:disabled { cursor:default; }
+.feedback { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; }
+.feedback.correct { background:var(--mint-light); color:#2E8064; }
+.feedback.wrong { background:var(--coral-light); color:#B84534; }
+.fb-title { font-size:15px; font-weight:800; margin-bottom:4px; }
+.fb-sentence { font-size:15.5px; margin-top:8px; padding:10px 12px; background:#fff; border-radius:10px; }
+.fb-sentence .err { text-decoration:line-through; color:#B84534; }
+.fb-sentence .fix { color:#2E8064; font-weight:800; }
+.next-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--green); color:#fff; border:none; cursor:pointer; display:none; transition:background .2s; }
+.next-btn:hover { background:var(--green-dark); }
+.result-screen { display:none; background:var(--card-bg); border-radius:20px; padding:36px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); text-align:center; }
+.result-stars { font-size:44px; margin-bottom:12px; }
+.result-score { font-size:18px; font-weight:800; color:var(--green); margin-bottom:6px; }
+.result-sub { font-size:13.5px; color:var(--gray); margin-bottom:24px; }
+.result-btns { display:flex; flex-direction:column; gap:10px; }
+.result-btn { padding:14px; border-radius:14px; font-size:15.5px; font-weight:800; font-family:'Noto Sans KR',sans-serif; border:none; cursor:pointer; transition:all .2s; }
+.btn-retry { background:var(--green); color:#fff; }
+.btn-retry:hover { background:var(--green-dark); }
+.btn-wrong { background:var(--coral-light); color:var(--coral); border:2px solid var(--coral); }
+.btn-wrong:hover { background:#f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">심화</span>
+      <span class="badge-type">C형</span>
+    </div>
+    <h1>JG2-0006Cy · 여러가지동사 문장점검 심화</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 8</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsCol"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+      <div class="fb-sentence" id="fbSentence"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "The fresh bread smelled <span class='hl'>deliciously</span> from the kitchen.",
+    "hint": "",
+    "answer": "delicious",
+    "options": [
+      "delicious",
+      "deliciousness",
+      "delicately"
+    ],
+    "feedback": "감각동사 smell 뒤에는 부사가 아닌 형용사가 옵니다.",
+    "fixSentence": "The fresh bread smelled <span class='err'>deliciously</span> → <span class='fix'>delicious</span> from the kitchen."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "I asked a favor <span class='hl'>to</span> my neighbor.",
+    "hint": "",
+    "answer": "of",
+    "options": [
+      "of",
+      "for",
+      "from"
+    ],
+    "feedback": "ask a favor(부탁하다)는 간접목적어 앞에 전치사 of를 씁니다.",
+    "fixSentence": "I asked a favor <span class='err'>to</span> → <span class='fix'>of</span> my neighbor."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "My father bought a new bike <span class='hl'>to</span> me for my birthday.",
+    "hint": "",
+    "answer": "for",
+    "options": [
+      "for",
+      "of",
+      "toward"
+    ],
+    "feedback": "buy는 make, get과 같이 간접목적어 앞에 전치사 for를 쓰는 동사입니다.",
+    "fixSentence": "My father bought a new bike <span class='err'>to</span> → <span class='fix'>for</span> me for my birthday."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "The strange noise made everyone <span class='hl'>to feel</span> nervous.",
+    "hint": "",
+    "answer": "feel",
+    "options": [
+      "feel",
+      "feeling",
+      "felt"
+    ],
+    "feedback": "사역동사 make의 목적격 보어는 동사원형이어야 합니다.",
+    "fixSentence": "The strange noise made everyone <span class='err'>to feel</span> → <span class='fix'>feel</span> nervous."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "I want you <span class='hl'>join</span> our club this year.",
+    "hint": "",
+    "answer": "to join",
+    "options": [
+      "to join",
+      "joining",
+      "joined"
+    ],
+    "feedback": "want는 목적격 보어로 to부정사를 취하는 동사입니다.",
+    "fixSentence": "I want you <span class='err'>join</span> → <span class='fix'>to join</span> our club this year."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "We watched the plane <span class='hl'>took off</span> from the runway.",
+    "hint": "",
+    "answer": "take off",
+    "options": [
+      "take off",
+      "taking off",
+      "to take off"
+    ],
+    "feedback": "지각동사 watch의 목적격 보어는 동사원형(또는 현재분사)이어야 하며, 과거형은 쓸 수 없습니다.",
+    "fixSentence": "We watched the plane <span class='err'>took off</span> → <span class='fix'>take off</span> from the runway."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "The manager let his employees <span class='hl'>to leave</span> early on Fridays.",
+    "hint": "",
+    "answer": "leave",
+    "options": [
+      "leave",
+      "leaving",
+      "left"
+    ],
+    "feedback": "사역동사 let의 목적격 보어는 동사원형이어야 합니다.",
+    "fixSentence": "The manager let his employees <span class='err'>to leave</span> → <span class='fix'>leave</span> early on Fridays."
+  },
+  {
+    "instruction": "밑줄 친 부분을 어법에 맞게 고치세요.",
+    "sentence": "This blanket feels <span class='hl'>softly</span> against my skin.",
+    "hint": "",
+    "answer": "soft",
+    "options": [
+      "soft",
+      "softness",
+      "softer than"
+    ],
+    "feedback": "감각동사 feel 뒤에는 형용사가 와야 합니다.",
+    "fixSentence": "This blanket feels <span class='err'>softly</span> → <span class='fix'>soft</span> against my skin."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const col = document.getElementById('optsCol');
+  col.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    col.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  document.getElementById('fbSentence').innerHTML = q.fixSentence;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 문장점검 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

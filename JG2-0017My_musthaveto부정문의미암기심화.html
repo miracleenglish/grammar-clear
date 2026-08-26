@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG2-0017My must/have to 부정문 의미 암기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#EAF6F1; --green:#1E5A46; --green-dark:#16432F;
+  --mint:#4CAF93; --mint-light:#E7F7F0;
+  --coral:#E8604C; --coral-light:#FDEAE6;
+  --badge-mem:#E07B39;
+  --card-bg:#fff; --text:#1a1a1a; --gray:#888;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); font-family:'Noto Sans KR','Nunito',sans-serif; color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:16px; padding-bottom:40px; }
+.app { width:100%; max-width:480px; }
+.header { text-align:center; margin-bottom:18px; padding-top:8px; }
+.header-badges { display:flex; justify-content:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-track { font-size:11.5px; font-weight:800; background:var(--badge-mem); color:#fff; padding:3px 10px; border-radius:999px; }
+.badge-type { font-size:11.5px; font-weight:800; background:var(--badge-mem); color:#fff; padding:3px 10px; border-radius:999px; }
+h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
+.progress-wrap { height:12px; border-radius:999px; background:#d4ece3; box-shadow:inset 0 0 0 2px #b8dece; margin:14px 0 18px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mint),var(--green)); transition:width .4s ease; }
+.card { background:var(--card-bg); border-radius:20px; padding:22px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size:13px; color:#999; margin-bottom:6px; }
+.card-instruction { font-size:16.5px; color:#555; margin-bottom:12px; line-height:1.5; }
+.sentence-box { font-size:20px; font-family:'Nunito',sans-serif; font-weight:700; line-height:1.6; background:var(--bg); border-radius:12px; padding:14px 16px; margin-bottom:10px; color:var(--green-dark); }
+.ex-hl { color:var(--badge-mem); font-weight:800; }
+.hint { font-size:16px; color:#666; line-height:1.5; margin-bottom:16px; display:none; }
+.opts-col { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.opt-btn { font-size:17px; font-weight:700; font-family:'Nunito','Noto Sans KR',sans-serif; padding:13px 14px; border-radius:14px; border:2.5px solid #b8dece; background:#fff; color:var(--text); cursor:pointer; transition:all .15s; text-align:left; line-height:1.3; }
+.opt-btn:hover:not(:disabled) { background:var(--bg); border-color:var(--mint); }
+.opt-btn.correct { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.opt-btn.wrong { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.opt-btn:disabled { cursor:default; }
+.feedback { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; }
+.feedback.correct { background:var(--mint-light); color:#2E8064; }
+.feedback.wrong { background:var(--coral-light); color:#B84534; }
+.fb-title { font-size:15px; font-weight:800; margin-bottom:4px; }
+.next-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--green); color:#fff; border:none; cursor:pointer; display:none; transition:background .2s; }
+.next-btn:hover { background:var(--green-dark); }
+.result-screen { display:none; background:var(--card-bg); border-radius:20px; padding:36px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); text-align:center; }
+.result-stars { font-size:44px; margin-bottom:12px; }
+.result-score { font-size:18px; font-weight:800; color:var(--green); margin-bottom:6px; }
+.result-sub { font-size:13.5px; color:var(--gray); margin-bottom:24px; }
+.result-btns { display:flex; flex-direction:column; gap:10px; }
+.result-btn { padding:14px; border-radius:14px; font-size:15.5px; font-weight:800; font-family:'Noto Sans KR',sans-serif; border:none; cursor:pointer; transition:all .2s; }
+.btn-retry { background:var(--green); color:#fff; }
+.btn-retry:hover { background:var(--green-dark); }
+.btn-wrong { background:var(--coral-light); color:var(--coral); border:2px solid var(--coral); }
+.btn-wrong:hover { background:#f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">심화</span>
+      <span class="badge-type">암기형</span>
+    </div>
+    <h1>JG2-0017My · must/have to 부정문 의미 암기</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 8</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsCol"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "instruction": "다음 우리말 의미에 맞는 조동사 표현으로 알맞은 것을 고르세요.",
+    "sentence": "~해서는 안 된다 (금지)",
+    "krHint": "",
+    "options": [
+      "must not",
+      "don't have to",
+      "can't",
+      "should"
+    ],
+    "answer": "must not",
+    "feedback": "<span class='ex-hl'>must not</span>은 금지(~해서는 안 된다)를 나타냅니다.<br>예문: You must not touch the wire. (그 전선을 만지면 안 된다.)"
+  },
+  {
+    "instruction": "다음 우리말 의미에 맞는 조동사 표현으로 알맞은 것을 고르세요.",
+    "sentence": "~할 필요가 없다 (불필요)",
+    "krHint": "",
+    "options": [
+      "don't have to",
+      "must not",
+      "can't",
+      "shouldn't"
+    ],
+    "answer": "don't have to",
+    "feedback": "<span class='ex-hl'>don't have to</span>는 불필요(~할 필요가 없다)를 나타내며, don't need to·need not과 같은 뜻입니다.<br>예문: You don't have to bring lunch. (점심을 가져올 필요가 없다.)"
+  },
+  {
+    "instruction": "다음 우리말 의미에 맞는 조동사 표현으로 알맞은 것을 고르세요.",
+    "sentence": "~임에 틀림없다 (강한 확신)",
+    "krHint": "",
+    "options": [
+      "must",
+      "must not",
+      "can't",
+      "may"
+    ],
+    "answer": "must",
+    "feedback": "<span class='ex-hl'>must</span>는 강한 추측(~임에 틀림없다)을 나타냅니다.<br>예문: He must be tired after the long trip. (그는 긴 여행 후라 피곤함에 틀림없다.)"
+  },
+  {
+    "instruction": "다음 우리말 의미에 맞는 조동사 표현으로 알맞은 것을 고르세요.",
+    "sentence": "~일 리가 없다 (강한 확신의 부정)",
+    "krHint": "",
+    "options": [
+      "can't",
+      "must not",
+      "don't have to",
+      "shouldn't"
+    ],
+    "answer": "can't",
+    "feedback": "강한 추측 must의 부정형은 must not이 아니라 <span class='ex-hl'>can't[cannot]</span>(~일 리가 없다)입니다.<br>예문: That can't be true. (그것이 사실일 리가 없다.)"
+  },
+  {
+    "instruction": "다음 우리말 의미에 맞는 조동사 표현으로 알맞은 것을 고르세요.",
+    "sentence": "~해야 한다 (의무, must와 같은 뜻)",
+    "krHint": "",
+    "options": [
+      "have to",
+      "don't have to",
+      "must not",
+      "should"
+    ],
+    "answer": "have to",
+    "feedback": "<span class='ex-hl'>have to</span>는 must와 같은 뜻(~해야 한다)이지만, 부정형의 의미는 서로 다릅니다.<br>예문: You have to wear a seatbelt. (안전벨트를 매야 한다.)"
+  },
+  {
+    "instruction": "다음 우리말 의미에 맞는 조동사 표현으로 알맞은 것을 고르세요.",
+    "sentence": "금지(~해서는 안 된다)의 또 다른 표현이 아닌 것",
+    "krHint": "",
+    "options": [
+      "don't have to",
+      "must not",
+      "never",
+      "shouldn't(강하게 쓸 때)"
+    ],
+    "answer": "don't have to",
+    "feedback": "금지는 <span class='ex-hl'>must not</span>으로 나타내며, don't have to(불필요)와 절대 혼동하면 안 됩니다. 이 둘은 뜻이 완전히 다릅니다."
+  },
+  {
+    "instruction": "다음 우리말 의미에 맞는 조동사 표현으로 알맞은 것을 고르세요.",
+    "sentence": "의무를 나타내는 must와 have to의 부정형 의미가 서로 같은지 다른지",
+    "krHint": "",
+    "options": [
+      "완전히 다르다",
+      "완전히 같다",
+      "약간 비슷하다",
+      "비교 불가능하다"
+    ],
+    "answer": "완전히 다르다",
+    "feedback": "must not은 '금지', don't have to는 '불필요'로 <span class='ex-hl'>완전히 다른 의미</span>입니다. must와 have to 자체(긍정문)는 뜻이 같지만 부정문은 반드시 구별해야 합니다."
+  },
+  {
+    "instruction": "다음 우리말 의미에 맞는 조동사 표현으로 알맞은 것을 고르세요.",
+    "sentence": "강한 추측(긍정)과 강한 추측의 부정형이 같은 조동사를 쓰는지",
+    "krHint": "",
+    "options": [
+      "다른 조동사를 쓴다(must↔can't)",
+      "같은 조동사를 쓴다(must↔must not)",
+      "둘 다 will을 쓴다",
+      "둘 다 may를 쓴다"
+    ],
+    "answer": "다른 조동사를 쓴다(must↔can't)",
+    "feedback": "강한 추측의 긍정은 <span class='ex-hl'>must</span>, 부정은 <span class='ex-hl'>can't[cannot]</span>로 서로 다른 조동사를 씁니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence;
+  const hintEl = document.getElementById('hint');
+  if (q.krHint) { hintEl.style.display = ''; hintEl.innerHTML = q.krHint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const col = document.getElementById('optsCol');
+  col.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    col.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 암기 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
