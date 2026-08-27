@@ -256,11 +256,11 @@
         <span class="sb-sub">중2 · 기본+활용+심화+실전TEST 완성 · 213앱</span>
       </div>
     </button>
-    <button class="series-btn jg3 coming" onclick="return false">
+    <button class="series-btn jg3" onclick="showSeries('jg3',this)">
       <div class="sb-icon">📙</div>
       <div class="sb-text">
         <span class="sb-name">점프 영문법 3권</span>
-        <span class="sb-sub">중3 · 준비 중</span>
+        <span class="sb-sub">중3 · 기본 트랙 완성 · 76앱</span>
       </div>
     </button>
   </div>
@@ -2934,11 +2934,469 @@
 
 <!-- ▣ JG3 패널 -->
 <div id="series-jg3" class="series-panel">
-  <div class="coming-box">
-    <div class="ci">📙</div>
-    <div class="ct">점프 영문법 3권 — 준비 중</div>
-    <div class="cd">중3 수준 문법 앱이 곧 추가될 예정입니다.<br>기본 → 활용 → 심화 트랙으로 구성됩니다.</div>
+
+  <!-- 트랙 탭 -->
+  <div class="track-bar">
+    <button class="track-btn tb-basics active" onclick="showTrack('jg3','basics',this)">📖 Grammar Basics</button>
+    <button class="track-btn tb-basic" onclick="showTrack('jg3','basic',this)">🔵 기본 (1316그래머 수준)</button>
+    <button class="track-btn tb-apply" onclick="return false" style="opacity:.5;cursor:not-allowed;">🟢 활용 (준비중)</button>
+    <button class="track-btn tb-deep" onclick="return false" style="opacity:.5;cursor:not-allowed;">🟣 심화 (준비중)</button>
   </div>
+
+<div id="jg3-basics" class="track-panel show">
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon" style="background:linear-gradient(135deg,#D4AF37,#A08010);">📖</div>
+        <div class="section-title">Grammar Basics — 문법 기초 다지기</div>
+      </div>
+      <div class="card-grid">
+        <a class="app-card" href="JG3-0001_문장의성분.html">
+          <div class="app-num">0001</div><div class="app-icon ic-basic-a">A</div>
+          <div class="app-info"><div class="app-name">문장의 성분</div><div class="app-desc">주어·동사·목적어·보어·수식어</div></div>
+          <span class="app-badge bdg-basics">Basics</span>
+        </a>
+        <a class="app-card" href="JG3-0002_문장의형식.html">
+          <div class="app-num">0002</div><div class="app-icon ic-basic-a">A</div>
+          <div class="app-info"><div class="app-name">문장의 형식</div><div class="app-desc">1~5형식 문장 구조</div></div>
+          <span class="app-badge bdg-basics">Basics</span>
+        </a>
+        <a class="app-card" href="JG3-0003_구와절.html">
+          <div class="app-num">0003</div><div class="app-icon ic-basic-a">A</div>
+          <div class="app-info"><div class="app-name">구와 절</div><div class="app-desc">구·절의 역할, 명사절·형용사절·부사절</div></div>
+          <span class="app-badge bdg-basics">Basics</span>
+        </a>
+      </div>
+    </div>
+</div>
+
+<div id="jg3-basic" class="track-panel">
+    <!-- 그룹1 부정사 (Ch01) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹1 · 부정사 (Ch01)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0004_to부정사명사적용법.html">
+        <div class="app-num">0004</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">to부정사의 명사적 용법</div><div class="app-desc">주어·목적어·보어, 가주어/가목적어, 의문사+to-v</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0005_to부정사형용사적부사적용법.html">
+        <div class="app-num">0005</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">to부정사의 형용사적 용법, 부사적 용법</div><div class="app-desc">명사수식+전치사, be to-v, 목적·감정원인·결과</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0006_to부정사의미상주어시제수동태.html">
+        <div class="app-num">0006</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">to부정사의 의미상 주어, 시제, 수동태</div><div class="app-desc">for/of+목적격, 단순·완료부정사, 단순·완료수동태</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0007_목적격보어to부정사원형부정사.html">
+        <div class="app-num">0007</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">목적격 보어로 쓰이는 to부정사와 원형부정사</div><div class="app-desc">지각동사·사역동사, get의 예외, 분사 목적격보어</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0008_to부정사주요구문독립부정사.html">
+        <div class="app-num">0008</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">to부정사를 이용한 주요 구문, 독립부정사</div><div class="app-desc">too~to/enough to/it takes~to, 독립부정사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0009_부정사문장점검.html">
+        <div class="app-num">0009</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">부정사 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0009M_독립부정사관용표현암기.html">
+        <div class="app-num">0009M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">독립부정사 관용표현 암기</div><div class="app-desc">to begin with, strange to say 등</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0009T_부정사내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0009T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 부정사 내신TEST</div><div class="app-desc">그룹1 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹2 동명사 (Ch02) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹2 · 동명사 (Ch02)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0010_동명사의역할.html">
+        <div class="app-num">0010</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">동명사의 역할</div><div class="app-desc">주어·목적어·보어, 의미상주어, 시제, 수동태</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0011_목적어동명사to부정사.html">
+        <div class="app-num">0011</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">목적어로 쓰이는 동명사와 to부정사</div><div class="app-desc">동명사전용/to부정사전용/둘다가능 동사 구별</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0012_동명사주요구문.html">
+        <div class="app-num">0012</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">동명사를 이용한 주요 구문</div><div class="app-desc">go v-ing, feel like, look forward to, be worth 등</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0013_동명사문장점검.html">
+        <div class="app-num">0013</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">동명사 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0013M_기타주요동명사구문암기.html">
+        <div class="app-num">0013M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">기타 주요 동명사 구문 암기</div><div class="app-desc">be busy v-ing, spend~on 등</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0013T_동명사내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0013T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 동명사 내신TEST</div><div class="app-desc">그룹2 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹3 분사 (Ch03) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹3 · 분사 (Ch03)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0014_분사의역할.html">
+        <div class="app-num">0014</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">분사의 역할</div><div class="app-desc">현재분사·과거분사, 명사수식, 보어, 감정형용사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0015_분사구문.html">
+        <div class="app-num">0015</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">분사구문</div><div class="app-desc">만들기, 5가지 의미(때/동시동작/이유/조건/양보)</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0016_분사구문부정시제수동태.html">
+        <div class="app-num">0016</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">분사구문의 부정, 시제, 수동태</div><div class="app-desc">단순·완료 분사구문, 단순·완료 수동태</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0017_주의해야할분사구문.html">
+        <div class="app-num">0017</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">주의해야 할 분사구문</div><div class="app-desc">접속사 유지, with+명사+분사, 관용표현</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0018_분사문장점검.html">
+        <div class="app-num">0018</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">분사 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0018M_관용적분사구문암기.html">
+        <div class="app-num">0018M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">관용적 분사구문 암기</div><div class="app-desc">strictly speaking, considering 등</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0018T_분사내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0018T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 분사 내신TEST</div><div class="app-desc">그룹3 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹4 시제 (Ch04) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹4 · 시제 (Ch04)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0019_현재완료.html">
+        <div class="app-num">0019</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">현재완료</div><div class="app-desc">경험·계속·완료·결과, since/for, 현재완료진행</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0020_과거완료미래완료.html">
+        <div class="app-num">0020</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">과거완료, 미래완료</div><div class="app-desc">대과거, 과거완료진행, 미래완료(진행)</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0021_시제문장점검.html">
+        <div class="app-num">0021</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">시제 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0021M_since_for_beento_goneto암기.html">
+        <div class="app-num">0021M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">since·for, have been to·have gone to 암기</div><div class="app-desc">기준시점 vs 기간, 경험 vs 결과 구별</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0021T_시제내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0021T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 시제 내신TEST</div><div class="app-desc">그룹4 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹5 조동사 (Ch05) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹5 · 조동사 (Ch05)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0022_canmustshouldmayneed.html">
+        <div class="app-num">0022</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">can, must, should/ought to, may, need</div><div class="app-desc">능력·의무·충고·허가·필요</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0023_hadbetterwouldratherwouldusedto.html">
+        <div class="app-num">0023</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">had better, would rather, would, used to</div><div class="app-desc">강한 충고, 선호, 과거습관·상태</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0024_조동사have_ved.html">
+        <div class="app-num">0024</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">조동사+have v-ed</div><div class="app-desc">must/can't/should/may·might/could+have v-ed</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0025_조동사문장점검.html">
+        <div class="app-num">0025</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">조동사 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0025M_조동사have_ved의미구별암기.html">
+        <div class="app-num">0025M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">조동사+have v-ed 의미 구별 암기</div><div class="app-desc">과거 일에 대한 추측·후회 5가지</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0025T_조동사내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0025T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 조동사 내신TEST</div><div class="app-desc">그룹5 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹6 수동태 (Ch06) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹6 · 수동태 (Ch06)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0026_수동태의미와형태.html">
+        <div class="app-num">0026</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">수동태의 의미와 형태</div><div class="app-desc">수동태 불가 동사, 행위자 생략, 여러 형태</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0027_4형식5형식수동태.html">
+        <div class="app-num">0027</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">4형식, 5형식 문장의 수동태</div><div class="app-desc">목적어 전환, 지각·사역동사 수동태</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0028_주의해야할수동태.html">
+        <div class="app-num">0028</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">주의해야 할 수동태</div><div class="app-desc">by 이외 전치사, 동사구 수동태, that절 수동태</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0029_수동태문장점검.html">
+        <div class="app-num">0029</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">수동태 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0029M_by이외전치사수동태표현암기.html">
+        <div class="app-num">0029M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">by 이외 전치사 수동태 표현 암기</div><div class="app-desc">be interested in, be made of 등 12종</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0029T_수동태내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0029T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 수동태 내신TEST</div><div class="app-desc">그룹6 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹7 가정법 (Ch07) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹7 · 가정법 (Ch07)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0030_가정법과거가정법과거완료혼합가정법.html">
+        <div class="app-num">0030</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">가정법 과거, 가정법 과거완료, 혼합 가정법</div><div class="app-desc">단순조건문 구별 포함</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0031_Iwishasifwithoutbutforitstime.html">
+        <div class="app-num">0031</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">I wish, as if, without[but for], it's time</div><div class="app-desc">현재·과거 소망, 가정, if절 대체</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0032_가정법문장점검.html">
+        <div class="app-num">0032</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">가정법 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0032M_가정법if생략도치without전환암기.html">
+        <div class="app-num">0032M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">가정법 if 생략 도치·without 전환 암기</div><div class="app-desc">Were/Had/Should 도치, without↔if절</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0032T_가정법내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0032T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 가정법 내신TEST</div><div class="app-desc">그룹7 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹8 관계사 (Ch08) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹8 · 관계사 (Ch08)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0033_관계대명사.html">
+        <div class="app-num">0033</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">관계대명사</div><div class="app-desc">주격·소유격·목적격, what, that 필수조건</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0034_관계부사.html">
+        <div class="app-num">0034</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">관계부사</div><div class="app-desc">when/where/why/how, 선행사·관계부사 생략</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0035_복합관계사.html">
+        <div class="app-num">0035</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">복합 관계사</div><div class="app-desc">whoever/whichever/whatever 명사절·부사절</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0036_주의해야할관계사의용법.html">
+        <div class="app-num">0036</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">주의해야 할 관계사의 용법</div><div class="app-desc">계속적 용법, 생략, 전치사+관계대명사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0037_관계사문장점검.html">
+        <div class="app-num">0037</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">관계사 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0037M_복합관계사6종의미구별암기.html">
+        <div class="app-num">0037M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">복합관계사 6종 의미 구별 암기</div><div class="app-desc">whoever~however 명사절·부사절 의미</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0037T_관계사내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0037T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 관계사 내신TEST</div><div class="app-desc">그룹8 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹9 비교 구문 (Ch09) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹9 · 비교 구문 (Ch09)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0038_비교구문.html">
+        <div class="app-num">0038</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">비교 구문</div><div class="app-desc">as~as, 비교급+than, to를 쓰는 비교, 최상급</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0039_여러가지최상급표현.html">
+        <div class="app-num">0039</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">여러 가지 최상급 표현</div><div class="app-desc">No other~, one of the+최상급, the+최상급+that</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0040_비교구문이용한표현.html">
+        <div class="app-num">0040</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">비교 구문을 이용한 표현</div><div class="app-desc">much+비교급, as~as possible, 배수사</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0041_비교구문문장점검.html">
+        <div class="app-num">0041</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">비교 구문 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0041M_to쓰는비교표현비교급강조부사암기.html">
+        <div class="app-num">0041M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">to를 쓰는 비교표현·비교급 강조부사 암기</div><div class="app-desc">superior to 등 + much/even/far/a lot</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0041T_비교구문내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0041T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 비교 구문 내신TEST</div><div class="app-desc">그룹9 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹10 접속사 (Ch10) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹10 · 접속사 (Ch10)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0042_시간이유를나타내는접속사.html">
+        <div class="app-num">0042</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">시간, 이유를 나타내는 접속사</div><div class="app-desc">while/as/since/until/every time/as soon as</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0043_조건양보결과를나타내는접속사.html">
+        <div class="app-num">0043</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">조건, 양보, 결과를 나타내는 접속사</div><div class="app-desc">if/unless/although/so~that/such~that</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0044_짝으로이루어진접속사.html">
+        <div class="app-num">0044</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">짝으로 이루어진 접속사</div><div class="app-desc">both A and B 등 4종 + 수 일치</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0045_접속사문장점검.html">
+        <div class="app-num">0045</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">접속사 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0045M_짝접속사수일치규칙암기.html">
+        <div class="app-num">0045M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">짝접속사 수 일치 규칙 암기</div><div class="app-desc">both=복수, 나머지는 B에 일치</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0045T_접속사내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0045T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 접속사 내신TEST</div><div class="app-desc">그룹10 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹11 일치와 화법 (Ch11) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹11 · 일치와 화법 (Ch11)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0046_수의일치.html">
+        <div class="app-num">0046</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">수의 일치</div><div class="app-desc">each/every 등 단수, (both)A and B 등 복수</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0047_시제의일치.html">
+        <div class="app-num">0047</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">시제의 일치</div><div class="app-desc">규칙 + 예외(불변진리·역사적사실·지속습관)</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0048_화법.html">
+        <div class="app-num">0048</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">화법</div><div class="app-desc">평서문·의문문·명령문 전환, 간접의문문</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0049_일치화법문장점검.html">
+        <div class="app-num">0049</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">일치와 화법 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0049M_화법인칭대명사부사전환표암기.html">
+        <div class="app-num">0049M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">화법 인칭대명사·부사 전환표 암기</div><div class="app-desc">now→then, tomorrow→the next day 등</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0049T_일치화법내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0049T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 일치와 화법 내신TEST</div><div class="app-desc">그룹11 범위 19문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+    <!-- 그룹12 특수 구문 (Ch12) -->
+    <div class="group-label"><div class="gl-dot" style="background:#4A90D9;"></div>그룹12 · 특수 구문 (Ch12)</div>
+    <div class="card-grid" style="margin-bottom:8px;">
+      <a class="app-card" href="JG3-0050_강조부정구문병렬.html">
+        <div class="app-num">0050</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">강조, 부정 구문, 병렬</div><div class="app-desc">do 강조, it is/was~that, 부분·전체부정</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0051_도치.html">
+        <div class="app-num">0051</div><div class="app-icon ic-basic-a">A</div>
+        <div class="app-info"><div class="app-name">도치</div><div class="app-desc">방향·장소부사, 부정어구 강조, so/neither+동사+주어</div></div>
+        <span class="app-badge bdg-a">A형</span>
+      </a>
+      <a class="app-card" href="JG3-0052_특수구문문장점검.html">
+        <div class="app-num">0052</div><div class="app-icon ic-basic-c">C</div>
+        <div class="app-info"><div class="app-name">특수구문 문장점검</div><div class="app-desc">밑줄 고치기 오류 찾기</div></div>
+        <span class="app-badge bdg-c">C형</span>
+      </a>
+      <a class="app-card" href="JG3-0052M_부분부정전체부정부정부사암기.html">
+        <div class="app-num">0052M</div><div class="app-icon ic-basic-m">M</div>
+        <div class="app-info"><div class="app-name">부분부정·전체부정·부정부사 암기</div><div class="app-desc">not all vs none, hardly~barely</div></div>
+        <span class="app-badge bdg-m">암기형</span>
+      </a>
+      <a class="app-card" href="JG3-0052T_특수구문내신TEST.html" style="margin-top:6px;border:1.5px solid #f5c6be;">
+        <div class="app-num">0052T</div><div class="app-icon ic-basic-t">T</div>
+        <div class="app-info"><div class="app-name">📝 특수구문 내신TEST</div><div class="app-desc">그룹12 범위 20문제</div></div>
+        <span class="app-badge bdg-t">내신TEST</span>
+      </a>
+    </div>
+
+</div>
+
 </div>
 
 </main>
