@@ -65,7 +65,7 @@ h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   <div class="card" id="quizCard">
-    <div class="qnum" id="qnum">1 / 7</div>
+    <div class="qnum" id="qnum">1 / 9</div>
     <div class="card-instruction" id="cardInstruction"></div>
     <div class="sentence-box" id="sentenceBox"></div>
     <div class="hint" id="hint"></div>
@@ -178,6 +178,32 @@ const ALL_QUESTIONS = [
     ],
     "answer": "If I had known the truth",
     "feedback": "Had가 도치되었으므로 가정법 과거완료(If I had known)가 원래 형태입니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "내가 너라면, 주저하지 않을 텐데.<br><span class='blank'> </span> I you, I wouldn't hesitate.",
+    "krHint": "",
+    "options": [
+      "Were",
+      "Was",
+      "If were",
+      "Have"
+    ],
+    "answer": "Were",
+    "feedback": "if절의 동사가 were일 때 if를 생략하고 <span class='ex-hl'>Were+주어</span>로 도치합니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "그녀의 지원이 없었더라면, 나는 대학을 마치지 못했을 텐데.<br><span class='blank'> </span> it not been for her support, I couldn't have finished university.",
+    "krHint": "",
+    "options": [
+      "Had",
+      "Have",
+      "Did",
+      "Were"
+    ],
+    "answer": "Had",
+    "feedback": "if절의 동사가 had일 때 if를 생략하고 <span class='ex-hl'>Had+주어</span>로 도치합니다."
   }
 ];
 

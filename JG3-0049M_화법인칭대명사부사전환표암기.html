@@ -65,7 +65,7 @@ h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   <div class="card" id="quizCard">
-    <div class="qnum" id="qnum">1 / 9</div>
+    <div class="qnum" id="qnum">1 / 13</div>
     <div class="card-instruction" id="cardInstruction"></div>
     <div class="sentence-box" id="sentenceBox"></div>
     <div class="hint" id="hint"></div>
@@ -204,6 +204,58 @@ const ALL_QUESTIONS = [
     ],
     "answer": "the next week",
     "feedback": "<span class='ex-hl'>next week</span>는 간접화법에서 <b>the next week</b>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 문장을 간접화법으로 바꿀 때 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Arnold said to Emma, \"I will be back tomorrow.\"<br>→ Arnold told Emma he would be back <span class='blank'> </span>.",
+    "krHint": "",
+    "options": [
+      "the next day",
+      "tomorrow",
+      "that day",
+      "the day before"
+    ],
+    "answer": "the next day",
+    "feedback": "직접화법의 tomorrow는 간접화법에서 <span class='ex-hl'>the next day</span>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 문장을 간접화법으로 바꿀 때 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He said, \"I saw her yesterday.\"<br>→ He told me that he had seen her <span class='blank'> </span>.",
+    "krHint": "",
+    "options": [
+      "the day before",
+      "yesterday",
+      "the next day",
+      "ago"
+    ],
+    "answer": "the day before",
+    "feedback": "직접화법의 yesterday는 간접화법에서 <span class='ex-hl'>the day before</span>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 문장을 간접화법으로 바꿀 때 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "She said, \"I bought this two days ago.\"<br>→ She said she had bought that two days <span class='blank'> </span>.",
+    "krHint": "",
+    "options": [
+      "before",
+      "ago",
+      "later",
+      "past"
+    ],
+    "answer": "before",
+    "feedback": "직접화법의 ago는 간접화법에서 <span class='ex-hl'>before</span>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 문장을 간접화법으로 바꿀 때 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He said, \"I am busy now.\"<br>→ He said he was busy <span class='blank'> </span>.",
+    "krHint": "",
+    "options": [
+      "then",
+      "now",
+      "today",
+      "that day"
+    ],
+    "answer": "then",
+    "feedback": "직접화법의 now는 간접화법에서 <span class='ex-hl'>then</span>으로 바뀝니다."
   }
 ];
 

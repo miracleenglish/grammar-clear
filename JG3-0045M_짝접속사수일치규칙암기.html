@@ -65,7 +65,7 @@ h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   <div class="card" id="quizCard">
-    <div class="qnum" id="qnum">1 / 7</div>
+    <div class="qnum" id="qnum">1 / 8</div>
     <div class="card-instruction" id="cardInstruction"></div>
     <div class="sentence-box" id="sentenceBox"></div>
     <div class="hint" id="hint"></div>
@@ -178,6 +178,19 @@ const ALL_QUESTIONS = [
     ],
     "answer": "is",
     "feedback": "not only A but also B는 B(the teacher, 단수)에 수를 일치시키므로 is가 정답입니다."
+  },
+  {
+    "instruction": "다음 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Neither Ben nor his friends <span class='blank'> </span> coming to the party.",
+    "krHint": "",
+    "options": [
+      "are",
+      "is",
+      "was",
+      "has"
+    ],
+    "answer": "are",
+    "feedback": "neither A nor B는 B(his friends, 복수)에 수를 일치시키므로 are가 정답입니다."
   }
 ];
 

@@ -65,7 +65,7 @@ h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   <div class="card" id="quizCard">
-    <div class="qnum" id="qnum">1 / 8</div>
+    <div class="qnum" id="qnum">1 / 12</div>
     <div class="card-instruction" id="cardInstruction"></div>
     <div class="sentence-box" id="sentenceBox"></div>
     <div class="hint" id="hint"></div>
@@ -191,6 +191,58 @@ const ALL_QUESTIONS = [
     ],
     "answer": "Strictly speaking",
     "feedback": "'엄밀히 말해서'는 <span class='ex-hl'>Strictly speaking</span>으로 나타냅니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "엄밀히 말해서<br>strictly <span class='blank'> </span>",
+    "krHint": "",
+    "options": [
+      "speaking",
+      "speak",
+      "spoke",
+      "speech"
+    ],
+    "answer": "speaking",
+    "feedback": "'엄밀히 말해서'는 <span class='ex-hl'>strictly speaking</span>입니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "~로 판단하건대<br>judging <span class='blank'> </span>",
+    "krHint": "",
+    "options": [
+      "from",
+      "of",
+      "by",
+      "with"
+    ],
+    "answer": "from",
+    "feedback": "'~로 판단하건대'는 <span class='ex-hl'>judging from</span>입니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "~ 이야기가 나왔으니 말인데<br>speaking <span class='blank'> </span>",
+    "krHint": "",
+    "options": [
+      "of",
+      "from",
+      "to",
+      "with"
+    ],
+    "answer": "of",
+    "feedback": "'~ 이야기가 나왔으니 말인데'는 <span class='ex-hl'>speaking of</span>입니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "대강 말하자면<br>roughly <span class='blank'> </span>",
+    "krHint": "",
+    "options": [
+      "speaking",
+      "speak",
+      "spoke",
+      "speech"
+    ],
+    "answer": "speaking",
+    "feedback": "'대강 말하자면'은 <span class='ex-hl'>roughly speaking</span>입니다."
   }
 ];
 

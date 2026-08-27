@@ -65,7 +65,7 @@ h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   <div class="card" id="quizCard">
-    <div class="qnum" id="qnum">1 / 8</div>
+    <div class="qnum" id="qnum">1 / 12</div>
     <div class="card-instruction" id="cardInstruction"></div>
     <div class="sentence-box" id="sentenceBox"></div>
     <div class="hint" id="hint"></div>
@@ -90,7 +90,7 @@ h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
 const ALL_QUESTIONS = [
   {
     "instruction": "다음 동명사 구문의 뜻으로 알맞은 것을 고르세요.",
-    "sentence": "be busy <span class='blank'> v-ing </span>",
+    "sentence": "be busy v-ing",
     "krHint": "",
     "options": [
       "~하느라 바쁘다",
@@ -103,7 +103,7 @@ const ALL_QUESTIONS = [
   },
   {
     "instruction": "다음 동명사 구문의 뜻으로 알맞은 것을 고르세요.",
-    "sentence": "keep (on) <span class='blank'> v-ing </span>",
+    "sentence": "keep (on) v-ing",
     "krHint": "",
     "options": [
       "계속 ~하다",
@@ -116,7 +116,7 @@ const ALL_QUESTIONS = [
   },
   {
     "instruction": "다음 동명사 구문의 뜻으로 알맞은 것을 고르세요.",
-    "sentence": "there is no <span class='blank'> v-ing </span>",
+    "sentence": "there is no v-ing",
     "krHint": "",
     "options": [
       "~할 수 없다, ~하는 것은 불가능하다",
@@ -129,7 +129,7 @@ const ALL_QUESTIONS = [
   },
   {
     "instruction": "다음 동명사 구문의 뜻으로 알맞은 것을 고르세요.",
-    "sentence": "on[upon] <span class='blank'> v-ing </span>",
+    "sentence": "on[upon] v-ing",
     "krHint": "",
     "options": [
       "~하자마자",
@@ -142,7 +142,7 @@ const ALL_QUESTIONS = [
   },
   {
     "instruction": "다음 동명사 구문의 뜻으로 알맞은 것을 고르세요.",
-    "sentence": "have trouble[difficulty] (in) <span class='blank'> v-ing </span>",
+    "sentence": "have trouble[difficulty] (in) v-ing",
     "krHint": "",
     "options": [
       "~하는 데 어려움을 겪다",
@@ -155,7 +155,7 @@ const ALL_QUESTIONS = [
   },
   {
     "instruction": "다음 동명사 구문의 뜻으로 알맞은 것을 고르세요.",
-    "sentence": "spend+시간[돈]+(on) <span class='blank'> v-ing </span>",
+    "sentence": "spend+시간[돈]+(on) v-ing",
     "krHint": "",
     "options": [
       "~하는 데 시간[돈]을 쓰다",
@@ -168,7 +168,7 @@ const ALL_QUESTIONS = [
   },
   {
     "instruction": "다음 동명사 구문의 뜻으로 알맞은 것을 고르세요.",
-    "sentence": "keep[prevent]+목적어+from <span class='blank'> v-ing </span>",
+    "sentence": "keep[prevent]+목적어+from v-ing",
     "krHint": "",
     "options": [
       "~가 ~하는 것을 막다",
@@ -181,7 +181,7 @@ const ALL_QUESTIONS = [
   },
   {
     "instruction": "다음 동명사 구문의 뜻으로 알맞은 것을 고르세요.",
-    "sentence": "it's no use <span class='blank'> v-ing </span>",
+    "sentence": "it's no use v-ing",
     "krHint": "",
     "options": [
       "~해 봐야 소용없다",
@@ -191,6 +191,58 @@ const ALL_QUESTIONS = [
     ],
     "answer": "~해 봐야 소용없다",
     "feedback": "<span class='ex-hl'>it's no use v-ing</span>는 '~해 봐야 소용없다'라는 뜻입니다.<br>예문: It's no use crying over spilled milk. (엎질러진 우유에 대해 울어봐야 소용없다.)"
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "계속 ~하다<br>keep <span class='blank'> </span> v-ing",
+    "krHint": "",
+    "options": [
+      "on",
+      "of",
+      "to",
+      "at"
+    ],
+    "answer": "on",
+    "feedback": "'계속 ~하다'는 <span class='ex-hl'>keep on v-ing</span>입니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "~할 수 없다, ~하는 것은 불가능하다<br>there is <span class='blank'> </span> v-ing",
+    "krHint": "",
+    "options": [
+      "no",
+      "not",
+      "none",
+      "never"
+    ],
+    "answer": "no",
+    "feedback": "'~할 수 없다'는 <span class='ex-hl'>there is no v-ing</span>입니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "~해 봐야 소용없다<br>it's no <span class='blank'> </span> v-ing",
+    "krHint": "",
+    "options": [
+      "use",
+      "using",
+      "used",
+      "uses"
+    ],
+    "answer": "use",
+    "feedback": "'~해 봐야 소용없다'는 <span class='ex-hl'>it's no use v-ing</span>입니다."
+  },
+  {
+    "instruction": "다음 우리말 뜻에 맞도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "~가 ~하는 것을 막다<br>keep[prevent]+목적어+<span class='blank'> </span> v-ing",
+    "krHint": "",
+    "options": [
+      "from",
+      "of",
+      "to",
+      "with"
+    ],
+    "answer": "from",
+    "feedback": "'~가 ~하는 것을 막다'는 <span class='ex-hl'>keep[prevent]+목적어+from v-ing</span>입니다."
   }
 ];
 

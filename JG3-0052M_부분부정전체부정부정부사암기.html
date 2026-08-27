@@ -65,7 +65,7 @@ h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
   <div class="card" id="quizCard">
-    <div class="qnum" id="qnum">1 / 7</div>
+    <div class="qnum" id="qnum">1 / 9</div>
     <div class="card-instruction" id="cardInstruction"></div>
     <div class="sentence-box" id="sentenceBox"></div>
     <div class="hint" id="hint"></div>
@@ -170,6 +170,32 @@ const ALL_QUESTIONS = [
     ],
     "answer": "None",
     "feedback": "'아무도 ~못했다'는 전체부정 none으로 나타냅니다."
+  },
+  {
+    "instruction": "다음 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "<span class='blank'> </span> of my friends like spicy food.",
+    "krHint": "내 친구들이 모두 매운 음식을 좋아하는 것은 아니다.",
+    "options": [
+      "Not all",
+      "None",
+      "Neither",
+      "Not either"
+    ],
+    "answer": "Not all",
+    "feedback": "'모두 ~인 것은 아니다'는 부분부정 not all로 나타냅니다."
+  },
+  {
+    "instruction": "다음 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He does <span class='blank'> </span> agree with her.",
+    "krHint": "그가 항상 그녀에게 동의하는 것은 아니다.",
+    "options": [
+      "not always",
+      "never",
+      "not any",
+      "none"
+    ],
+    "answer": "not always",
+    "feedback": "'항상 ~인 것은 아니다'는 부분부정 not always로 나타냅니다."
   }
 ];
 
