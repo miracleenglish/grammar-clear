@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG3-0015 분사구문</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#EAF6F1; --green:#1E5A46; --green-dark:#16432F;
+  --mint:#4CAF93; --mint-light:#E7F7F0;
+  --coral:#E8604C; --coral-light:#FDEAE6;
+  --badge-basic:#4A90D9;
+  --card-bg:#fff; --text:#1a1a1a; --gray:#888;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); font-family:'Noto Sans KR','Nunito',sans-serif; color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:16px; padding-bottom:40px; }
+.app { width:100%; max-width:480px; }
+.header { text-align:center; margin-bottom:18px; padding-top:8px; }
+.header-badges { display:flex; justify-content:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-track { font-size:11.5px; font-weight:800; background:var(--badge-basic); color:#fff; padding:3px 10px; border-radius:999px; }
+h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
+.progress-wrap { height:12px; border-radius:999px; background:#d4ece3; box-shadow:inset 0 0 0 2px #b8dece; margin:14px 0 18px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mint),var(--green)); transition:width .4s ease; }
+.card { background:var(--card-bg); border-radius:20px; padding:22px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size:13px; color:#999; margin-bottom:6px; }
+.card-instruction { font-size:16.5px; color:#555; margin-bottom:12px; line-height:1.5; }
+.sentence-box { font-size:20px; font-family:'Nunito',sans-serif; font-weight:700; line-height:1.6; background:var(--bg); border-radius:12px; padding:14px 16px; margin-bottom:10px; color:var(--green-dark); }
+.sentence-box .blank { display:inline-block; min-width:72px; border-bottom:3px solid var(--green); vertical-align:bottom; margin:0 3px; }
+.sentence-box .hl { text-decoration:underline; text-decoration-thickness:2.5px; text-underline-offset:5px; text-decoration-color:var(--green-dark); }
+.hint { font-size:16px; color:#666; line-height:1.5; margin-bottom:16px; }
+.opts-col { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.opt-btn { font-size:17px; font-weight:700; font-family:'Nunito','Noto Sans KR',sans-serif; padding:13px 14px; border-radius:14px; border:2.5px solid #b8dece; background:#fff; color:var(--text); cursor:pointer; transition:all .15s; text-align:left; line-height:1.3; }
+.opt-btn:hover:not(:disabled) { background:var(--bg); border-color:var(--mint); }
+.opt-btn.correct { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.opt-btn.wrong { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.opt-btn:disabled { cursor:default; }
+.feedback { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; }
+.feedback.correct { background:var(--mint-light); color:#2E8064; }
+.feedback.wrong { background:var(--coral-light); color:#B84534; }
+.fb-title { font-size:15px; font-weight:800; margin-bottom:4px; }
+.next-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--green); color:#fff; border:none; cursor:pointer; display:none; transition:background .2s; }
+.next-btn:hover { background:var(--green-dark); }
+.result-screen { display:none; background:var(--card-bg); border-radius:20px; padding:36px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); text-align:center; }
+.result-stars { font-size:44px; margin-bottom:12px; }
+.result-score { font-size:18px; font-weight:800; color:var(--green); margin-bottom:6px; }
+.result-sub { font-size:13.5px; color:var(--gray); margin-bottom:24px; }
+.result-btns { display:flex; flex-direction:column; gap:10px; }
+.result-btn { padding:14px; border-radius:14px; font-size:15.5px; font-weight:800; font-family:'Noto Sans KR',sans-serif; border:none; cursor:pointer; transition:all .2s; }
+.btn-retry { background:var(--green); color:#fff; }
+.btn-retry:hover { background:var(--green-dark); }
+.btn-wrong { background:var(--coral-light); color:var(--coral); border:2px solid var(--coral); }
+.btn-wrong:hover { background:#f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">기본</span>
+    </div>
+    <h1>JG3-0015 · 분사구문</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 12</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint" style="display:none;"></div>
+    <div class="opts-col" id="optsCol"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ first prize, he felt happy.",
+    "hint": "1등상을 타서, 그는 행복했다.",
+    "options": [
+      "Winning",
+      "Win",
+      "Won",
+      "To win"
+    ],
+    "answer": "Winning",
+    "feedback": "부사절과 주절의 주어가 같을 때, 접속사와 주어를 생략하고 동사를 v-ing로 바꿉니다. 정답은 <b>Winning</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ the house, we heard the kids running upstairs.",
+    "hint": "집에 들어갔을 때, 우리는 아이들이 위층에서 뛰는 소리를 들었다.",
+    "options": [
+      "Entering",
+      "Enter",
+      "Entered",
+      "To enter"
+    ],
+    "answer": "Entering",
+    "feedback": "'~할 때'라는 시간을 나타내는 분사구문입니다. 정답은 <b>Entering</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Ken walked away, ___ his hand.",
+    "hint": "Ken은 손을 흔들면서 걸어갔다.",
+    "options": [
+      "waving",
+      "waved",
+      "wave",
+      "to wave"
+    ],
+    "answer": "waving",
+    "feedback": "'~하면서'라는 동시동작을 나타내는 분사구문입니다. 정답은 <b>waving</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The train left Seoul at 6, ___ Busan at 9.",
+    "hint": "기차는 6시에 서울을 떠나서, 9시에 부산에 도착했다.(연속상황)",
+    "options": [
+      "reaching",
+      "reached",
+      "reach",
+      "to reach"
+    ],
+    "answer": "reaching",
+    "feedback": "'~하고 나서'라는 연속상황을 나타내는 분사구문입니다. 정답은 <b>reaching</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ a boy, he couldn't understand the girl's feelings.",
+    "hint": "소년이었기 때문에, 그는 소녀의 감정을 이해할 수 없었다.(이유)",
+    "options": [
+      "Being",
+      "Be",
+      "Been",
+      "To be"
+    ],
+    "answer": "Being",
+    "feedback": "'~하기 때문에'라는 이유를 나타내는 분사구문입니다. 정답은 <b>Being</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ to Hollywood, you'll be able to see many famous people.",
+    "hint": "할리우드에 간다면, 너는 많은 유명인을 볼 수 있을 것이다.(조건)",
+    "options": [
+      "Going",
+      "Go",
+      "Gone",
+      "To go"
+    ],
+    "answer": "Going",
+    "feedback": "'~하면'이라는 조건을 나타내는 분사구문입니다. 정답은 <b>Going</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Though ___ near a movie star's house, I have never seen her.",
+    "hint": "영화배우의 집 근처에 살고 있음에도 불구하고, 나는 그녀를 본 적이 없다.(양보)",
+    "options": [
+      "living",
+      "live",
+      "lived",
+      "to live"
+    ],
+    "answer": "living",
+    "feedback": "양보를 나타내는 분사구문은 접속사(though)를 남겨 두는 경우가 많습니다. 정답은 <b>living</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "As the singer danced, she turned toward the audience.\n→ ___, the singer turned toward the audience.",
+    "hint": "",
+    "options": [
+      "Dancing",
+      "Dance",
+      "Danced",
+      "To dance"
+    ],
+    "answer": "Dancing",
+    "feedback": "부사절의 주어를 생략한 후 주절의 주어가 대명사(she)라면, 대명사를 부사절의 주어(the singer)로 고칩니다. 정답은 <b>Dancing</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "My mother cooked dinner in the kitchen, ___ to music.",
+    "hint": "엄마는 음악을 들으면서 부엌에서 저녁을 요리했다.",
+    "options": [
+      "listening",
+      "listen",
+      "is listening",
+      "listened"
+    ],
+    "answer": "listening",
+    "feedback": "동시동작을 나타내는 분사구문입니다. 정답은 <b>listening</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ up early, I felt tired all day.",
+    "hint": "일찍 일어났기 때문에, 나는 하루 종일 피곤했다.(이유)",
+    "options": [
+      "Waking",
+      "Wake",
+      "Woke",
+      "To wake"
+    ],
+    "answer": "Waking",
+    "feedback": "이유를 나타내는 분사구문입니다. 정답은 <b>Waking</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ this medicine, you will feel better soon.",
+    "hint": "이 약을 먹으면, 곧 나아질 것이다.(조건)",
+    "options": [
+      "Taking",
+      "Take",
+      "Took",
+      "To take"
+    ],
+    "answer": "Taking",
+    "feedback": "조건을 나타내는 분사구문입니다. 정답은 <b>Taking</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Although ___ tired, she kept working.",
+    "hint": "피곤했음에도 불구하고, 그녀는 계속 일했다.(양보)",
+    "options": [
+      "feeling",
+      "feel",
+      "felt",
+      "to feel"
+    ],
+    "answer": "feeling",
+    "feedback": "양보를 나타내는 분사구문은 접속사를 남겨 두는 경우가 많습니다. 정답은 <b>feeling</b>입니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/___/g, "<span class='blank'>&nbsp;</span>");
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const col = document.getElementById('optsCol');
+  col.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    col.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

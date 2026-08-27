@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG3-0009T 부정사 내신TEST</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+  --mint: #4CAF93; --mint-light: #E7F7F0;
+  --coral: #E8604C; --coral-light: #FDEAE6;
+  --badge-test: #E8604C;
+  --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+.app { width: 100%; max-width: 480px; }
+.header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+.header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+.badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+.progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+.progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+.card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+.card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+.sentence-box { font-size: 20px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+.sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+.hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; display: none; }
+.opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.opt-btn { font-size: 18px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+.opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+.opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+.opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+.opt-btn:disabled { cursor: default; }
+.feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+.feedback.correct { background: var(--mint-light); color: #2E8064; }
+.feedback.wrong { background: var(--coral-light); color: #B84534; }
+.fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+.next-btn:hover { background: var(--green-dark); }
+.result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+.result-stars { font-size: 44px; margin-bottom: 12px; }
+.result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+.result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+.result-btns { display: flex; flex-direction: column; gap: 10px; }
+.result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+.btn-retry { background: var(--green); color: #fff; }
+.btn-retry:hover { background: var(--green-dark); }
+.btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+.btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">심화</span>
+      <span class="badge-type">내신TEST</span>
+    </div>
+    <h1>JG3-0009T · 부정사 내신TEST</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 19</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "<span class='blank'> ? </span> a new house takes a lot of money.",
+    "hint": "",
+    "answer": "To build",
+    "options": [
+      "To build",
+      "Build",
+      "Building of",
+      "Built"
+    ],
+    "feedback": "to부정사가 문장의 주어로 쓰였습니다. 정답은 <b>To build</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "It is essential <span class='blank'> ? </span> enough water every day.",
+    "hint": "",
+    "answer": "to drink",
+    "options": [
+      "to drink",
+      "drink",
+      "drinking",
+      "drunk"
+    ],
+    "feedback": "가주어 It, 진주어 to부정사구입니다. 정답은 <b>to drink</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "She didn't know <span class='blank'> ? </span> to say to him.",
+    "hint": "",
+    "answer": "what",
+    "options": [
+      "what",
+      "how",
+      "when",
+      "which"
+    ],
+    "feedback": "「what to-v(무엇을 ~할지)」구문입니다. 정답은 <b>what</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Do you have a chair <span class='blank'> ? </span>?",
+    "hint": "",
+    "answer": "to sit on",
+    "options": [
+      "to sit on",
+      "to sit",
+      "sitting on",
+      "to sit at"
+    ],
+    "feedback": "chair는 전치사 on의 의미상 목적어이므로 전치사를 함께 씁니다. 정답은 <b>to sit on</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "You <span class='blank'> ? </span> submit the form by Friday.",
+    "hint": "",
+    "answer": "are to",
+    "options": [
+      "are to",
+      "is to",
+      "are for",
+      "being to"
+    ],
+    "feedback": "「be to-v」의 의무 용법입니다. 정답은 <b>are to</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He grew up <span class='blank'> ? </span> a famous pianist.",
+    "hint": "",
+    "answer": "to be",
+    "options": [
+      "to be",
+      "be",
+      "being",
+      "been"
+    ],
+    "feedback": "'자라서 ~가 되다'는 결과를 나타내는 부사적 용법입니다. 정답은 <b>to be</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "It was kind <span class='blank'> ? </span> help the old man.",
+    "hint": "",
+    "answer": "of her to",
+    "options": [
+      "of her to",
+      "for her to",
+      "of she to",
+      "for she to"
+    ],
+    "feedback": "kind(성품 형용사) 뒤에는 「of+목적격」을 씁니다. 정답은 <b>of her to</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He seems <span class='blank'> ? </span> rich in his youth.",
+    "hint": "",
+    "answer": "to have been",
+    "options": [
+      "to have been",
+      "to be",
+      "being",
+      "to has been"
+    ],
+    "feedback": "완료부정사로 문장 시제보다 앞선 과거 사실을 나타냅니다. 정답은 <b>to have been</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "This bridge is thought <span class='blank'> ? </span> in the 1800s.",
+    "hint": "",
+    "answer": "to have been built",
+    "options": [
+      "to have been built",
+      "to be built",
+      "to have built",
+      "to being built"
+    ],
+    "feedback": "완료수동태(수동+시제가 앞섬)입니다. 정답은 <b>to have been built</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "My teacher told me <span class='blank'> ? </span> give up.",
+    "hint": "",
+    "answer": "never to",
+    "options": [
+      "never to",
+      "to never",
+      "not never",
+      "never not to"
+    ],
+    "feedback": "to부정사의 부정은 to 앞에 not/never를 붙입니다. 정답은 <b>never to</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The teacher allowed the students <span class='blank'> ? </span> early.",
+    "hint": "",
+    "answer": "to leave",
+    "options": [
+      "to leave",
+      "leave",
+      "leaving",
+      "left"
+    ],
+    "feedback": "allow는 목적격 보어로 to부정사를 취합니다. 정답은 <b>to leave</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "I saw the leaves <span class='blank'> ? </span> from the tree.",
+    "hint": "",
+    "answer": "falling",
+    "options": [
+      "falling",
+      "fall",
+      "to fall",
+      "fallen"
+    ],
+    "feedback": "지각동사의 목적격 보어로 진행을 강조할 때는 현재분사를 씁니다. 정답은 <b>falling</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "She had her hair <span class='blank'> ? </span> yesterday.",
+    "hint": "",
+    "answer": "cut",
+    "options": [
+      "cut",
+      "to cut",
+      "cutting",
+      "cuts"
+    ],
+    "feedback": "목적어와 목적격 보어의 관계가 수동일 때 과거분사를 씁니다(cut의 과거분사도 cut). 정답은 <b>cut</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "This box is <span class='blank'> ? </span> heavy for a child to lift.",
+    "hint": "",
+    "answer": "too",
+    "options": [
+      "too",
+      "so",
+      "very",
+      "enough"
+    ],
+    "feedback": "「too+형용사+for+목적격+to-v」구문입니다. 정답은 <b>too</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He is wise <span class='blank'> ? </span> to solve the puzzle.",
+    "hint": "",
+    "answer": "enough",
+    "options": [
+      "enough",
+      "too",
+      "so",
+      "very"
+    ],
+    "feedback": "「형용사+enough+to-v」구문입니다. 정답은 <b>enough</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "It took us five hours <span class='blank'> ? </span> the mountain.",
+    "hint": "",
+    "answer": "to climb",
+    "options": [
+      "to climb",
+      "climb",
+      "climbing",
+      "climbed"
+    ],
+    "feedback": "「it takes+목적격+시간+to-v」구문입니다. 정답은 <b>to climb</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "<span class='blank'> ? </span>, let's review the main point.",
+    "hint": "",
+    "answer": "To be brief",
+    "options": [
+      "To be brief",
+      "Strange to say",
+      "To make matters worse",
+      "To tell the truth"
+    ],
+    "feedback": "'간단히 말하면'은 <b>To be brief</b>입니다."
+  },
+  {
+    "instruction": "다음 중 어법상 틀린 문장을 고르세요.",
+    "sentence": "다음 중 어법상 틀린 문장은?",
+    "hint": "",
+    "answer": "It is important for us solve this problem.",
+    "options": [
+      "It is important for us solve this problem.",
+      "It is important for us to solve this problem.",
+      "He was happy to see his family again.",
+      "She wanted to join the newspaper club."
+    ],
+    "feedback": "가주어 it 뒤 진주어는 to부정사구여야 하므로 to solve로 고쳐야 합니다."
+  },
+  {
+    "instruction": "다음 중 어법상 틀린 문장을 고르세요.",
+    "sentence": "다음 중 어법상 틀린 문장은?",
+    "hint": "",
+    "answer": "I made him to clean his room.",
+    "options": [
+      "I made him to clean his room.",
+      "I asked him to clean his room.",
+      "I saw him clean his room.",
+      "I helped him clean his room."
+    ],
+    "feedback": "사역동사 make의 목적격 보어는 원형부정사여야 하므로 clean으로 고쳐야 합니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  document.getElementById('hint').style.display = 'none';
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 내신 만점 각! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
