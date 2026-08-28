@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG3-0024xT 분사 내신TEST (활용)</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #EAF6F1; --green: #1E5A46; --green-dark: #16432F;
+  --mint: #4CAF93; --mint-light: #E7F7F0;
+  --coral: #E8604C; --coral-light: #FDEAE6;
+  --badge-test: #E8604C;
+  --card-bg: #fff; --text: #1a1a1a; --gray: #888;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); font-family: 'Noto Sans KR', 'Nunito', sans-serif; color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 16px; padding-bottom: 40px; }
+.app { width: 100%; max-width: 480px; }
+.header { text-align: center; margin-bottom: 18px; padding-top: 8px; }
+.header-badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.badge-track { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+.badge-type { font-size: 11.5px; font-weight: 800; background: var(--badge-test); color: #fff; padding: 3px 10px; border-radius: 999px; }
+h1 { font-size: 19px; font-weight: 800; color: var(--green); line-height: 1.3; }
+.progress-wrap { height: 12px; border-radius: 999px; background: #d4ece3; box-shadow: inset 0 0 0 2px #b8dece; margin: 14px 0 18px; overflow: hidden; }
+.progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mint), var(--green)); transition: width 0.4s ease; }
+.card { background: var(--card-bg); border-radius: 20px; padding: 22px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size: 13px; color: #999; margin-bottom: 6px; }
+.card-instruction { font-size: 16.5px; color: #555; margin-bottom: 12px; line-height: 1.5; }
+.sentence-box { font-size: 20px; font-family: 'Nunito', sans-serif; font-weight: 700; line-height: 1.65; background: var(--bg); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; color: var(--green-dark); }
+.sentence-box .blank { display: inline-block; border-bottom: 3px solid var(--green); min-width: 72px; text-align: center; color: var(--green); font-weight: 800; }
+.hint { font-size: 16px; color: #666; line-height: 1.5; margin-bottom: 16px; display: none; }
+.opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.opt-btn { font-size: 18px; font-weight: 700; font-family: 'Nunito', 'Noto Sans KR', sans-serif; padding: 14px 8px; border-radius: 14px; border: 2.5px solid #b8dece; background: #fff; color: var(--text); cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+.opt-btn:hover:not(:disabled) { background: var(--bg); border-color: var(--mint); }
+.opt-btn.correct { background: var(--mint-light); border-color: var(--mint); color: #2E8064; }
+.opt-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: #B84534; }
+.opt-btn:disabled { cursor: default; }
+.feedback { display: none; border-radius: 14px; padding: 14px; margin-bottom: 14px; font-size: 15.5px; line-height: 1.6; }
+.feedback.correct { background: var(--mint-light); color: #2E8064; }
+.feedback.wrong { background: var(--coral-light); color: #B84534; }
+.fb-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.next-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; background: var(--green); color: #fff; border: none; cursor: pointer; display: none; transition: background 0.2s; }
+.next-btn:hover { background: var(--green-dark); }
+.result-screen { display: none; background: var(--card-bg); border-radius: 20px; padding: 36px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); text-align: center; }
+.result-stars { font-size: 44px; margin-bottom: 12px; }
+.result-score { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+.result-sub { font-size: 13.5px; color: var(--gray); margin-bottom: 24px; }
+.result-btns { display: flex; flex-direction: column; gap: 10px; }
+.result-btn { padding: 14px; border-radius: 14px; font-size: 15.5px; font-weight: 800; font-family: 'Noto Sans KR', sans-serif; border: none; cursor: pointer; transition: all 0.2s; }
+.btn-retry { background: var(--green); color: #fff; }
+.btn-retry:hover { background: var(--green-dark); }
+.btn-wrong { background: var(--coral-light); color: var(--coral); border: 2px solid var(--coral); }
+.btn-wrong:hover { background: #f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">심화</span>
+      <span class="badge-type">내신TEST</span>
+    </div>
+    <h1>JG3-0024xT · 분사 내신TEST (활용)</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-grid" id="optsGrid"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "There are <span class='blank'> ? </span> leaves on the street.",
+    "hint": "",
+    "answer": "fallen",
+    "options": [
+      "fallen",
+      "falling",
+      "fall",
+      "falls"
+    ],
+    "feedback": "잎이 '떨어진' 완료의 의미이므로 과거분사입니다. 정답은 <b>fallen</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The <span class='blank'> ? </span> girl came and stood by me.",
+    "hint": "",
+    "answer": "smiling",
+    "options": [
+      "smiling",
+      "smiled",
+      "smile",
+      "smiles"
+    ],
+    "feedback": "소녀가 '미소 짓고 있는' 능동의 의미이므로 현재분사입니다. 정답은 <b>smiling</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "His explanation was really <span class='blank'> ? </span>.",
+    "hint": "",
+    "answer": "confusing",
+    "options": [
+      "confusing",
+      "confused",
+      "confuse",
+      "confuses"
+    ],
+    "feedback": "설명(사물)이 혼란을 유발하는 능동의 의미이므로 현재분사입니다. 정답은 <b>confusing</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "I was <span class='blank'> ? </span>. What day is it?",
+    "hint": "",
+    "answer": "confused",
+    "options": [
+      "confused",
+      "confusing",
+      "confuse",
+      "confuses"
+    ],
+    "feedback": "내가 혼란을 느끼는 수동의 의미이므로 과거분사입니다. 정답은 <b>confused</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Who is the man <span class='blank'> ? </span> to Emily?",
+    "hint": "",
+    "answer": "talking",
+    "options": [
+      "talking",
+      "talked",
+      "talk",
+      "talks"
+    ],
+    "feedback": "남자가 '이야기하고 있는' 능동·진행이므로 현재분사입니다. 정답은 <b>talking</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "I had three <span class='blank'> ? </span> eggs for lunch.",
+    "hint": "",
+    "answer": "boiled",
+    "options": [
+      "boiled",
+      "boiling",
+      "boils",
+      "to boil"
+    ],
+    "feedback": "계란이 '삶긴' 수동의 의미이므로 과거분사입니다. 정답은 <b>boiled</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He got excited when Johnny <span class='blank'> ? </span>.",
+    "hint": "",
+    "answer": "scored",
+    "options": [
+      "scored",
+      "scoring",
+      "score",
+      "to score"
+    ],
+    "feedback": "단순 사실을 나타내는 동사입니다. 정답은 <b>scored</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "I found him <span class='blank'> ? </span> water.",
+    "hint": "",
+    "answer": "drinking",
+    "options": [
+      "drinking",
+      "drunk",
+      "drink",
+      "to drink"
+    ],
+    "feedback": "목적어와 목적격보어가 능동·진행 관계이므로 현재분사입니다. 정답은 <b>drinking</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Mike will have his hair <span class='blank'> ? </span>.",
+    "hint": "",
+    "answer": "cut",
+    "options": [
+      "cut",
+      "cutting",
+      "to cut",
+      "cuts"
+    ],
+    "feedback": "목적어(hair)와 목적격보어가 수동 관계이므로 과거분사입니다. 정답은 <b>cut</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "<span class='blank'> ? </span> the tickets, we went into the theater.",
+    "hint": "",
+    "answer": "Buying",
+    "options": [
+      "Buying",
+      "Buys",
+      "Bought",
+      "To buy"
+    ],
+    "feedback": "동시동작을 나타내는 분사구문입니다. 정답은 <b>Buying</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "<span class='blank'> ? </span> tired, she kept working.",
+    "hint": "",
+    "answer": "Being",
+    "options": [
+      "Being",
+      "Is",
+      "Was",
+      "To be"
+    ],
+    "feedback": "양보를 나타내는 분사구문입니다. 정답은 <b>Being</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "<span class='blank'> ? </span> enough money, I couldn't buy it.",
+    "hint": "",
+    "answer": "Not having",
+    "options": [
+      "Not having",
+      "Having not",
+      "No having",
+      "Not have"
+    ],
+    "feedback": "분사구문의 부정형입니다. 정답은 <b>Not having</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "<span class='blank'> ? </span> my holiday there, I know a lot about it.",
+    "hint": "",
+    "answer": "Having spent",
+    "options": [
+      "Having spent",
+      "Spending",
+      "Spent",
+      "To have spent"
+    ],
+    "feedback": "완료분사구문입니다. 정답은 <b>Having spent</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "(Being) <span class='blank'> ? </span> to answer, he was silent.",
+    "hint": "",
+    "answer": "asked",
+    "options": [
+      "asked",
+      "asking",
+      "ask",
+      "to ask"
+    ],
+    "feedback": "단순수동태에서 being이 생략되었습니다. 정답은 <b>asked</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The rain <span class='blank'> ? </span> heavy, we stayed inside.",
+    "hint": "",
+    "answer": "being",
+    "options": [
+      "being",
+      "was",
+      "is",
+      "to be"
+    ],
+    "feedback": "독립분사구문에서 부사절의 주어(the rain)가 주절 주어(we)와 다르므로 남겨 둡니다. 정답은 <b>being</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "She sat with her arms <span class='blank'> ? </span>.",
+    "hint": "",
+    "answer": "folded",
+    "options": [
+      "folded",
+      "folding",
+      "fold",
+      "to fold"
+    ],
+    "feedback": "명사(arms)와 분사의 관계가 수동이므로 과거분사입니다. 정답은 <b>folded</b>입니다."
+  },
+  {
+    "instruction": "다음 중 어법상 틀린 문장을 고르세요.",
+    "sentence": "다음 중 어법상 틀린 문장은?",
+    "hint": "",
+    "answer": "The movie was very bored.",
+    "options": [
+      "The movie was very bored.",
+      "The movie was very boring.",
+      "I was bored during the movie.",
+      "The lecture was boring."
+    ],
+    "feedback": "영화(사물)가 지루함을 유발하는 능동의 의미이므로 boring으로 고쳐야 합니다."
+  },
+  {
+    "instruction": "다음 중 어법상 틀린 문장을 고르세요.",
+    "sentence": "다음 중 어법상 틀린 문장은?",
+    "hint": "",
+    "answer": "Being pleased I smiled brightly at him yesterday only.",
+    "options": [
+      "Being pleased I smiled brightly at him yesterday only.",
+      "Being pleased, I smiled.",
+      "Being kind, he helped the man.",
+      "Being tall, she can reach the shelf."
+    ],
+    "feedback": "의미가 불명확하고 어색한 문장 구조입니다."
+  },
+  {
+    "instruction": "( ) 안의 말을 배열할 때 3번째로 오는 단어를 고르세요.",
+    "sentence": "세탁기가 돌아가게 두고 그는 외출했다.\nHe went out (the, running, with, machine, washing).",
+    "hint": "",
+    "answer": "machine",
+    "options": [
+      "machine",
+      "with",
+      "the",
+      "washing"
+    ],
+    "feedback": "완성된 문장은 'He went out with the washing machine running.'입니다. 3번째 단어는 <b>machine</b>입니다."
+  },
+  {
+    "instruction": "두 문장의 의미가 같도록 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "As he grew up in Canada, he speaks English well.\n→ <span class='blank'> ? </span> up in Canada, he speaks English well.",
+    "hint": "",
+    "answer": "Having been brought",
+    "options": [
+      "Having been brought",
+      "Bringing",
+      "Brought",
+      "To have brought"
+    ],
+    "feedback": "완료수동태 분사구문입니다. 정답은 <b>Having been brought</b>입니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/\n/g, '<br>');
+  document.getElementById('hint').style.display = 'none';
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const grid = document.getElementById('optsGrid');
+  grid.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 내신 만점 각! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

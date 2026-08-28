@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG3-0063xM 화법 인칭대명사·부사 전환표 암기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#EAF6F1; --green:#1E5A46; --green-dark:#16432F;
+  --mint:#4CAF93; --mint-light:#E7F7F0;
+  --coral:#E8604C; --coral-light:#FDEAE6;
+  --badge-mem:#E07B39;
+  --card-bg:#fff; --text:#1a1a1a; --gray:#888;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); font-family:'Noto Sans KR','Nunito',sans-serif; color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:16px; padding-bottom:40px; }
+.app { width:100%; max-width:480px; }
+.header { text-align:center; margin-bottom:18px; padding-top:8px; }
+.header-badges { display:flex; justify-content:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-track { font-size:11.5px; font-weight:800; background:var(--badge-mem); color:#fff; padding:3px 10px; border-radius:999px; }
+.badge-type { font-size:11.5px; font-weight:800; background:var(--badge-mem); color:#fff; padding:3px 10px; border-radius:999px; }
+h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
+.progress-wrap { height:12px; border-radius:999px; background:#d4ece3; box-shadow:inset 0 0 0 2px #b8dece; margin:14px 0 18px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mint),var(--green)); transition:width .4s ease; }
+.card { background:var(--card-bg); border-radius:20px; padding:22px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size:13px; color:#999; margin-bottom:6px; }
+.card-instruction { font-size:16.5px; color:#555; margin-bottom:12px; line-height:1.5; }
+.sentence-box { font-size:20px; font-family:'Nunito',sans-serif; font-weight:700; line-height:1.6; background:var(--bg); border-radius:12px; padding:14px 16px; margin-bottom:10px; color:var(--green-dark); }
+.sentence-box .blank { display:inline-block; min-width:56px; border-bottom:3px solid var(--green); vertical-align:bottom; margin:0 3px; }
+.ex-hl { color:var(--badge-mem); font-weight:800; }
+.hint { font-size:16px; color:#666; line-height:1.5; margin-bottom:16px; display:none; }
+.opts-col { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.opt-btn { font-size:17px; font-weight:700; font-family:'Nunito','Noto Sans KR',sans-serif; padding:13px 14px; border-radius:14px; border:2.5px solid #b8dece; background:#fff; color:var(--text); cursor:pointer; transition:all .15s; text-align:left; line-height:1.3; }
+.opt-btn:hover:not(:disabled) { background:var(--bg); border-color:var(--mint); }
+.opt-btn.correct { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.opt-btn.wrong { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.opt-btn:disabled { cursor:default; }
+.feedback { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; }
+.feedback.correct { background:var(--mint-light); color:#2E8064; }
+.feedback.wrong { background:var(--coral-light); color:#B84534; }
+.fb-title { font-size:15px; font-weight:800; margin-bottom:4px; }
+.next-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--green); color:#fff; border:none; cursor:pointer; display:none; transition:background .2s; }
+.next-btn:hover { background:var(--green-dark); }
+.result-screen { display:none; background:var(--card-bg); border-radius:20px; padding:36px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); text-align:center; }
+.result-stars { font-size:44px; margin-bottom:12px; }
+.result-score { font-size:18px; font-weight:800; color:var(--green); margin-bottom:6px; }
+.result-sub { font-size:13.5px; color:var(--gray); margin-bottom:24px; }
+.result-btns { display:flex; flex-direction:column; gap:10px; }
+.result-btn { padding:14px; border-radius:14px; font-size:15.5px; font-weight:800; font-family:'Noto Sans KR',sans-serif; border:none; cursor:pointer; transition:all .2s; }
+.btn-retry { background:var(--green); color:#fff; }
+.btn-retry:hover { background:var(--green-dark); }
+.btn-wrong { background:var(--coral-light); color:var(--coral); border:2px solid var(--coral); }
+.btn-wrong:hover { background:#f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">활용</span>
+      <span class="badge-type">암기형</span>
+    </div>
+    <h1>JG3-0063xM · 화법 인칭대명사·부사 전환표 암기</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 9</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsCol"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "instruction": "다음 직접화법 표현이 간접화법에서 어떻게 바뀌는지 고르세요.",
+    "sentence": "now",
+    "krHint": "",
+    "options": [
+      "then, at that time",
+      "today",
+      "the next day",
+      "before"
+    ],
+    "answer": "then, at that time",
+    "feedback": "<span class='ex-hl'>now</span>는 간접화법에서 <b>then, at that time</b>으로 바뀝니다."
+  },
+  {
+    "instruction": "다음 직접화법 표현이 간접화법에서 어떻게 바뀌는지 고르세요.",
+    "sentence": "here",
+    "krHint": "",
+    "options": [
+      "there",
+      "that",
+      "then",
+      "the next day"
+    ],
+    "answer": "there",
+    "feedback": "<span class='ex-hl'>here</span>는 간접화법에서 <b>there</b>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 직접화법 표현이 간접화법에서 어떻게 바뀌는지 고르세요.",
+    "sentence": "this[these]",
+    "krHint": "",
+    "options": [
+      "that[those]",
+      "then",
+      "there",
+      "the next day"
+    ],
+    "answer": "that[those]",
+    "feedback": "<span class='ex-hl'>this[these]</span>는 간접화법에서 <b>that[those]</b>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 직접화법 표현이 간접화법에서 어떻게 바뀌는지 고르세요.",
+    "sentence": "today",
+    "krHint": "",
+    "options": [
+      "that day",
+      "the next day",
+      "the day before",
+      "at that time"
+    ],
+    "answer": "that day",
+    "feedback": "<span class='ex-hl'>today</span>는 간접화법에서 <b>that day</b>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 직접화법 표현이 간접화법에서 어떻게 바뀌는지 고르세요.",
+    "sentence": "tomorrow",
+    "krHint": "",
+    "options": [
+      "the next[following] day",
+      "that day",
+      "the day before",
+      "the previous week"
+    ],
+    "answer": "the next[following] day",
+    "feedback": "<span class='ex-hl'>tomorrow</span>는 간접화법에서 <b>the next[following] day</b>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 직접화법 표현이 간접화법에서 어떻게 바뀌는지 고르세요.",
+    "sentence": "yesterday",
+    "krHint": "",
+    "options": [
+      "the day before, the previous day",
+      "the next day",
+      "that day",
+      "before"
+    ],
+    "answer": "the day before, the previous day",
+    "feedback": "<span class='ex-hl'>yesterday</span>는 간접화법에서 <b>the day before, the previous day</b>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 직접화법 표현이 간접화법에서 어떻게 바뀌는지 고르세요.",
+    "sentence": "ago",
+    "krHint": "",
+    "options": [
+      "before",
+      "the day before",
+      "the next day",
+      "that day"
+    ],
+    "answer": "before",
+    "feedback": "<span class='ex-hl'>ago</span>는 간접화법에서 <b>before</b>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 문장을 간접화법으로 바꿀 때 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "David said to Alice, \"I will take you to the party tomorrow.\"<br>→ David told Alice he would take her to the party <span class='blank'> </span>.",
+    "krHint": "",
+    "options": [
+      "the next day",
+      "tomorrow",
+      "that day",
+      "the day before"
+    ],
+    "answer": "the next day",
+    "feedback": "직접화법의 tomorrow는 간접화법에서 <span class='ex-hl'>the next day</span>로 바뀝니다."
+  },
+  {
+    "instruction": "다음 문장을 간접화법으로 바꿀 때 빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Lyla said, \"I didn't book a flight yesterday.\"<br>→ Lyla said she hadn't booked a flight <span class='blank'> </span>.",
+    "krHint": "",
+    "options": [
+      "the day before",
+      "yesterday",
+      "the next day",
+      "ago"
+    ],
+    "answer": "the day before",
+    "feedback": "직접화법의 yesterday는 간접화법에서 <span class='ex-hl'>the day before</span>로 바뀝니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence;
+  const hintEl = document.getElementById('hint');
+  if (q.krHint) { hintEl.style.display = ''; hintEl.innerHTML = q.krHint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const col = document.getElementById('optsCol');
+  col.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    col.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 암기 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
