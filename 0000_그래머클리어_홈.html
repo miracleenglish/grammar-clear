@@ -73,38 +73,56 @@
 
   .series-btn.jg1 .sb-icon{background:var(--mint);color:var(--green);}
   .series-btn.jg1.active,.series-btn.jg1:hover{border-color:var(--green);}
-  .series-btn.jg1.active .sb-name{color:var(--green);}
+  .series-btn.jg1.active{background:var(--green);box-shadow:0 6px 18px rgba(30,90,70,.22);}
+  .series-btn.jg1.active .sb-name{color:#fff;}
+  .series-btn.jg1.active .sb-sub{color:rgba(255,255,255,.85);}
+  .series-btn.jg1.active .sb-icon{background:rgba(255,255,255,.25);color:#fff;}
 
   .series-btn.jg2 .sb-icon{background:var(--blue-light);color:var(--blue);}
   .series-btn.jg2.active,.series-btn.jg2:hover{border-color:var(--blue);}
-  .series-btn.jg2.active .sb-name{color:var(--blue);}
+  .series-btn.jg2.active{background:var(--blue);box-shadow:0 6px 18px rgba(30,90,190,.22);}
+  .series-btn.jg2.active .sb-name{color:#fff;}
+  .series-btn.jg2.active .sb-sub{color:rgba(255,255,255,.85);}
+  .series-btn.jg2.active .sb-icon{background:rgba(255,255,255,.25);color:#fff;}
 
   .series-btn.jg3 .sb-icon{background:var(--purple-light);color:var(--purple);}
   .series-btn.jg3.active,.series-btn.jg3:hover{border-color:var(--purple);}
-  .series-btn.jg3.active .sb-name{color:var(--purple);}
+  .series-btn.jg3.active{background:var(--purple);box-shadow:0 6px 18px rgba(120,60,190,.22);}
+  .series-btn.jg3.active .sb-name{color:#fff;}
+  .series-btn.jg3.active .sb-sub{color:rgba(255,255,255,.85);}
+  .series-btn.jg3.active .sb-icon{background:rgba(255,255,255,.25);color:#fff;}
 
   .series-btn.coming{opacity:.55;cursor:not-allowed;box-shadow:none;}
   .series-btn.coming:hover{transform:none;box-shadow:none;border-color:var(--border);}
   .series-btn.coming .sb-icon{background:#eef2ef;color:var(--muted);}
 
   /* ── 메인 패널 ── */
-  main{max-width:760px;margin:0 auto;padding:20px 16px 60px;}
+  main{max-width:760px;margin:0 auto;padding:28px 16px 60px;}
   .series-panel{display:none;}
   .series-panel.show{display:block;}
 
   /* ── 트랙 탭 ── */
-  .track-bar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
-  .track-btn{
-    padding:8px 18px;border-radius:99px;border:2px solid var(--border);
-    background:#fff;font-size:13px;font-weight:800;cursor:pointer;
-    transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--muted);
+  .track-bar-wrap{
+    background:#F3F1EC;border:1.5px solid #E5E1D8;border-radius:18px;
+    padding:16px 18px 18px;margin-bottom:26px;
   }
-  .track-btn:hover{border-color:var(--green);color:var(--green);}
-  .track-btn.active{background:var(--green);border-color:var(--green);color:#fff;}
-  .track-btn.tb-basic.active{background:var(--blue);border-color:var(--blue);}
-  .track-btn.tb-apply.active{background:var(--teal);border-color:var(--teal);}
-  .track-btn.tb-deep.active{background:var(--purple);border-color:var(--purple);}
-  .track-btn.tb-test.active{background:var(--coral);border-color:var(--coral);}
+  .track-bar-label{
+    font-size:12.5px;font-weight:800;color:var(--muted);margin-bottom:10px;
+    display:flex;align-items:center;gap:6px;letter-spacing:.02em;
+  }
+  .track-bar{display:flex;gap:10px;flex-wrap:wrap;}
+  .track-btn{
+    padding:12px 22px;border-radius:99px;border:2px solid var(--border);
+    background:#fff;font-size:14.5px;font-weight:800;cursor:pointer;
+    transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--text);
+    box-shadow:0 2px 6px rgba(30,90,70,.05);
+  }
+  .track-btn:hover{border-color:var(--green);color:var(--green);transform:translateY(-1px);}
+  .track-btn.active{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 4px 14px rgba(30,90,70,.25);}
+  .track-btn.tb-basic.active{background:var(--blue);border-color:var(--blue);box-shadow:0 4px 14px rgba(30,90,190,.25);}
+  .track-btn.tb-apply.active{background:var(--teal);border-color:var(--teal);box-shadow:0 4px 14px rgba(20,140,120,.25);}
+  .track-btn.tb-deep.active{background:var(--purple);border-color:var(--purple);box-shadow:0 4px 14px rgba(120,60,190,.25);}
+  .track-btn.tb-test.active{background:var(--coral);border-color:var(--coral);box-shadow:0 4px 14px rgba(220,80,60,.25);}
 
   .track-panel{display:none;}
   .track-panel.show{display:block;}
@@ -209,6 +227,8 @@
   @media(max-width:560px){
     header h1{font-size:28px;}
     .series-btn{min-width:calc(50% - 5px);}
+    .track-btn{padding:10px 16px;font-size:13.5px;}
+    .track-bar-wrap{padding:14px 14px 16px;}
   }
   @media(max-width:360px){
     .series-btn{min-width:100%;}
@@ -273,13 +293,16 @@
 <div id="series-jg1" class="series-panel show">
 
   <!-- 트랙 탭 -->
-  <div class="track-bar">
+  <div class="track-bar-wrap">
+    <div class="track-bar-label">📂 점프 영문법 1권 · 트랙 선택</div>
+    <div class="track-bar">
     <button class="track-btn tb-basics active" onclick="showTrack('jg1','basics',this)">📖 Grammar Basics</button>
     <button class="track-btn tb-basic" onclick="showTrack('jg1','basic',this)">🔵 기본 (1316그래머 수준)</button>
     <button class="track-btn tb-apply" onclick="showTrack('jg1','apply',this)">🟢 활용 (문마중 수준)</button>
     <button class="track-btn tb-deep" onclick="showTrack('jg1','deep',this)">🟣 심화 (그래머인사이드 수준)</button>
     <button class="track-btn tb-test" onclick="showTrack('jg1','final',this)">🔴 실전테스트</button>
 
+    </div>
   </div>
 
   <!-- ── Grammar Basics 트랙 ── -->
@@ -1637,12 +1660,15 @@
 <div id="series-jg2" class="series-panel">
 
   <!-- 트랙 탭 -->
-  <div class="track-bar">
+  <div class="track-bar-wrap">
+    <div class="track-bar-label">📂 점프 영문법 2권 · 트랙 선택</div>
+    <div class="track-bar">
     <button class="track-btn tb-basics active" onclick="showTrack('jg2','basics',this)">📖 Grammar Basics</button>
     <button class="track-btn tb-basic" onclick="showTrack('jg2','basic',this)">🔵 기본 (1316그래머 수준)</button>
     <button class="track-btn tb-apply" onclick="showTrack('jg2','apply',this)">🟢 활용 (문마중 수준)</button>
     <button class="track-btn tb-deep" onclick="showTrack('jg2','deep',this)">🟣 심화 (그래머인사이드 수준)</button>
     <button class="track-btn tb-test" onclick="showTrack('jg2','final',this)">🔴 실전테스트</button>
+    </div>
   </div>
 
 <div id="jg2-basics" class="track-panel show">
@@ -2936,12 +2962,15 @@
 <div id="series-jg3" class="series-panel">
 
   <!-- 트랙 탭 -->
-  <div class="track-bar">
+  <div class="track-bar-wrap">
+    <div class="track-bar-label">📂 점프 영문법 3권 · 트랙 선택</div>
+    <div class="track-bar">
     <button class="track-btn tb-basics active" onclick="showTrack('jg3','basics',this)">📖 Grammar Basics</button>
     <button class="track-btn tb-basic" onclick="showTrack('jg3','basic',this)">🔵 기본 (1316그래머 수준)</button>
     <button class="track-btn tb-apply" onclick="showTrack('jg3','apply',this)">🟢 활용 (문마중 수준)</button>
     <button class="track-btn tb-deep" onclick="showTrack('jg3','deep',this)">🟣 심화 (그래머인사이드 수준)</button>
     <button class="track-btn tb-test" onclick="showTrack('jg3','final',this)">🔴 실전테스트</button>
+    </div>
   </div>
 
 <div id="jg3-basics" class="track-panel show">
