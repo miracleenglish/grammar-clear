@@ -4342,7 +4342,6 @@ function showSeries(series, btn) {
   document.querySelectorAll('.series-panel').forEach(p => p.classList.remove('show'));
   const target = document.getElementById('series-'+series);
   if (target) target.classList.add('show');
-  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 // 트랙 탭 선택
@@ -4357,7 +4356,6 @@ function showTrack(series, track, btn) {
     if (el) el.style.display = (t === track) ? 'block' : 'none';
     if (el) el.classList.toggle('show', t === track);
   });
-  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 // 초기 상태: JG1 기본 Basics 탭 표시
