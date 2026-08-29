@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG3-0076y 부정사 내신TEST 심화</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#EAF6F1; --green:#1E5A46; --green-dark:#16432F;
+  --mint:#4CAF93; --mint-light:#E7F7F0;
+  --coral:#E8604C; --coral-light:#FDEAE6;
+  --badge-deep-obj:#9B6DD1; --badge-deep-subj:#E07B39;
+  --badge-track-color:#9B6DD1;
+  --card-bg:#fff; --text:#1a1a1a; --gray:#888;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); font-family:'Noto Sans KR','Nunito',sans-serif; color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:16px; padding-bottom:40px; }
+.app { width:100%; max-width:480px; }
+.header { text-align:center; margin-bottom:18px; padding-top:8px; }
+.header-badges { display:flex; justify-content:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-track { font-size:11.5px; font-weight:800; background:var(--badge-track-color); color:#fff; padding:3px 10px; border-radius:999px; }
+.badge-type { font-size:11.5px; font-weight:800; background:#9B6DD1; color:#fff; padding:3px 10px; border-radius:999px; }
+h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
+.progress-wrap { height:12px; border-radius:999px; background:#d4ece3; box-shadow:inset 0 0 0 2px #b8dece; margin:14px 0 18px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mint),var(--green)); transition:width .4s ease; }
+.card { background:var(--card-bg); border-radius:20px; padding:22px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size:13px; color:#999; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; }
+.qtype-chip { font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px; }
+.qtype-chip.obj { background:#EFE6FA; color:#9B6DD1; }
+.qtype-chip.subj { background:#FBE9DC; color:#E07B39; }
+.card-instruction { font-size:16.5px; color:#555; margin-bottom:12px; line-height:1.5; }
+.sentence-box { font-size:20px; font-family:'Nunito',sans-serif; font-weight:700; line-height:1.6; background:var(--bg); border-radius:12px; padding:14px 16px; margin-bottom:10px; color:var(--green-dark); }
+.sentence-box .blank { display:inline-block; min-width:72px; border-bottom:3px solid var(--green); vertical-align:bottom; margin:0 3px; }
+.sentence-box .hl { text-decoration:underline; text-decoration-thickness:2.5px; text-underline-offset:5px; text-decoration-color:var(--green-dark); }
+.hint { font-size:16px; color:#666; line-height:1.5; margin-bottom:16px; }
+.opts-col { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.opt-btn { font-size:17px; font-weight:700; font-family:'Nunito','Noto Sans KR',sans-serif; padding:13px 14px; border-radius:14px; border:2.5px solid #b8dece; background:#fff; color:var(--text); cursor:pointer; transition:all .15s; text-align:left; line-height:1.3; }
+.opt-btn:hover:not(:disabled) { background:var(--bg); border-color:var(--mint); }
+.opt-btn.correct { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.opt-btn.wrong { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.opt-btn:disabled { cursor:default; }
+.subj-input { width:100%; font-size:16px; padding:12px 14px; border-radius:12px; border:2px solid #b8dece; margin-bottom:12px; font-family:'Nunito','Noto Sans KR',sans-serif; }
+.subj-check-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--badge-deep-subj); color:#fff; border:none; cursor:pointer; margin-bottom:12px; }
+.subj-answer-box { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; background:#FBE9DC; color:#8a4a1f; }
+.subj-answer-box .aa-title { font-size:15px; font-weight:800; margin-bottom:6px; color:#E07B39; }
+.subj-rubric { font-size:13.5px; color:#a06630; margin-top:8px; }
+.subj-selfgrade { display:none; gap:10px; margin-bottom:14px; }
+.subj-selfgrade button { flex:1; padding:12px; border-radius:14px; font-size:15px; font-weight:800; border:2px solid #ccc; background:#fff; cursor:pointer; }
+.subj-selfgrade .sg-correct:hover, .subj-selfgrade .sg-correct.picked { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.subj-selfgrade .sg-wrong:hover, .subj-selfgrade .sg-wrong.picked { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.feedback { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; }
+.feedback.correct { background:var(--mint-light); color:#2E8064; }
+.feedback.wrong { background:var(--coral-light); color:#B84534; }
+.fb-title { font-size:15px; font-weight:800; margin-bottom:4px; }
+.next-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--green); color:#fff; border:none; cursor:pointer; display:none; transition:background .2s; }
+.next-btn:hover { background:var(--green-dark); }
+.result-screen { display:none; background:var(--card-bg); border-radius:20px; padding:36px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); text-align:center; }
+.result-stars { font-size:44px; margin-bottom:12px; }
+.result-score { font-size:18px; font-weight:800; color:var(--green); margin-bottom:6px; }
+.result-score2 { font-size:15px; font-weight:700; color:#E07B39; margin-bottom:6px; }
+.result-sub { font-size:13.5px; color:var(--gray); margin-bottom:24px; }
+.result-btns { display:flex; flex-direction:column; gap:10px; }
+.result-btn { padding:14px; border-radius:14px; font-size:15.5px; font-weight:800; font-family:'Noto Sans KR',sans-serif; border:none; cursor:pointer; transition:all .2s; }
+.btn-retry { background:var(--green); color:#fff; }
+.btn-retry:hover { background:var(--green-dark); }
+.btn-wrong { background:var(--coral-light); color:var(--coral); border:2px solid var(--coral); }
+.btn-wrong:hover { background:#f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">심화</span>
+      <span class="badge-type">혼합</span>
+    </div>
+    <h1>JG3-0076y · 부정사 내신TEST 심화</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum"><span id="qnum">1 / 24</span><span class="qtype-chip" id="qtypeChip"></span></div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsCol" style="display:none"></div>
+    <div id="subjArea" style="display:none">
+      <input type="text" class="subj-input" id="subjInput" placeholder="정답을 영어로 입력해 보세요 (자가채점용)">
+      <button class="subj-check-btn" id="subjCheckBtn" onclick="revealSubjAnswer()">정답 확인하기</button>
+      <div class="subj-answer-box" id="subjAnswerBox">
+        <div class="aa-title">📝 모범답안</div>
+        <div id="subjAnswerText"></div>
+        <div class="subj-rubric" id="subjRubric"></div>
+      </div>
+      <div class="subj-selfgrade" id="subjSelfgrade">
+        <button class="sg-correct" onclick="gradeSelf(true)">⭕ 내가 맞았어요</button>
+        <button class="sg-wrong" onclick="gradeSelf(false)">❌ 내가 틀렸어요</button>
+      </div>
+    </div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-score2" id="resultScore2"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ a new language takes time and effort.",
+    "hint": "",
+    "options": [
+      "Learning[To learn]",
+      "Learn",
+      "Learned",
+      "Learns"
+    ],
+    "answer": "Learning[To learn]",
+    "feedback": "(새 언어를 배우는 것은 시간과 노력이 든다.(주어 역할)) 동명사나 to부정사가 주어 역할을 합니다. 정답은 <b>Learning[To learn]</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "I found it exciting ___ a blog.",
+    "hint": "",
+    "options": [
+      "to keep",
+      "keep",
+      "keeping",
+      "kept"
+    ],
+    "answer": "to keep",
+    "feedback": "(나는 블로그를 유지하는 것이 흥미롭다는 것을 알았다.(가목적어 it)) 가목적어 it이 있으므로 진목적어인 to부정사가 뒤에 옵니다. 정답은 <b>to keep</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "They were looking for a bench ___.",
+    "hint": "",
+    "options": [
+      "to sit on",
+      "to sit",
+      "sitting",
+      "sitting on"
+    ],
+    "answer": "to sit on",
+    "feedback": "(그들은 앉을 벤치를 찾고 있었다.(전치사 필수)) 수식받는 명사(bench)가 전치사의 의미상 목적어이므로 전치사를 반드시 같이 씁니다. 정답은 <b>to sit on</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The company ___ its service next month.",
+    "hint": "",
+    "options": [
+      "is to begin",
+      "begin",
+      "begins to",
+      "beginning"
+    ],
+    "answer": "is to begin",
+    "feedback": "(회사는 다음 달에 서비스를 시작할 예정이다.(be to-v, 예정)) 「be to-v(예정)」구문입니다. 정답은 <b>is to begin</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "It is difficult ___ to read this fast.",
+    "hint": "",
+    "options": [
+      "for me",
+      "of me",
+      "to me",
+      "with me"
+    ],
+    "answer": "for me",
+    "feedback": "(이걸 이렇게 빨리 읽는 것은 나에게 어렵다.(의미상 주어)) to부정사의 의미상 주어는 보통 「for+목적격」을 씁니다. 정답은 <b>for me</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "It was careless ___ to lose the ticket.",
+    "hint": "",
+    "options": [
+      "of him",
+      "for him",
+      "to him",
+      "with him"
+    ],
+    "answer": "of him",
+    "feedback": "(표를 잃어버린 것은 그에게 부주의한 일이었다.(사람평가 형용사)) 사람에 대한 주관적 평가 형용사(careless)와 함께 쓰이면 「of+목적격」을 씁니다. 정답은 <b>of him</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "She seems ___ abroad when she was a child.",
+    "hint": "",
+    "options": [
+      "to have lived",
+      "to live",
+      "living",
+      "lived"
+    ],
+    "answer": "to have lived",
+    "feedback": "(그녀는 어렸을 때 해외에 살았던 것 같다.(완료부정사)) to부정사의 시제가 문장의 시제보다 앞설 때는 완료부정사를 씁니다. 정답은 <b>to have lived</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The prize is expected ___ to the winner tomorrow.",
+    "hint": "",
+    "options": [
+      "to be given",
+      "to give",
+      "giving",
+      "given"
+    ],
+    "answer": "to be given",
+    "feedback": "(상은 내일 우승자에게 주어질 것으로 예상된다.(수동태 부정사)) 상이 '주어지는' 수동 관계이므로 수동태 부정사를 씁니다. 정답은 <b>to be given</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The coach told the players ___ harder.",
+    "hint": "",
+    "options": [
+      "to train",
+      "train",
+      "training",
+      "trained"
+    ],
+    "answer": "to train",
+    "feedback": "(코치는 선수들에게 더 열심히 훈련하라고 말했다.(목적격보어 to부정사)) tell은 목적격 보어로 to부정사를 취합니다. 정답은 <b>to train</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "We heard someone ___ our name from outside.",
+    "hint": "",
+    "options": [
+      "call",
+      "to call",
+      "called",
+      "calling to"
+    ],
+    "answer": "call",
+    "feedback": "(우리는 밖에서 누군가 우리 이름을 부르는 것을 들었다.(지각동사)) 지각동사(heard)는 목적격 보어로 원형부정사를 취합니다. 정답은 <b>call</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The test was ___ that no one finished it.",
+    "hint": "",
+    "options": [
+      "so difficult",
+      "too difficult",
+      "difficult enough",
+      "very difficult"
+    ],
+    "answer": "so difficult",
+    "feedback": "(시험이 너무 어려워서 아무도 끝내지 못했다.(so~that)) 「so+형용사+that+주어+can't」구문입니다. 정답은 <b>so difficult</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___, I don't think this plan will work.",
+    "hint": "",
+    "options": [
+      "To be frank",
+      "To be brief",
+      "To begin with",
+      "So to speak"
+    ],
+    "answer": "To be frank",
+    "feedback": "(솔직히 말해서, 나는 이 계획이 성공할 거라 생각하지 않는다.(독립부정사)) 「to be frank(솔직히 말해서)」는 독립부정사 관용표현입니다. 정답은 <b>To be frank</b>입니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "이 소설을 읽는 것은 나에게 흥미로웠다.",
+    "hint": "",
+    "answer": "To read this novel was interesting to me.",
+    "rubric": "To read가 문장 맨 앞 주어로 오고 단수동사 was가 와야 정답. Reading도 인정 가능.",
+    "feedback": "(To read, this novel, was interesting, to me를 사용하세요.) to부정사가 주어 역할을 할 때는 단수 취급합니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "나는 매일 운동하는 것이 중요하다는 것을 안다.(가목적어 it)",
+    "hint": "",
+    "answer": "I know it is important to exercise every day.",
+    "rubric": "가목적어 it이 반드시 포함되어야 정답. it is important to exercise 어순이 정확해야 함.",
+    "feedback": "(I know it is important to exercise every day를 활용하세요.) 5형식 문장에서 목적어가 to부정사(구)일 때는 가목적어 it을 씁니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "다음 문장을 의문사+to부정사를 이용한 문장으로 바꿔 쓰세요.",
+    "sentence": "She didn't know what she should say.",
+    "hint": "",
+    "answer": "She didn't know what to say.",
+    "rubric": "「what+주어+should+동사원형」을 「what to-v」로 정확히 바꿔야 정답.",
+    "feedback": "「의문사+주어+should+동사원형」은 「의문사+to부정사」로 바꿔 쓸 수 있습니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "기차가 도착할 예정이다.(be to-v, 예정)",
+    "hint": "",
+    "answer": "The train is to arrive soon.",
+    "rubric": "is to arrive(예정) 형태가 정확해야 정답.",
+    "feedback": "(The train, is to arrive를 사용하세요.) 「be to-v」는 예정의 의미(~할 예정이다)를 나타냅니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "그가 시험에 늦은 것은 부주의했다.(careless, 사람 평가)",
+    "hint": "",
+    "answer": "It was careless of him to be late for the exam.",
+    "rubric": "of him(주관적 평가 형용사이므로 of+목적격)이 반드시 포함되어야 정답.",
+    "feedback": "(It was careless of him to be late를 활용하세요.) careless는 사람에 대한 주관적 평가를 나타내는 형용사이므로 「of+목적격」을 씁니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "다음 문장을 목적어와 목적격 보어가 수동 관계가 되도록 바꿔 쓰세요.",
+    "sentence": "She had her brother fix her bike. → She had her bike ___.",
+    "hint": "",
+    "answer": "She had her bike fixed.",
+    "rubric": "fixed(과거분사)가 정확히 와야 정답.",
+    "feedback": "('수리되는' 것은 자전거입니다.) 목적어와 목적격 보어가 수동의 관계일 때는 목적격 보어로 과거분사를 씁니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "나는 그가 조용히 문을 닫는 것을 봤다.(지각동사, 분사형 목적격보어)",
+    "hint": "",
+    "answer": "I saw him closing the door quietly.",
+    "rubric": "closing(현재분사)이 목적격 보어로 정확히 와야 정답. close(원형)도 인정 가능.",
+    "feedback": "(I saw him closing the door quietly를 사용하세요.) 지각동사는 목적격 보어로 분사(현재분사)도 취할 수 있습니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "다음 문장을 too~to 구문을 이용한 문장으로 바꿔 쓰세요.",
+    "sentence": "The bag is so heavy that I can't carry it.",
+    "hint": "",
+    "answer": "The bag is too heavy for me to carry.",
+    "rubric": "too heavy for me to carry 형태가 정확해야 정답(의미상 주어 for me 포함 필수).",
+    "feedback": "「so+형용사+that+주어+can't」는 「too+형용사+(for+목적격)+to-v」로 바꿔 쓸 수 있습니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "우선, 나는 규칙을 설명하겠다.",
+    "hint": "",
+    "answer": "To begin with, I will explain the rules.",
+    "rubric": "To begin with가 문장 맨 앞에 정확히 와야 정답.",
+    "feedback": "(To begin with를 문장 맨 앞에 사용하세요.) To begin with(우선, 먼저)는 독립부정사 관용표현입니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "간단히 말하면, 그 계획은 실패했다.",
+    "hint": "",
+    "answer": "To be brief, the plan failed.",
+    "rubric": "To be brief가 문장 맨 앞에 정확히 와야 정답.",
+    "feedback": "(To be brief를 문장 맨 앞에 사용하세요.) To be brief(간단히 말하면)는 독립부정사 관용표현입니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "다음 문장에서 틀린 부분을 찾아 바르게 고쳐 쓰세요.",
+    "sentence": "My brother let me to use his laptop.",
+    "hint": "",
+    "answer": "My brother let me use his laptop.",
+    "rubric": "to use를 원형부정사 use로 고쳐야 정답(사역동사 let의 목적격 보어는 원형부정사).",
+    "feedback": "사역동사(let)는 목적격 보어로 원형부정사를 취하며 to부정사를 쓰지 않습니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "엄마는 내가 아침을 먹게 시켰다.(get, to부정사)",
+    "hint": "",
+    "answer": "Mom got me to eat breakfast.",
+    "rubric": "to eat(to부정사) 형태가 정확해야 정답.",
+    "feedback": "(Mom got me to eat breakfast를 사용하세요.) get은 사역의 의미를 갖지만 목적격 보어로 to부정사를 취합니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, objScore = 0, objTotal = 0, subjDone = 0, subjCorrectSelf = 0, subjTotal = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; objScore = 0; objTotal = 0; subjDone = 0; subjCorrectSelf = 0; subjTotal = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('qtypeChip').textContent = q.type === 'obj' ? '객관식' : '주관식';
+  document.getElementById('qtypeChip').className = 'qtype-chip ' + q.type;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/___/g,
+    '<span class="blank">&nbsp;</span>').replace(/\n/g, '<br>');
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const optsCol = document.getElementById('optsCol');
+  const subjArea = document.getElementById('subjArea');
+  optsCol.innerHTML = '';
+  document.getElementById('subjAnswerBox').style.display = 'none';
+  document.getElementById('subjSelfgrade').style.display = 'none';
+  document.getElementById('subjInput').value = '';
+  document.querySelectorAll('.sg-correct,.sg-wrong').forEach(b=>b.classList.remove('picked'));
+  if (q.type === 'obj') {
+    optsCol.style.display = 'flex'; subjArea.style.display = 'none';
+    shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn'; btn.textContent = opt;
+      btn.onclick = () => selectAnswer(opt, btn);
+      optsCol.appendChild(btn);
+    });
+  } else {
+    optsCol.style.display = 'none'; subjArea.style.display = 'block';
+    document.getElementById('subjCheckBtn').style.display = 'block';
+  }
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  objTotal++;
+  if (isCorrect) { objScore++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function revealSubjAnswer() {
+  const q = questions[current];
+  document.getElementById('subjAnswerText').innerHTML = '<b>' + q.answer + '</b>';
+  document.getElementById('subjRubric').innerHTML = q.rubric || '';
+  document.getElementById('subjAnswerBox').style.display = 'block';
+  document.getElementById('subjSelfgrade').style.display = 'flex';
+  document.getElementById('subjCheckBtn').style.display = 'none';
+}
+function gradeSelf(isCorrect) {
+  const q = questions[current];
+  subjTotal++; subjDone++;
+  document.querySelectorAll('.sg-correct,.sg-wrong').forEach(b=>b.classList.remove('picked'));
+  if (isCorrect) { subjCorrectSelf++; document.querySelector('.sg-correct').classList.add('picked'); }
+  else { wrongIndexes.push(current); document.querySelector('.sg-wrong').classList.add('picked'); }
+  const fb = document.getElementById('feedback');
+  fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+  document.getElementById('fbTitle').textContent = isCorrect ? '✅ 잘했어요!' : '📖 다시 확인해봐요';
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const pct = objTotal > 0 ? objScore / objTotal : 1;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `객관식 ${objScore} / ${objTotal} 정답`;
+  document.getElementById('resultScore2').textContent = `주관식 자가채점 ${subjCorrectSelf} / ${subjTotal} (완료 ${subjDone}개)`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 심화 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

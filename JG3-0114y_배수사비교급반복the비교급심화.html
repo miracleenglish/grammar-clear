@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG3-0114y 배수사, 비교급 반복, the+비교급, as+원급+as possible 심화</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#EAF6F1; --green:#1E5A46; --green-dark:#16432F;
+  --mint:#4CAF93; --mint-light:#E7F7F0;
+  --coral:#E8604C; --coral-light:#FDEAE6;
+  --badge-deep-obj:#9B6DD1; --badge-deep-subj:#E07B39;
+  --badge-track-color:#9B6DD1;
+  --card-bg:#fff; --text:#1a1a1a; --gray:#888;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); font-family:'Noto Sans KR','Nunito',sans-serif; color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:16px; padding-bottom:40px; }
+.app { width:100%; max-width:480px; }
+.header { text-align:center; margin-bottom:18px; padding-top:8px; }
+.header-badges { display:flex; justify-content:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-track { font-size:11.5px; font-weight:800; background:var(--badge-track-color); color:#fff; padding:3px 10px; border-radius:999px; }
+.badge-type { font-size:11.5px; font-weight:800; background:#9B6DD1; color:#fff; padding:3px 10px; border-radius:999px; }
+h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
+.progress-wrap { height:12px; border-radius:999px; background:#d4ece3; box-shadow:inset 0 0 0 2px #b8dece; margin:14px 0 18px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mint),var(--green)); transition:width .4s ease; }
+.card { background:var(--card-bg); border-radius:20px; padding:22px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size:13px; color:#999; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; }
+.qtype-chip { font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px; }
+.qtype-chip.obj { background:#EFE6FA; color:#9B6DD1; }
+.qtype-chip.subj { background:#FBE9DC; color:#E07B39; }
+.card-instruction { font-size:16.5px; color:#555; margin-bottom:12px; line-height:1.5; }
+.sentence-box { font-size:20px; font-family:'Nunito',sans-serif; font-weight:700; line-height:1.6; background:var(--bg); border-radius:12px; padding:14px 16px; margin-bottom:10px; color:var(--green-dark); }
+.sentence-box .blank { display:inline-block; min-width:72px; border-bottom:3px solid var(--green); vertical-align:bottom; margin:0 3px; }
+.sentence-box .hl { text-decoration:underline; text-decoration-thickness:2.5px; text-underline-offset:5px; text-decoration-color:var(--green-dark); }
+.hint { font-size:16px; color:#666; line-height:1.5; margin-bottom:16px; }
+.opts-col { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.opt-btn { font-size:17px; font-weight:700; font-family:'Nunito','Noto Sans KR',sans-serif; padding:13px 14px; border-radius:14px; border:2.5px solid #b8dece; background:#fff; color:var(--text); cursor:pointer; transition:all .15s; text-align:left; line-height:1.3; }
+.opt-btn:hover:not(:disabled) { background:var(--bg); border-color:var(--mint); }
+.opt-btn.correct { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.opt-btn.wrong { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.opt-btn:disabled { cursor:default; }
+.subj-input { width:100%; font-size:16px; padding:12px 14px; border-radius:12px; border:2px solid #b8dece; margin-bottom:12px; font-family:'Nunito','Noto Sans KR',sans-serif; }
+.subj-check-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--badge-deep-subj); color:#fff; border:none; cursor:pointer; margin-bottom:12px; }
+.subj-answer-box { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; background:#FBE9DC; color:#8a4a1f; }
+.subj-answer-box .aa-title { font-size:15px; font-weight:800; margin-bottom:6px; color:#E07B39; }
+.subj-rubric { font-size:13.5px; color:#a06630; margin-top:8px; }
+.subj-selfgrade { display:none; gap:10px; margin-bottom:14px; }
+.subj-selfgrade button { flex:1; padding:12px; border-radius:14px; font-size:15px; font-weight:800; border:2px solid #ccc; background:#fff; cursor:pointer; }
+.subj-selfgrade .sg-correct:hover, .subj-selfgrade .sg-correct.picked { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.subj-selfgrade .sg-wrong:hover, .subj-selfgrade .sg-wrong.picked { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.feedback { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; }
+.feedback.correct { background:var(--mint-light); color:#2E8064; }
+.feedback.wrong { background:var(--coral-light); color:#B84534; }
+.fb-title { font-size:15px; font-weight:800; margin-bottom:4px; }
+.next-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--green); color:#fff; border:none; cursor:pointer; display:none; transition:background .2s; }
+.next-btn:hover { background:var(--green-dark); }
+.result-screen { display:none; background:var(--card-bg); border-radius:20px; padding:36px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); text-align:center; }
+.result-stars { font-size:44px; margin-bottom:12px; }
+.result-score { font-size:18px; font-weight:800; color:var(--green); margin-bottom:6px; }
+.result-score2 { font-size:15px; font-weight:700; color:#E07B39; margin-bottom:6px; }
+.result-sub { font-size:13.5px; color:var(--gray); margin-bottom:24px; }
+.result-btns { display:flex; flex-direction:column; gap:10px; }
+.result-btn { padding:14px; border-radius:14px; font-size:15.5px; font-weight:800; font-family:'Noto Sans KR',sans-serif; border:none; cursor:pointer; transition:all .2s; }
+.btn-retry { background:var(--green); color:#fff; }
+.btn-retry:hover { background:var(--green-dark); }
+.btn-wrong { background:var(--coral-light); color:var(--coral); border:2px solid var(--coral); }
+.btn-wrong:hover { background:#f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">심화</span>
+      <span class="badge-type">혼합</span>
+    </div>
+    <h1>JG3-0114y · 배수사, 비교급 반복, the+비교급, as+원급+as possible 심화</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum"><span id="qnum">1 / 8</span><span class="qtype-chip" id="qtypeChip"></span></div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsCol" style="display:none"></div>
+    <div id="subjArea" style="display:none">
+      <input type="text" class="subj-input" id="subjInput" placeholder="정답을 영어로 입력해 보세요 (자가채점용)">
+      <button class="subj-check-btn" id="subjCheckBtn" onclick="revealSubjAnswer()">정답 확인하기</button>
+      <div class="subj-answer-box" id="subjAnswerBox">
+        <div class="aa-title">📝 모범답안</div>
+        <div id="subjAnswerText"></div>
+        <div class="subj-rubric" id="subjRubric"></div>
+      </div>
+      <div class="subj-selfgrade" id="subjSelfgrade">
+        <button class="sg-correct" onclick="gradeSelf(true)">⭕ 내가 맞았어요</button>
+        <button class="sg-wrong" onclick="gradeSelf(false)">❌ 내가 틀렸어요</button>
+      </div>
+    </div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-score2" id="resultScore2"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "This pen is three times ___ cheap ___ that one.",
+    "hint": "이 펜은 저것보다 세 배 더 싸다.(배수사+as+원급+as)",
+    "options": [
+      "as / as",
+      "so / as",
+      "as / than",
+      "more / than"
+    ],
+    "answer": "as / as",
+    "feedback": "「배수사+as+원급+as」구문입니다. 정답은 <b>as / as</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "The reality show is getting ___ and more interesting.",
+    "hint": "그 리얼리티 쇼는 점점 더 흥미로워지고 있다.(more로 만드는 비교급 반복)",
+    "options": [
+      "more",
+      "much",
+      "very",
+      "most"
+    ],
+    "answer": "more",
+    "feedback": "「more and more+원급」구문입니다. 정답은 <b>more</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Sadly, his condition is getting ___ and worse.",
+    "hint": "안타깝게도, 그의 상태는 점점 나빠지고 있다.(불규칙 비교급 반복)",
+    "options": [
+      "worse",
+      "bad",
+      "badly",
+      "worst"
+    ],
+    "answer": "worse",
+    "feedback": "「비교급+and+비교급」구문으로 불규칙 비교급 worse를 반복합니다. 정답은 <b>worse</b>입니다."
+  },
+  {
+    "type": "obj",
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "I'll be back as soon ___ possible.",
+    "hint": "가능한 한 빨리 돌아올게.(as+원급+as possible)",
+    "options": [
+      "as",
+      "than",
+      "so",
+      "that"
+    ],
+    "answer": "as",
+    "feedback": "「as+원급+as possible(가능한 한 ~하게)」구문입니다. 정답은 <b>as</b>입니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "이 상자는 저것보다 두 배 더 무겁다.(배수사+비교급+than)",
+    "hint": "This box is twice heavier than that one을 사용하세요.",
+    "answer": "This box is twice heavier than that one.",
+    "rubric": "twice heavier than이 정확히 와야 정답.",
+    "feedback": "「배수사+비교급+than」구문입니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "다음 문장을 「as+원급+as+주어+can」을 이용한 문장으로 바꿔 쓰세요.",
+    "sentence": "I'll be back as soon as possible.",
+    "hint": "",
+    "answer": "I'll be back as soon as I can.",
+    "rubric": "as soon as I can이 정확히 와야 정답.",
+    "feedback": "「as+원급+as possible」은 「as+원급+as+주어+can」으로 바꿔 쓸 수 있습니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "우리말 뜻에 맞게 문장을 완성하세요.",
+    "sentence": "더 많이 가질수록, 더 많이 원한다.(the+비교급, the+비교급)",
+    "hint": "The more one has, the more one wants를 사용하세요.",
+    "answer": "The more one has, the more one wants.",
+    "rubric": "The more~, the more~ 구조가 정확히 와야 정답.",
+    "feedback": "「the+비교급~, the+비교급…」은 '~할수록 더 …하다'라는 뜻입니다."
+  },
+  {
+    "type": "subj",
+    "instruction": "다음 문장에서 틀린 부분을 찾아 바르게 고쳐 쓰세요.",
+    "sentence": "He drove fast and fast on the highway.",
+    "hint": "",
+    "answer": "He drove faster and faster on the highway.",
+    "rubric": "fast and fast를 faster and faster(비교급 반복)로 고쳐야 정답.",
+    "feedback": "「비교급+and+비교급」구문이므로 fast의 비교급인 faster를 반복해야 합니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, objScore = 0, objTotal = 0, subjDone = 0, subjCorrectSelf = 0, subjTotal = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; objScore = 0; objTotal = 0; subjDone = 0; subjCorrectSelf = 0; subjTotal = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('qtypeChip').textContent = q.type === 'obj' ? '객관식' : '주관식';
+  document.getElementById('qtypeChip').className = 'qtype-chip ' + q.type;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence.replace(/___/g,
+    '<span class="blank">&nbsp;</span>').replace(/\n/g, '<br>');
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = '💡 ' + q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const optsCol = document.getElementById('optsCol');
+  const subjArea = document.getElementById('subjArea');
+  optsCol.innerHTML = '';
+  document.getElementById('subjAnswerBox').style.display = 'none';
+  document.getElementById('subjSelfgrade').style.display = 'none';
+  document.getElementById('subjInput').value = '';
+  document.querySelectorAll('.sg-correct,.sg-wrong').forEach(b=>b.classList.remove('picked'));
+  if (q.type === 'obj') {
+    optsCol.style.display = 'flex'; subjArea.style.display = 'none';
+    shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn'; btn.textContent = opt;
+      btn.onclick = () => selectAnswer(opt, btn);
+      optsCol.appendChild(btn);
+    });
+  } else {
+    optsCol.style.display = 'none'; subjArea.style.display = 'block';
+    document.getElementById('subjCheckBtn').style.display = 'block';
+  }
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected.toLowerCase() === q.answer.toLowerCase();
+  objTotal++;
+  if (isCorrect) { objScore++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function revealSubjAnswer() {
+  const q = questions[current];
+  document.getElementById('subjAnswerText').innerHTML = '<b>' + q.answer + '</b>';
+  document.getElementById('subjRubric').innerHTML = q.rubric || '';
+  document.getElementById('subjAnswerBox').style.display = 'block';
+  document.getElementById('subjSelfgrade').style.display = 'flex';
+  document.getElementById('subjCheckBtn').style.display = 'none';
+}
+function gradeSelf(isCorrect) {
+  const q = questions[current];
+  subjTotal++; subjDone++;
+  document.querySelectorAll('.sg-correct,.sg-wrong').forEach(b=>b.classList.remove('picked'));
+  if (isCorrect) { subjCorrectSelf++; document.querySelector('.sg-correct').classList.add('picked'); }
+  else { wrongIndexes.push(current); document.querySelector('.sg-wrong').classList.add('picked'); }
+  const fb = document.getElementById('feedback');
+  fb.className = isCorrect ? 'feedback correct' : 'feedback wrong';
+  document.getElementById('fbTitle').textContent = isCorrect ? '✅ 잘했어요!' : '📖 다시 확인해봐요';
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const pct = objTotal > 0 ? objScore / objTotal : 1;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `객관식 ${objScore} / ${objTotal} 정답`;
+  document.getElementById('resultScore2').textContent = `주관식 자가채점 ${subjCorrectSelf} / ${subjTotal} (완료 ${subjDone}개)`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 심화 마스터! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 연습해봐요.' : '다시 한번 도전해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>

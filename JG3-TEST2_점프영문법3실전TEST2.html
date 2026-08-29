@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG3-TEST2 점프영문법3 실전TEST 2 (그룹7~12 통합)</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#EAF6F1; --green:#1E5A46; --green-dark:#16432F;
+  --mint:#4CAF93; --mint-light:#E7F7F0;
+  --coral:#E8604C; --coral-light:#FDEAE6;
+  --badge-track-color:#34495E;
+  --badge-type-color:#C0392B;
+  --card-bg:#fff; --text:#1a1a1a; --gray:#888;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); font-family:'Noto Sans KR','Nunito',sans-serif; color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:16px; padding-bottom:40px; }
+.app { width:100%; max-width:480px; }
+.header { text-align:center; margin-bottom:18px; padding-top:8px; }
+.header-badges { display:flex; justify-content:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.badge-track { font-size:11.5px; font-weight:800; background:var(--badge-track-color); color:#fff; padding:3px 10px; border-radius:999px; }
+.badge-type { font-size:11.5px; font-weight:800; background:var(--badge-type-color); color:#fff; padding:3px 10px; border-radius:999px; }
+h1 { font-size:19px; font-weight:800; color:var(--green); line-height:1.3; }
+.progress-wrap { height:12px; border-radius:999px; background:#d4ece3; box-shadow:inset 0 0 0 2px #b8dece; margin:14px 0 18px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mint),var(--green)); transition:width .4s ease; }
+.card { background:var(--card-bg); border-radius:20px; padding:22px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); }
+.qnum { font-size:13px; color:#999; margin-bottom:6px; }
+.card-instruction { font-size:16.5px; color:#555; margin-bottom:12px; line-height:1.5; }
+.sentence-box { font-size:20px; font-family:'Nunito',sans-serif; font-weight:700; line-height:1.6; background:var(--bg); border-radius:12px; padding:14px 16px; margin-bottom:10px; color:var(--green-dark); }
+.sentence-box .blank { display:inline-block; min-width:56px; border-bottom:3px solid var(--green); vertical-align:bottom; margin:0 3px; }
+.hint { font-size:16px; color:#666; line-height:1.5; margin-bottom:16px; display:none; }
+.opts-col { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+.opt-btn { font-size:17px; font-weight:700; font-family:'Nunito','Noto Sans KR',sans-serif; padding:13px 14px; border-radius:14px; border:2.5px solid #b8dece; background:#fff; color:var(--text); cursor:pointer; transition:all .15s; text-align:left; line-height:1.3; }
+.opt-btn:hover:not(:disabled) { background:var(--bg); border-color:var(--mint); }
+.opt-btn.correct { background:var(--mint-light); border-color:var(--mint); color:#2E8064; }
+.opt-btn.wrong { background:var(--coral-light); border-color:var(--coral); color:#B84534; }
+.opt-btn:disabled { cursor:default; }
+.feedback { display:none; border-radius:14px; padding:14px; margin-bottom:14px; font-size:15.5px; line-height:1.6; }
+.feedback.correct { background:var(--mint-light); color:#2E8064; }
+.feedback.wrong { background:var(--coral-light); color:#B84534; }
+.fb-title { font-size:15px; font-weight:800; margin-bottom:4px; }
+.next-btn { width:100%; padding:14px; border-radius:14px; font-size:16px; font-weight:800; font-family:'Noto Sans KR',sans-serif; background:var(--green); color:#fff; border:none; cursor:pointer; display:none; transition:background .2s; }
+.next-btn:hover { background:var(--green-dark); }
+.result-screen { display:none; background:var(--card-bg); border-radius:20px; padding:36px 18px; box-shadow:0 4px 16px rgba(0,0,0,0.10); text-align:center; }
+.result-stars { font-size:44px; margin-bottom:12px; }
+.result-score { font-size:18px; font-weight:800; color:var(--green); margin-bottom:6px; }
+.result-sub { font-size:13.5px; color:var(--gray); margin-bottom:24px; }
+.result-btns { display:flex; flex-direction:column; gap:10px; }
+.result-btn { padding:14px; border-radius:14px; font-size:15.5px; font-weight:800; font-family:'Noto Sans KR',sans-serif; border:none; cursor:pointer; transition:all .2s; }
+.btn-retry { background:var(--green); color:#fff; }
+.btn-retry:hover { background:var(--green-dark); }
+.btn-wrong { background:var(--coral-light); color:var(--coral); border:2px solid var(--coral); }
+.btn-wrong:hover { background:#f9d4ce; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badges">
+      <span class="badge-track">전체통합</span>
+      <span class="badge-type">실전TEST</span>
+    </div>
+    <h1>JG3-TEST2 · 점프영문법3 실전TEST 2 (그룹7~12 통합)</h1>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum">1 / 20</div>
+    <div class="card-instruction" id="cardInstruction"></div>
+    <div class="sentence-box" id="sentenceBox"></div>
+    <div class="hint" id="hint"></div>
+    <div class="opts-col" id="optsCol"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbBody"></div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+  <div class="result-screen" id="resultScreen">
+    <div class="result-stars" id="resultStars"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryAll()">🔄 전체 다시 풀기</button>
+      <button class="result-btn btn-wrong" id="retryWrongBtn" onclick="retryWrong()">❌ 오답만 다시 풀기</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "If I ___ her problem, I could help her.",
+    "hint": "",
+    "answer": "knew",
+    "options": [
+      "knew",
+      "know",
+      "had known",
+      "will know"
+    ],
+    "feedback": "(가정법 과거) 가정법 과거의 if절은 동사의 과거형입니다. 정답은 <b>knew</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "If I ___ the ticket online, I would have gotten a discount.",
+    "hint": "",
+    "answer": "had reserved",
+    "options": [
+      "had reserved",
+      "reserved",
+      "have reserved",
+      "would reserve"
+    ],
+    "feedback": "(가정법 과거완료) 가정법 과거완료의 if절은 「had+v-ed」입니다. 정답은 <b>had reserved</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "I wish I ___ harder for the exams.",
+    "hint": "",
+    "answer": "had studied",
+    "options": [
+      "had studied",
+      "studied",
+      "have studied",
+      "would study"
+    ],
+    "feedback": "(I wish+가정법 과거완료) 「I wish+가정법 과거완료」는 과거 일에 대한 유감을 나타냅니다. 정답은 <b>had studied</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Andy is a boy ___ goal is to be an actor.",
+    "hint": "",
+    "answer": "whose",
+    "options": [
+      "whose",
+      "who",
+      "which",
+      "what"
+    ],
+    "feedback": "(소유격) 소유격 관계대명사는 whose입니다. 정답은 <b>whose</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "This is the time ___ my favorite show is on.",
+    "hint": "",
+    "answer": "when",
+    "options": [
+      "when",
+      "where",
+      "why",
+      "how"
+    ],
+    "feedback": "(관계부사) 선행사가 시간이므로 관계부사 when입니다. 정답은 <b>when</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ wins the World Cup, it will be fun to watch.",
+    "hint": "",
+    "answer": "Whoever",
+    "options": [
+      "Whoever",
+      "Whatever",
+      "Whichever",
+      "Wherever"
+    ],
+    "feedback": "(복합관계대명사) 「whoever(누가 ~하더라도)」구문입니다. 정답은 <b>Whoever</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He is not ___ rich ___ his parents.",
+    "hint": "",
+    "answer": "as / as",
+    "options": [
+      "as / as",
+      "so / than",
+      "as / than",
+      "more / than"
+    ],
+    "feedback": "(부정 원급) 「not as+원급+as」구문입니다. 정답은 <b>as / as</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "No other mountain in the world is ___ than Mount Everest.",
+    "hint": "",
+    "answer": "higher",
+    "options": [
+      "higher",
+      "high",
+      "the highest",
+      "more high"
+    ],
+    "feedback": "(부정주어+비교급, 최상급 의미) 「부정주어~비교급+than」으로 최상급 의미를 나타냅니다. 정답은 <b>higher</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "This pen is three times ___ cheap ___ that one.",
+    "hint": "",
+    "answer": "as / as",
+    "options": [
+      "as / as",
+      "so / as",
+      "as / than",
+      "more / than"
+    ],
+    "feedback": "(배수사) 「배수사+as+원급+as」구문입니다. 정답은 <b>as / as</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ the test is difficult, we can all pass.",
+    "hint": "",
+    "answer": "Unless",
+    "options": [
+      "Unless",
+      "If",
+      "Even if",
+      "Though"
+    ],
+    "feedback": "(=if~not) 「unless(=if~not)」구문입니다. 정답은 <b>Unless</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Not only Tom but also I ___ interested in hip hop music.",
+    "hint": "",
+    "answer": "am",
+    "options": [
+      "am",
+      "is",
+      "are",
+      "was"
+    ],
+    "feedback": "(B에 수 일치) 「not only A but also B」는 B(I)에 수를 일치시킵니다. 정답은 <b>am</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "___ do you think will win this game?",
+    "hint": "",
+    "answer": "Who",
+    "options": [
+      "Who",
+      "That",
+      "If",
+      "Whether"
+    ],
+    "feedback": "(think류 동사, 의문사 맨 앞) 주절의 동사가 think일 때는 의문사를 맨 앞에 둡니다. 정답은 <b>Who</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "A number of people ___ waiting at the bank.",
+    "hint": "",
+    "answer": "were",
+    "options": [
+      "were",
+      "was",
+      "is",
+      "has been"
+    ],
+    "feedback": "(a number of, 복수) 「a number of+복수명사」는 복수 취급합니다. 정답은 <b>were</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "My teacher said that the moon ___ around the earth.",
+    "hint": "",
+    "answer": "goes",
+    "options": [
+      "goes",
+      "went",
+      "had gone",
+      "would go"
+    ],
+    "feedback": "(과학적 사실) 과학적 사실은 항상 현재시제입니다. 정답은 <b>goes</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Zoe asked me why I ___ a hammer.",
+    "hint": "",
+    "answer": "needed",
+    "options": [
+      "needed",
+      "need",
+      "will need",
+      "had needed"
+    ],
+    "feedback": "(의문사 있는 의문문 화법전환) 의문사가 있는 의문문의 간접화법은 「ask+의문사+주어+동사」입니다. 정답은 <b>needed</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "I don't remember his name, but I ___ remember his face.",
+    "hint": "",
+    "answer": "do",
+    "options": [
+      "do",
+      "did",
+      "was",
+      "am"
+    ],
+    "feedback": "(동사 강조) 동사 강조는 「do+동사원형」입니다. 정답은 <b>do</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "It was Tom ___ saw Julie at the theater yesterday.",
+    "hint": "",
+    "answer": "that",
+    "options": [
+      "that",
+      "who",
+      "which",
+      "what"
+    ],
+    "feedback": "(주어 강조) 「It is[was]~that」강조구문에서 that을 씁니다(who도 가능하나 이 문항은 that). 정답은 <b>that</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "In the Trevi Fountain ___ a lot of coins.",
+    "hint": "",
+    "answer": "were",
+    "options": [
+      "were",
+      "was",
+      "are",
+      "is"
+    ],
+    "feedback": "(장소부사구 도치) 장소 부사구가 문두에 오면 도치되며 coins(복수)에 수를 일치시킵니다. 정답은 <b>were</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "Hardly ___ I seen such an exciting soccer game.",
+    "hint": "",
+    "answer": "have",
+    "options": [
+      "have",
+      "did",
+      "do",
+      "was"
+    ],
+    "feedback": "(부정어 도치) 완료형 문장에서 부정어 도치는 「부정어+have+주어」입니다. 정답은 <b>have</b>입니다."
+  },
+  {
+    "instruction": "빈칸에 알맞은 것을 고르세요.",
+    "sentence": "He is not only handsome but also ___.",
+    "hint": "",
+    "answer": "intelligent",
+    "options": [
+      "intelligent",
+      "intelligence",
+      "intelligently",
+      "to be intelligent"
+    ],
+    "feedback": "(병렬, 형용사) 상관접속사로 연결되는 말은 동일한 문법 형태(형용사)를 가져야 합니다. 정답은 <b>intelligent</b>입니다."
+  }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function shuffleNoFirstAnswer(arr, answer) {
+  let result; let tries = 0;
+  do { result = shuffle(arr); tries++; }
+  while (result[0].toLowerCase() === answer.toLowerCase() && tries < 20);
+  return result;
+}
+let questions = [], current = 0, score = 0, wrongIndexes = [];
+function startQuiz(qs) {
+  questions = qs; current = 0; score = 0; wrongIndexes = [];
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('resultScreen').style.display = 'none';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[current], total = questions.length;
+  document.getElementById('qnum').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progressBar').style.width = `${(current / total) * 100}%`;
+  document.getElementById('cardInstruction').textContent = q.instruction;
+  document.getElementById('sentenceBox').innerHTML = q.sentence;
+  const hintEl = document.getElementById('hint');
+  if (q.hint) { hintEl.style.display = ''; hintEl.innerHTML = q.hint; } else { hintEl.style.display = 'none'; }
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none'; fb.className = 'feedback';
+  document.getElementById('nextBtn').style.display = 'none';
+  const col = document.getElementById('optsCol');
+  col.innerHTML = '';
+  shuffleNoFirstAnswer(q.options, q.answer).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn'; btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt, btn);
+    col.appendChild(btn);
+  });
+}
+function selectAnswer(selected, clickedBtn) {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) b.classList.add('correct');
+  });
+  const fb = document.getElementById('feedback');
+  const isCorrect = selected === q.answer;
+  if (isCorrect) { score++; clickedBtn.classList.add('correct'); fb.className = 'feedback correct'; document.getElementById('fbTitle').textContent = '✅ 정답!'; }
+  else { clickedBtn.classList.add('wrong'); fb.className = 'feedback wrong'; document.getElementById('fbTitle').textContent = '❌ 오답'; wrongIndexes.push(current); }
+  document.getElementById('fbBody').innerHTML = q.feedback;
+  fb.style.display = 'block';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? '다음 문제 →' : '결과 보기 🏁';
+}
+function nextQuestion() { current++; if (current < questions.length) showQuestion(); else showResult(); }
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const rs = document.getElementById('resultScreen'); rs.style.display = 'block';
+  const total = questions.length, pct = score / total;
+  document.getElementById('resultStars').textContent = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+  document.getElementById('resultScore').textContent = `${score} / ${total} 정답`;
+  document.getElementById('resultSub').textContent = pct >= 0.9 ? '완벽해요! 만점에 가까워요! 🎉' : pct >= 0.6 ? '잘했어요! 조금만 더 복습해봐요.' : '틀린 부분을 다시 확인해봐요!';
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('retryWrongBtn').style.display = wrongIndexes.length > 0 ? 'block' : 'none';
+}
+function retryAll() { startQuiz(shuffle([...ALL_QUESTIONS])); }
+function retryWrong() { if (!wrongIndexes.length) return; startQuiz(shuffle(wrongIndexes.map(i => questions[i]))); }
+startQuiz(shuffle([...ALL_QUESTIONS]));
+</script>
+</body>
+</html>
